@@ -23,7 +23,13 @@ function initControls(globals){
     });
 
     setLink("#addForce", function(){
+        globals.addRemoveFixedMode = false;
         globals.addForceMode = true;
+    });
+
+    setLink("#addRemoveFixed", function(){
+        globals.addForceMode = false;
+        globals.addRemoveFixedMode = true;
     });
 
     setCheckbox("#lockForces", globals.lockForces, function(val){

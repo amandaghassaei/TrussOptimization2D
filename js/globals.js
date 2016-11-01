@@ -9,6 +9,7 @@ function initGlobals(){
 
         //edit geo
         addForceMode: false,
+        addRemoveFixedMode: false,
 
         viewMode: "geometry",
 
@@ -23,6 +24,7 @@ function initGlobals(){
         addEdge: addEdge,
         removeEdge: removeEdge
     };
+
 
     function addNode(node){
         node.setIndex(_globals.nodes.length);

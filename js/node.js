@@ -2,14 +2,13 @@
  * Created by ghassaei on 9/16/16.
  */
 
-var nodeMaterial = new THREE.MeshLambertMaterial({color: 0x000000});
-var nodeMaterialFixed = new THREE.MeshLambertMaterial({color: 0x000000});
-var nodeMaterialDelete = new THREE.MeshLambertMaterial({color: 0xff0000});
-var nodeMaterialHighlight = new THREE.MeshLambertMaterial({color: 0xffffff});
+var nodeMaterial = new THREE.MeshBasicMaterial({color: 0x000000});
+var nodeMaterialFixed = new THREE.MeshBasicMaterial({color: 0x000000});
+var nodeMaterialDelete = new THREE.MeshBasicMaterial({color: 0xff0000});
+var nodeMaterialHighlight = new THREE.MeshBasicMaterial({color: 0xffffff});
 var nodeGeo = new THREE.SphereGeometry(0.2);
 nodeGeo.rotateX(Math.PI/2);
-var nodeFixedGeo = new THREE.CubeGeometry(1, 0.5, 1);
-nodeFixedGeo.applyMatrix( new THREE.Matrix4().makeTranslation(0, 0.25, 0) );
+var nodeFixedGeo = new THREE.CubeGeometry(0.5, 0.5, 0.5);
 
 
 function Node(position, globals){
@@ -96,7 +95,10 @@ Node.prototype.setDeleteMode = function(){
 };
 
 Node.prototype.highlight = function(){
-    this.object3D.material = nodeMaterialHighlight;
+    if (globals.addRemoveFixedMode && this.fixed) {
+        this.setDeleteMode();
+    }
+    else this.object3D.material = nodeMaterialHighlight;
     globals.threeView.render();
 };
 
@@ -112,6 +114,9 @@ Node.prototype.unhighlight = function(){
 
 Node.prototype.hide = function(){
     this.object3D.visible = false;
+};
+Node.prototype.show = function(){
+    this.object3D.visible = true;
 };
 
 Node.prototype.move = function(position){

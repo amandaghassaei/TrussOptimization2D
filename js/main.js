@@ -39,9 +39,10 @@ $(function() {
 
     var force = new Force(new THREE.Vector3(2,1.4,0.2), globals);
     globals.nodes[3].addExternalForce(force);
+    globals.nodes[2].setFixed(true);
 
+    //todo solve
     globals.threeView.render();
-
 
     var raycaster = new THREE.Raycaster();
     var mouse = new THREE.Vector2();
@@ -51,7 +52,16 @@ $(function() {
     var isDraggingNode = false;
     var isDraggingForce = false;
     var mouseDown = false;
+
     var beamInProgress = null;
+    var dummyFixed = new Node(new THREE.Vector3(), globals);
+    dummyFixed.setFixed(true);
+    dummyFixed.type = "dummy";
+    dummyFixed.getObject3D().material = dummyFixed.getObject3D().material.clone();
+    dummyFixed.getObject3D().material.transparent = true;
+    dummyFixed.getObject3D().material.side = THREE.DoubleSide;
+    dummyFixed.getObject3D().material.opacity = 0.5;
+    dummyFixed.hide();
 
     function setHighlightedObj(object){
         if (highlightedObj && (object != highlightedObj)) {
@@ -81,6 +91,7 @@ $(function() {
             globals.addEdge(beam2);
             setHighlightedObj(node);
             globals.removeEdge(oldEdge);
+            //todo solve
             globals.controls.viewModeCallback();
         }
     });
@@ -100,14 +111,24 @@ $(function() {
                 }
                 beamInProgress.destroy();
                 beamInProgress = null;
+                //todo solve
                 globals.threeView.render();
             } else if (globals.addForceMode) {
                 if (highlightedObj && highlightedObj.type == "node" && highlightedObj.externalForce === null){
                     var force = new Force(new THREE.Vector3(), globals);
                     highlightedObj.addExternalForce(force);
                     setHighlightedObj(force);
+                    //todo solve
                 }
                 globals.addForceMode = false;
+            } else if (globals.addRemoveFixedMode){
+                globals.addRemoveFixedMode = false;
+                dummyFixed.hide();
+                if (highlightedObj && highlightedObj.type == "node"){
+                    highlightedObj.setFixed(!highlightedObj.fixed);
+                    //todo solve
+                    globals.threeView.render();
+                }
             }
             break;
         case 2://middle button
@@ -115,15 +136,14 @@ $(function() {
         case 3://right button
 
             if (highlightedObj && highlightedObj.type == "node"){
-                //globals.threeView.enableControls(false);
-
+                //globals.controls.editMoreInfo(highlightedObj.getLength().toFixed(2), e, function(val){
+                //    console.log(val);
+                //});
             } else if (highlightedObj && highlightedObj.type == "beam"){
-                //globals.threeView.enableControls(false);
-                globals.controls.editMoreInfo(highlightedObj.getLength().toFixed(2), e, function(val){
-                    console.log(val);
-                });
+                //globals.controls.editMoreInfo(highlightedObj.getLength().toFixed(2), e, function(val){
+                //    console.log(val);
+                //});
             }
-
             break;
     }
 
@@ -169,6 +189,17 @@ $(function() {
             _highlightedObj = checkForIntersections(e, objsToIntersect);
             setHighlightedObj(_highlightedObj);
 
+            if (globals.addRemoveFixedMode){
+                if (highlightedObj && highlightedObj.type == "node" && highlightedObj.fixed){
+                    dummyFixed.hide();
+                } else {
+                    var intersection = getIntersectionWithObjectPlane(new THREE.Vector3());
+                    dummyFixed.move(intersection);
+                    dummyFixed.show();
+                    globals.threeView.render();
+                }
+            }
+
             if (globals.viewMode == "length"){
                 if (highlightedObj && highlightedObj.type == "beam"){
                     globals.controls.showMoreInfo("Length: " +
@@ -190,8 +221,8 @@ $(function() {
                     globals.threeView.enableControls(false);
                 }
                 var intersection = getIntersectionWithObjectPlane(highlightedObj.getPosition());
-                raycaster.ray.intersectPlane(raycasterPlane, intersection);
                 highlightedObj.move(intersection);
+                //todo solve
                 globals.controls.viewModeCallback();
             } else if (highlightedObj.type == "beam"){
             } else if (highlightedObj.type == "force"){
@@ -202,6 +233,7 @@ $(function() {
                 }
                 var intersection = getIntersectionWithObjectPlane(highlightedObj.getPosition());
                 highlightedObj.move(intersection);
+                //todo solve
                 globals.threeView.render();
             }
         }
@@ -231,14 +263,15 @@ $(function() {
         if (intersections.length > 0) {
             var objectFound = false;
             _.each(intersections, function (thing) {
-                if (objectFound) return;
-                if (thing.object && thing.object._myNode){
+                if (thing.object && thing.object._myNode && thing.object._myNode.type == "node"){
                     _highlightedObj = thing.object._myNode;
                     objectFound = true;
-                } else if (thing.object && thing.object._myBeam) {
+                } else if (thing.object && thing.object._myBeam && thing.object._myBeam.type == "beam") {
+                    if (objectFound) return;
                     _highlightedObj = thing.object._myBeam;
                     objectFound = true;
-                } else if (thing.object && thing.object._myForce) {
+                } else if (thing.object && thing.object._myForce && thing.object._myForce.type == "force") {
+                    if (objectFound && high) return;
                     _highlightedObj = thing.object._myForce;
                     objectFound = true;
                 }
