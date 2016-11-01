@@ -2,31 +2,30 @@
  * Created by ghassaei on 9/16/16.
  */
 
-var beamMaterialHighlight = new THREE.LineBasicMaterial({color: 0xffffff, linewidth: 4});
+var beamMaterialHighlight = new THREE.MeshBasicMaterial({color: 0xffffff});
+var beamGeometry = new THREE.CylinderGeometry(0.1, 0.1, 1);
 
 function Beam(nodes, globals){
 
     nodes[0].addBeam(this);
     nodes[1].addBeam(this);
-    this.vertices = [nodes[0].getPosition(), nodes[1].getPosition()];
     this.nodes = nodes;
 
-    var lineGeometry = new THREE.Geometry();
-    lineGeometry.dynamic = true;
-    lineGeometry.vertices = this.vertices;
-
-    this.material = new THREE.LineBasicMaterial({linewidth: 3});
-    this.object3D = new THREE.Line(lineGeometry, this.material);
+    this.material = new THREE.MeshBasicMaterial({color: 0xaaaaaa});
+    this.object3D = new THREE.Mesh(beamGeometry, this.material);
     this.object3D._myBeam = this;
     globals.threeView.sceneAdd(this.object3D);
+    this.render();
 }
 
 Beam.prototype.highlight = function(){
     this.object3D.material = beamMaterialHighlight;
+    globals.threeView.render();
 };
 
 Beam.prototype.unhighlight = function(){
     if (this.material) this.object3D.material = this.material;
+    globals.threeView.render();
 };
 
 Beam.prototype.setColor = function(hex){
@@ -73,8 +72,14 @@ Beam.prototype.getObject3D = function(){
 };
 
 Beam.prototype.render = function(){
-    this.object3D.geometry.verticesNeedUpdate = true;
-    this.object3D.geometry.computeBoundingSphere();
+    this.object3D.scale.y = this.getLength();
+    var beamAxis = this.nodes[0].getPosition().sub(this.nodes[1].getPosition());
+    var axis = (new THREE.Vector3(0,1,0)).cross(beamAxis).normalize();
+    var angle = Math.acos(new THREE.Vector3(0,1,0).dot(beamAxis.normalize()));
+    var quaternion = (new THREE.Quaternion()).setFromAxisAngle(axis, angle);
+    var position = (this.nodes[0].getPosition().add(this.nodes[1].getPosition())).multiplyScalar(0.5);
+    this.object3D.position.set(position.x, position.y, position.z);
+    this.object3D.quaternion.set(quaternion.x, quaternion.y, quaternion.z, quaternion.w);
 };
 
 

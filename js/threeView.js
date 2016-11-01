@@ -101,7 +101,12 @@ function initThreeView(globals) {
         controls.enableRotate = state;
     }
 
+    function getObjToIntersect(){
+        return wrapper.children;
+    }
+
     return {
+        getObjToIntersect: getObjToIntersect,
         sceneRemove: sceneRemove,
         sceneAdd: sceneAdd,
         sceneClear: sceneClear,

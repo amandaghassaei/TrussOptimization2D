@@ -18,6 +18,10 @@ function initControls(globals){
         $('#aboutModal').modal('show');
     });
 
+    setLink("#addForce", function(){
+        globals.addForceMode = true;
+    });
+
     function updateScaleBars(min, max){
         for (var i=0;i<=20;i++){
             var val = (max-min)*(20-i)/20+min;

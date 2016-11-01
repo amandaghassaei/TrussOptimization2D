@@ -2,11 +2,11 @@
  * Created by ghassaei on 9/16/16.
  */
 
-var nodeMaterial = new THREE.MeshBasicMaterial({color: 0x000000, side:THREE.DoubleSide});
-var nodeMaterialFixed = new THREE.MeshBasicMaterial({color: 0x000000, side:THREE.DoubleSide});
-var nodeMaterialDelete = new THREE.MeshBasicMaterial({color: 0xff0000, side:THREE.DoubleSide});
-var nodeMaterialHighlight = new THREE.MeshBasicMaterial({color: 0xff00ff, side:THREE.DoubleSide});
-var nodeGeo = new THREE.CircleGeometry(0.2,20);
+var nodeMaterial = new THREE.MeshBasicMaterial({color: 0x000000});
+var nodeMaterialFixed = new THREE.MeshBasicMaterial({color: 0x000000});
+var nodeMaterialDelete = new THREE.MeshBasicMaterial({color: 0xff0000});
+var nodeMaterialHighlight = new THREE.MeshBasicMaterial({color: 0xffffff});
+var nodeGeo = new THREE.SphereGeometry(0.2);
 nodeGeo.rotateX(Math.PI/2);
 var nodeFixedGeo = new THREE.CubeGeometry(1, 0.5, 1);
 nodeFixedGeo.applyMatrix( new THREE.Matrix4().makeTranslation(0, 0.25, 0) );
@@ -95,6 +95,7 @@ Node.prototype.setDeleteMode = function(){
 
 Node.prototype.highlight = function(){
     this.object3D.material = nodeMaterialHighlight;
+    globals.threeView.render();
 };
 
 Node.prototype.unhighlight = function(){
@@ -104,6 +105,7 @@ Node.prototype.unhighlight = function(){
     else {
         this.object3D.material = nodeMaterial;
     }
+    globals.threeView.render();
 };
 
 Node.prototype.hide = function(){
