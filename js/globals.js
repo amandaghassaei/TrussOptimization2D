@@ -35,7 +35,7 @@ function initGlobals(){
     }
 
     function addEdge(edge){
-        _globals.nodes.push(edge);
+        _globals.edges.push(edge);
     }
     function removeEdge(edge){
         var index = _globals.edges.indexOf(edge);
