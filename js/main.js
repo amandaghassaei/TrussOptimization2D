@@ -7,7 +7,6 @@ globals = {};
 $(function() {
     console.log("hi");
 
-    var controls = initControls(globals);
-    var threeView = initThreeView(globals);
+    globals = initGlobals();
 
 });
