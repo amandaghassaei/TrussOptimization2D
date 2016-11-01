@@ -2,10 +2,10 @@
  * Created by ghassaei on 9/16/16.
  */
 
-var nodeMaterial = new THREE.MeshBasicMaterial({color: 0x000000});
-var nodeMaterialFixed = new THREE.MeshBasicMaterial({color: 0x000000});
-var nodeMaterialDelete = new THREE.MeshBasicMaterial({color: 0xff0000});
-var nodeMaterialHighlight = new THREE.MeshBasicMaterial({color: 0xffffff});
+var nodeMaterial = new THREE.MeshLambertMaterial({color: 0x000000});
+var nodeMaterialFixed = new THREE.MeshLambertMaterial({color: 0x000000});
+var nodeMaterialDelete = new THREE.MeshLambertMaterial({color: 0xff0000});
+var nodeMaterialHighlight = new THREE.MeshLambertMaterial({color: 0xffffff});
 var nodeGeo = new THREE.SphereGeometry(0.2);
 nodeGeo.rotateX(Math.PI/2);
 var nodeFixedGeo = new THREE.CubeGeometry(1, 0.5, 1);

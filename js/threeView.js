@@ -20,18 +20,18 @@ function initThreeView(globals) {
 
         scene.background = new THREE.Color(0xf4f4f4);
         scene.add(wrapper);
-        //var directionalLight1 = new THREE.DirectionalLight(0xffffff, 0.8);
-        //directionalLight1.position.set(0, 100, 0);
-        //scene.add(directionalLight1);
-        //var directionalLight4 = new THREE.DirectionalLight(0xffffff, 0.3);
-        //directionalLight4.position.set(0, -100, 0);
-        //scene.add(directionalLight4);
-        //var directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.8);
-        //directionalLight2.position.set(100, -30, 0);
-        //scene.add(directionalLight2);
-        //var directionalLight3 = new THREE.DirectionalLight(0xffffff, 0.8);
-        //directionalLight3.position.set(-100, -30, 0);
-        //scene.add(directionalLight3);
+        var directionalLight1 = new THREE.DirectionalLight(0xffffff, 0.8);
+        directionalLight1.position.set(0, 100, 0);
+        scene.add(directionalLight1);
+        var directionalLight4 = new THREE.DirectionalLight(0xffffff, 0.3);
+        directionalLight4.position.set(0, -100, 0);
+        scene.add(directionalLight4);
+        var directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.8);
+        directionalLight2.position.set(100, -30, 0);
+        scene.add(directionalLight2);
+        var directionalLight3 = new THREE.DirectionalLight(0xffffff, 0.8);
+        directionalLight3.position.set(-100, -30, 0);
+        scene.add(directionalLight3);
         //scene.fog = new THREE.FogExp2(0xf4f4f4, 1.7);
         //renderer.setClearColor(scene.fog.color);
 

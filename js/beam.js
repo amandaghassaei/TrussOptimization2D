@@ -2,7 +2,7 @@
  * Created by ghassaei on 9/16/16.
  */
 
-var beamMaterialHighlight = new THREE.MeshBasicMaterial({color: 0xffffff});
+var beamMaterialHighlight = new THREE.MeshLambertMaterial({color: 0xffffff});
 var beamGeometry = new THREE.CylinderGeometry(0.1, 0.1, 1);
 
 function Beam(nodes, globals){
@@ -12,7 +12,7 @@ function Beam(nodes, globals){
     nodes[1].addBeam(this);
     this.nodes = nodes;
 
-    this.material = new THREE.MeshBasicMaterial({color: 0xaaaaaa});
+    this.material = new THREE.MeshLambertMaterial({color: 0xaaaaaa});
     this.object3D = new THREE.Mesh(beamGeometry, this.material);
     this.object3D._myBeam = this;
     globals.threeView.sceneAdd(this.object3D);
