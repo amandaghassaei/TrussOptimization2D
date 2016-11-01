@@ -41,8 +41,10 @@ $(function() {
 
     var raycaster = new THREE.Raycaster();
     var mouse = new THREE.Vector2();
+    var raycasterPlane = new THREE.Plane(new THREE.Vector3(0,0,1));
     var highlightedObj;
     var isDragging = false;
+    var isDraggingNode = false;
     var mouseDown = false;
 
     document.addEventListener('mousedown', function(){
@@ -50,6 +52,10 @@ $(function() {
     }, false);
 
     document.addEventListener('mouseup', function(e){
+        if (isDraggingNode){
+            isDraggingNode = false;
+            globals.threeView.enableControls(true);
+        }
         isDragging = false;
         mouseDown = false;
     }, false);
@@ -71,9 +77,24 @@ $(function() {
         if (!isDragging) {
             var objsToIntersect = globals.threeView.getObjToIntersect();
             _highlightedObj = checkForIntersections(e, objsToIntersect);
+            if (highlightedObj && (_highlightedObj != highlightedObj)) highlightedObj.unhighlight();
+            highlightedObj = _highlightedObj;
+        } else if (isDragging && highlightedObj){
+            var position = highlightedObj.getPosition();
+            var cameraOrientation = globals.threeView.camera.getWorldDirection();
+            var dist = position.dot(cameraOrientation);
+            raycasterPlane.set(cameraOrientation, -dist);
+            var intersection = new THREE.Vector3();
+            raycaster.ray.intersectPlane(raycasterPlane, intersection);
+            if (highlightedObj.type == "node"){
+                if (!isDraggingNode) {
+                    isDraggingNode = true;
+                    globals.threeView.enableControls(false);
+                }
+                highlightedObj.move(intersection);
+                globals.threeView.render();
+            }
         }
-        if (highlightedObj && (_highlightedObj != highlightedObj)) highlightedObj.unhighlight();
-        highlightedObj = _highlightedObj;
 
         if (globals.viewMode == "length"){
             if (highlightedObj && (highlightedObj.type == "dynamicBeam" || highlightedObj.type == "staticBeam")){

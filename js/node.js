@@ -15,6 +15,7 @@ nodeFixedGeo.applyMatrix( new THREE.Matrix4().makeTranslation(0, 0.25, 0) );
 function Node(position, index, globals){
 
     this.index = index;
+    this.type = "node";
 
     this.object3D = new THREE.Mesh(nodeGeo, nodeMaterial);
     this.object3D._myNode = this;
