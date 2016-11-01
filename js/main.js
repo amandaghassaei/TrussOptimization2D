@@ -64,15 +64,15 @@ $(function() {
     document.addEventListener('mousedown', function(){
         mouseDown = true;
 
-        if (beamInProgress && highlightedObj && highlightedObj.type == "node"){
-            if (beamInProgress.shouldBuildBeam(highlightedObj)){
-                console.log("new beam");
-                edges.push(new Beam([nodes[beamInProgress.node.getIndex()], nodes[highlightedObj.getIndex()]], globals));
+        if (beamInProgress){
+            if (highlightedObj && highlightedObj.type == "node") {
+                if (beamInProgress.shouldBuildBeam(highlightedObj)) {
+                    edges.push(new Beam([nodes[beamInProgress.node.getIndex()], nodes[highlightedObj.getIndex()]], globals));
+                }
             }
             beamInProgress.destroy();
             beamInProgress = null;
             globals.threeView.render();
-
         }
 
     }, false);
