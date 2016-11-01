@@ -78,6 +78,10 @@ Beam.prototype.getObject3D = function(){
     return this.object3D;
 };
 
+Beam.prototype.getNodes = function(){
+    return this.nodes;
+};
+
 Beam.prototype.render = function(){
     this.object3D.scale.y = this.getLength();
     var beamAxis = this.nodes[0].getPosition().sub(this.nodes[1].getPosition());

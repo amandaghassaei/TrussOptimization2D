@@ -12,9 +12,8 @@ var nodeFixedGeo = new THREE.CubeGeometry(1, 0.5, 1);
 nodeFixedGeo.applyMatrix( new THREE.Matrix4().makeTranslation(0, 0.25, 0) );
 
 
-function Node(position, index, globals){
+function Node(position, globals){
 
-    this.index = index;
     this.type = "node";
 
     this.object3D = new THREE.Mesh(nodeGeo, nodeMaterial);
@@ -27,6 +26,10 @@ function Node(position, index, globals){
 
     this.move(position);
 }
+
+Node.prototype.setIndex = function(index){
+    this.index = index;
+};
 
 Node.prototype.setFixed = function(fixed){
     this.fixed = fixed;

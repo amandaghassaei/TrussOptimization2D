@@ -27,22 +27,20 @@ $(function() {
         [3, 5]
     ];
 
-    var nodes = [];
     _.each(nodePositions, function(pos){
-        var positon = new THREE.Vector3(pos[0], pos[1], pos[2]);
-        nodes.push(new Node(positon, nodes.length, globals));
+        var position = new THREE.Vector3(pos[0], pos[1], pos[2]);
+        var node = new Node(position, globals);
+        globals.addNode(node);
     });
-    var edges = [];
     _.each(edgeConnections, function(connection){
-        edges.push(new Beam([nodes[connection[0]], nodes[connection[1]]], globals));
+        var edge = new Beam([globals.nodes[connection[0]], globals.nodes[connection[1]]], globals);
+        globals.addEdge(edge);
     });
 
     var force = new Force(new THREE.Vector3(2,1.4,0.2), globals);
-    nodes[3].addExternalForce(force);
+    globals.nodes[3].addExternalForce(force);
 
     globals.threeView.render();
-    globals.nodes = nodes;
-    globals.edges = edges;
 
 
     var raycaster = new THREE.Raycaster();
@@ -61,6 +59,20 @@ $(function() {
             beamInProgress = new BeamBuilding(highlightedObj, highlightedObj.getPosition(), globals);
             highlightedObj.unhighlight();
             highlightedObj = null;
+        } else if (highlightedObj && highlightedObj.type == "beam"){
+            if (globals.lockTopology) return;
+            var position = getPointOfIntersectionWithObject(highlightedObj.getObject3D());
+            if (position === null) return;
+            var node = new Node(position, globals);
+            globals.addNode(node);
+            var connectedNodes = highlightedObj.getNodes();
+            var beam1 = new Beam([connectedNodes[0], node], globals);
+            globals.addEdge(beam1);
+            var beam2 = new Beam([connectedNodes[1], node], globals);
+            globals.addEdge(beam2);
+            globals.removeEdge(highlightedObj);
+            globals.controls.viewModeCallback();
+            highlightedObj = node;
         }
     });
 
@@ -70,7 +82,7 @@ $(function() {
         if (beamInProgress){
             if (highlightedObj && highlightedObj.type == "node"){
                 if (beamInProgress.shouldBuildBeam(highlightedObj)){
-                    edges.push(new Beam([nodes[beamInProgress.node.getIndex()], nodes[highlightedObj.getIndex()]], globals));
+                    globals.addEdge(new Beam([beamInProgress.node, highlightedObj], globals));
                     globals.controls.viewModeCallback();
                 }
             }
@@ -174,6 +186,15 @@ $(function() {
         var intersection = new THREE.Vector3();
         raycaster.ray.intersectPlane(raycasterPlane, intersection);
         return intersection;
+    }
+
+    function getPointOfIntersectionWithObject(object){
+        var intersections = raycaster.intersectObjects([object], false);
+        if (intersections.length > 0) {
+            return intersections[0].point;
+        }
+        console.warn("no intersection found");
+        return null;
     }
 
     function checkForIntersections(e, objects){
