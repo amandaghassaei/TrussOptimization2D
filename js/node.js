@@ -12,18 +12,19 @@ var nodeFixedGeo = new THREE.CubeGeometry(1, 0.5, 1);
 nodeFixedGeo.applyMatrix( new THREE.Matrix4().makeTranslation(0, 0.25, 0) );
 
 
-function Node(position, index){
+function Node(position, index, globals){
 
     this.index = index;
 
     this.object3D = new THREE.Mesh(nodeGeo, nodeMaterial);
     this.object3D._myNode = this;
+    globals.threeView.sceneAdd(this.object3D);
 
     this.beams = [];
     this.externalForces = [];
     this.fixed = false;
 
-    this.render(position);
+    this.move(position);
 }
 
 Node.prototype.setFixed = function(fixed){

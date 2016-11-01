@@ -4,7 +4,7 @@
 
 var beamMaterialHighlight = new THREE.LineBasicMaterial({color: 0xffffff, linewidth: 4});
 
-function Beam(nodes){
+function Beam(nodes, globals){
 
     nodes[0].addBeam(this);
     nodes[1].addBeam(this);
@@ -18,6 +18,7 @@ function Beam(nodes){
     this.material = new THREE.LineBasicMaterial({linewidth: 3});
     this.object3D = new THREE.Line(lineGeometry, this.material);
     this.object3D._myBeam = this;
+    globals.threeView.sceneAdd(this.object3D);
 }
 
 Beam.prototype.highlight = function(){
