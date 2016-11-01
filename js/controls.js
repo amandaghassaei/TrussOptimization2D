@@ -117,12 +117,16 @@ function initControls(globals){
     }
     function hideMoreInfo(){
         $moreInfo.hide();
+        $moreInfoInput.unbind("change");
     }
-    function editMoreInfo(val, callback){
+    function editMoreInfo(val, e, callback){
         var $moreInfo = $("#moreInfo");
+        $moreInfo.css({top: e.clientY - 50, left: e.clientX + 10});
         $moreInfoInput.show();
         $moreInfoSpan.hide();
+        $moreInfo.show();
         $moreInfoInput.focus();
+        //$moreInfoInput.val("");
         $moreInfoInput.val(val);
         $moreInfoInput.change(function(){
             $moreInfoInput.hide();
@@ -132,7 +136,7 @@ function initControls(globals){
             if (isNaN(parseFloat(newVal))) return;
             newVal = parseFloat(newVal);
             callback(newVal);
-        })
+        });
     }
 
 

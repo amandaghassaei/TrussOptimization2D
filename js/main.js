@@ -53,51 +53,81 @@ $(function() {
     var mouseDown = false;
     var beamInProgress = null;
 
+    function setHighlightedObj(object){
+        if (highlightedObj && (object != highlightedObj)) {
+            highlightedObj.unhighlight();
+            globals.controls.hideMoreInfo();
+        }
+        highlightedObj = object;
+        if (highlightedObj) highlightedObj.highlight();
+    }
+
     $(document).dblclick(function() {
         if (highlightedObj && highlightedObj.type == "node"){
             if (globals.lockTopology) return;
             beamInProgress = new BeamBuilding(highlightedObj, highlightedObj.getPosition(), globals);
-            highlightedObj.unhighlight();
-            highlightedObj = null;
+            setHighlightedObj(null);
         } else if (highlightedObj && highlightedObj.type == "beam"){
             if (globals.lockTopology) return;
             var position = getPointOfIntersectionWithObject(highlightedObj.getObject3D());
             if (position === null) return;
+            var oldEdge = highlightedObj;
             var node = new Node(position, globals);
             globals.addNode(node);
-            var connectedNodes = highlightedObj.getNodes();
+            var connectedNodes = oldEdge.getNodes();
             var beam1 = new Beam([connectedNodes[0], node], globals);
             globals.addEdge(beam1);
             var beam2 = new Beam([connectedNodes[1], node], globals);
             globals.addEdge(beam2);
-            globals.removeEdge(highlightedObj);
+            setHighlightedObj(node);
+            globals.removeEdge(oldEdge);
             globals.controls.viewModeCallback();
-            highlightedObj = node;
         }
     });
 
-    document.addEventListener('mousedown', function(){
-        mouseDown = true;
+    document.addEventListener('mousedown', function(e){
 
-        if (beamInProgress){
-            if (highlightedObj && highlightedObj.type == "node"){
-                if (beamInProgress.shouldBuildBeam(highlightedObj)){
-                    globals.addEdge(new Beam([beamInProgress.node, highlightedObj], globals));
-                    globals.controls.viewModeCallback();
+        switch (e.which) {
+        case 1://left button
+            mouseDown = true;
+
+            if (beamInProgress){
+                if (highlightedObj && highlightedObj.type == "node"){
+                    if (beamInProgress.shouldBuildBeam(highlightedObj)){
+                        globals.addEdge(new Beam([beamInProgress.node, highlightedObj], globals));
+                        globals.controls.viewModeCallback();
+                    }
                 }
+                beamInProgress.destroy();
+                beamInProgress = null;
+                globals.threeView.render();
+            } else if (globals.addForceMode) {
+                if (highlightedObj && highlightedObj.type == "node" && highlightedObj.externalForce === null){
+                    var force = new Force(new THREE.Vector3(), globals);
+                    highlightedObj.addExternalForce(force);
+                    setHighlightedObj(force);
+                }
+                globals.addForceMode = false;
             }
-            beamInProgress.destroy();
-            beamInProgress = null;
-            globals.threeView.render();
-        } else if (globals.addForceMode) {
-            if (highlightedObj && highlightedObj.type == "node" && highlightedObj.externalForce === null){
-                var force = new Force(new THREE.Vector3(), globals);
-                highlightedObj.addExternalForce(force);
-                highlightedObj.unhighlight();
-                highlightedObj = force;
+            break;
+        case 2://middle button
+            break;
+        case 3://right button
+
+            if (highlightedObj && highlightedObj.type == "node"){
+                //globals.threeView.enableControls(false);
+
+            } else if (highlightedObj && highlightedObj.type == "beam"){
+                //globals.threeView.enableControls(false);
+                globals.controls.editMoreInfo(highlightedObj.getLength().toFixed(2), e, function(val){
+                    console.log(val);
+                });
             }
-            globals.addForceMode = false;
-        }
+
+            break;
+    }
+
+
 
     }, false);
 
@@ -122,7 +152,6 @@ $(function() {
         }
 
         e.preventDefault();
-        globals.controls.hideMoreInfo();
         mouse.x = (e.clientX/window.innerWidth)*2-1;
         mouse.y = - (e.clientY/window.innerHeight)*2+1;
         raycaster.setFromCamera(mouse, globals.threeView.camera);
@@ -138,16 +167,15 @@ $(function() {
         if (!isDragging) {
             var objsToIntersect = globals.threeView.getObjToIntersect();
             _highlightedObj = checkForIntersections(e, objsToIntersect);
-            if (highlightedObj && (_highlightedObj != highlightedObj)) highlightedObj.unhighlight();
-            highlightedObj = _highlightedObj;
+            setHighlightedObj(_highlightedObj);
 
             if (globals.viewMode == "length"){
-                if (highlightedObj && (highlightedObj.type == "dynamicBeam" || highlightedObj.type == "staticBeam")){
+                if (highlightedObj && highlightedObj.type == "beam"){
                     globals.controls.showMoreInfo("Length: " +
                             highlightedObj.getLength().toFixed(2) + " m", e);
                 }
             } else if (globals.viewMode == "force"){
-                if (highlightedObj && (highlightedObj.type == "dynamicBeam" || highlightedObj.type == "staticBeam")){
+                if (highlightedObj && highlightedObj.type == "beam"){
                     globals.controls.showMoreInfo("Internal Force: " +
                             highlightedObj.getForce().toFixed(2) + " N", e);
                 }
@@ -206,15 +234,12 @@ $(function() {
                 if (objectFound) return;
                 if (thing.object && thing.object._myNode){
                     _highlightedObj = thing.object._myNode;
-                    _highlightedObj.highlight();
                     objectFound = true;
                 } else if (thing.object && thing.object._myBeam) {
                     _highlightedObj = thing.object._myBeam;
-                    _highlightedObj.highlight();
                     objectFound = true;
                 } else if (thing.object && thing.object._myForce) {
                     _highlightedObj = thing.object._myForce;
-                    _highlightedObj.highlight();
                     objectFound = true;
                 }
             });
