@@ -118,6 +118,9 @@ Node.prototype.move = function(position){
     _.each(this.beams, function(beam){
         beam.render();
     });
+    _.each(this.externalForces, function(force){
+        force.setOrigin(position.clone());
+    });
 };
 
 Node.prototype.getPosition = function(){

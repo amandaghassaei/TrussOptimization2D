@@ -59,8 +59,9 @@ Beam.prototype.getForce = function(){
     //todo
 };
 
-Beam.prototype.getVector = function(){
-    return this.vertices[0].clone().sub(this.vertices[1]);
+Beam.prototype.getOtherNode = function(node){
+    if (this.nodes[0] == node) return this.nodes[1];
+    return this.nodes[0];
 };
 
 
@@ -92,7 +93,6 @@ Beam.prototype.destroy = function(){
     _.each(this.nodes, function(node){
         node.removeBeam(self);
     });
-    this.vertices = null;
     globals.threeView.sceneRemove(this.object3D);
     this.object3D._myBeam = null;
     this.object3D = null;

@@ -51,9 +51,30 @@ $(function() {
     var isDraggingNode = false;
     var isDraggingForce = false;
     var mouseDown = false;
+    var beamInProgress = null;
+
+    $(document).dblclick(function() {
+        if (highlightedObj && highlightedObj.type == "node"){
+            beamInProgress = new BeamBuilding(highlightedObj, highlightedObj.getPosition(), globals);
+            highlightedObj.unhighlight();
+            highlightedObj = null;
+        }
+    });
 
     document.addEventListener('mousedown', function(){
         mouseDown = true;
+
+        if (beamInProgress && highlightedObj && highlightedObj.type == "node"){
+            if (beamInProgress.shouldBuildBeam(highlightedObj)){
+                console.log("new beam");
+                edges.push(new Beam([nodes[beamInProgress.node.getIndex()], nodes[highlightedObj.getIndex()]], globals));
+            }
+            beamInProgress.destroy();
+            beamInProgress = null;
+            globals.threeView.render();
+
+        }
+
     }, false);
 
     document.addEventListener('mouseup', function(e){
@@ -83,11 +104,31 @@ $(function() {
         raycaster.setFromCamera(mouse, globals.threeView.camera);
 
         var _highlightedObj = null;
+
+        if (beamInProgress){
+            var intersection = getIntersectionWithObjectPlane(beamInProgress.getStart());
+            beamInProgress.setEnd(intersection);
+            globals.threeView.render();
+        }
+
         if (!isDragging) {
             var objsToIntersect = globals.threeView.getObjToIntersect();
             _highlightedObj = checkForIntersections(e, objsToIntersect);
             if (highlightedObj && (_highlightedObj != highlightedObj)) highlightedObj.unhighlight();
             highlightedObj = _highlightedObj;
+
+            if (globals.viewMode == "length"){
+                if (highlightedObj && (highlightedObj.type == "dynamicBeam" || highlightedObj.type == "staticBeam")){
+                    globals.controls.showMoreInfo("Length: " +
+                            highlightedObj.getLength().toFixed(2) + " m", e);
+                }
+            } else if (globals.viewMode == "force"){
+                if (highlightedObj && (highlightedObj.type == "dynamicBeam" || highlightedObj.type == "staticBeam")){
+                    globals.controls.showMoreInfo("Internal Force: " +
+                            highlightedObj.getForce().toFixed(2) + " N", e);
+                }
+            }
+
         } else if (isDragging && highlightedObj){
 
             if (highlightedObj.type == "node"){
@@ -95,11 +136,7 @@ $(function() {
                     isDraggingNode = true;
                     globals.threeView.enableControls(false);
                 }
-                var position = highlightedObj.getPosition();
-                var cameraOrientation = globals.threeView.camera.getWorldDirection();
-                var dist = position.dot(cameraOrientation);
-                raycasterPlane.set(cameraOrientation, -dist);
-                var intersection = new THREE.Vector3();
+                var intersection = getIntersectionWithObjectPlane(highlightedObj.getPosition());
                 raycaster.ray.intersectPlane(raycasterPlane, intersection);
                 highlightedObj.move(intersection);
                 globals.threeView.render();
@@ -109,28 +146,20 @@ $(function() {
                     isDraggingForce = true;
                     globals.threeView.enableControls(false);
                 }
-                var position = highlightedObj.getPosition();
-                var cameraOrientation = globals.threeView.camera.getWorldDirection();
-                var dist = position.dot(cameraOrientation);
-                raycasterPlane.set(cameraOrientation, -dist);
-                var intersection = new THREE.Vector3();
-                raycaster.ray.intersectPlane(raycasterPlane, intersection);
+                var intersection = getIntersectionWithObjectPlane(highlightedObj.getPosition());
                 highlightedObj.move(intersection);
                 globals.threeView.render();
             }
         }
+    }
 
-        if (globals.viewMode == "length"){
-            if (highlightedObj && (highlightedObj.type == "dynamicBeam" || highlightedObj.type == "staticBeam")){
-                globals.controls.showMoreInfo("Length: " +
-                        highlightedObj.getLength().toFixed(2) + " m", e);
-            }
-        } else if (globals.viewMode == "force"){
-            if (highlightedObj && (highlightedObj.type == "dynamicBeam" || highlightedObj.type == "staticBeam")){
-                globals.controls.showMoreInfo("Internal Force: " +
-                        highlightedObj.getForce().toFixed(2) + " N", e);
-            }
-        }
+    function getIntersectionWithObjectPlane(position){
+        var cameraOrientation = globals.threeView.camera.getWorldDirection();
+        var dist = position.dot(cameraOrientation);
+        raycasterPlane.set(cameraOrientation, -dist);
+        var intersection = new THREE.Vector3();
+        raycaster.ray.intersectPlane(raycasterPlane, intersection);
+        return intersection;
     }
 
     function checkForIntersections(e, objects){

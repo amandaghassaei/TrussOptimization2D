@@ -5,7 +5,10 @@
 
 function initGlobals(){
     var _globals = {
+
+        //edit geo
         addForceMode: false,
+
         viewMode: "geometry"
     };
 
