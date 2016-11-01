@@ -25,6 +25,7 @@
     <script type="text/javascript" src="js/force.js"></script>
     <script type="text/javascript" src="js/globals.js"></script>
     <script type="text/javascript" src="js/threeView.js"></script>
+    <script type="text/javascript" src="js/solve.js"></script>
     <script type="text/javascript" src="js/controls.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
 </head>
@@ -34,10 +35,47 @@
     <a href="#" id="about" class="btn btn-lg btn-default">About</a><br/><br/>
     <a href="#" id="addForce" class="btn btn-lg btn-default">Add Force</a><br/><br/>
 </div>
-<a id="logo" target="_blank" href="http://cba.mit.edu/">
-    <img id="inactiveLogo" src="logo.png"/>
-    <img id="activeLogo" src="logo-active.png"/>
-</a>
+<div id="controlsLeft">
+    <a id="logo" target="_blank" href="http://cba.mit.edu/">
+        <img id="inactiveLogo" src="logo.png"/>
+        <img id="activeLogo" src="logo-active.png"/>
+    </a>
+    <div>
+        Controls
+        <div class="indent">
+            <label class="checkbox" for="lockForces">
+                <input id="lockForces" data-toggle="checkbox" class="custom-checkbox layersSelector" type="checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
+                Lock Forces
+            </label>
+            <label class="checkbox" for="lockTopology">
+                <input id="lockTopology" data-toggle="checkbox" class="custom-checkbox layersSelector" type="checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
+                Lock Topology
+            </label>
+            <label class="checkbox" for="lockNodePositions">
+                <input id="lockNodePositions" data-toggle="checkbox" class="custom-checkbox layersSelector" type="checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
+                Lock Node Positions
+            </label>
+        </div>
+    </div>
+    <div>
+        View Mode:
+        <div class="indent">
+            <label class="radio">
+                <input name="viewMode" value="geometry" data-toggle="radio" class="custom-radio" type="radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
+                Geometry
+            </label>
+            <label class="radio">
+                <input name="viewMode" value="length" data-toggle="radio" class="custom-radio" type="radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
+                Edge Length (m)
+            </label>
+        <label class="radio">
+            <input name="viewMode" value="force" data-toggle="radio" class="custom-radio" type="radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
+                Internal Forces (N)
+        </label>
+        </div>
+    </div>
+</div>
+
 <div id="scaleBars"></div>
 <div id="moreInfo"><span></span><input value="" type="text"></div>
 <div class="modal fade" id="aboutModal" tabindex="-1" role="dialog">

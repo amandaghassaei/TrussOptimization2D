@@ -41,6 +41,8 @@ $(function() {
     nodes[3].addExternalForce(force);
 
     globals.threeView.render();
+    globals.nodes = nodes;
+    globals.edges = edges;
 
 
     var raycaster = new THREE.Raycaster();
@@ -55,6 +57,7 @@ $(function() {
 
     $(document).dblclick(function() {
         if (highlightedObj && highlightedObj.type == "node"){
+            if (globals.lockTopology) return;
             beamInProgress = new BeamBuilding(highlightedObj, highlightedObj.getPosition(), globals);
             highlightedObj.unhighlight();
             highlightedObj = null;
@@ -68,6 +71,7 @@ $(function() {
             if (highlightedObj && highlightedObj.type == "node"){
                 if (beamInProgress.shouldBuildBeam(highlightedObj)){
                     edges.push(new Beam([nodes[beamInProgress.node.getIndex()], nodes[highlightedObj.getIndex()]], globals));
+                    globals.controls.viewModeCallback();
                 }
             }
             beamInProgress.destroy();
@@ -140,6 +144,7 @@ $(function() {
         } else if (isDragging && highlightedObj){
 
             if (highlightedObj.type == "node"){
+                if (globals.lockNodePositions) return;
                 if (!isDraggingNode) {
                     isDraggingNode = true;
                     globals.threeView.enableControls(false);
@@ -147,9 +152,10 @@ $(function() {
                 var intersection = getIntersectionWithObjectPlane(highlightedObj.getPosition());
                 raycaster.ray.intersectPlane(raycasterPlane, intersection);
                 highlightedObj.move(intersection);
-                globals.threeView.render();
+                globals.controls.viewModeCallback();
             } else if (highlightedObj.type == "beam"){
             } else if (highlightedObj.type == "force"){
+                if (globals.lockForces) return;
                 if (!isDraggingForce) {
                     isDraggingForce = true;
                     globals.threeView.enableControls(false);

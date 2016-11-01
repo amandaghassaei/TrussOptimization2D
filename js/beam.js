@@ -12,8 +12,9 @@ function Beam(nodes, globals){
     nodes[1].addBeam(this);
     this.nodes = nodes;
 
-    this.material = new THREE.MeshLambertMaterial({color: 0xaaaaaa});
+    this.material = new THREE.MeshLambertMaterial();
     this.object3D = new THREE.Mesh(beamGeometry, this.material);
+    this.setDefaultColor();
     this.object3D._myBeam = this;
     globals.threeView.sceneAdd(this.object3D);
     this.render();
@@ -27,6 +28,10 @@ Beam.prototype.highlight = function(){
 Beam.prototype.unhighlight = function(){
     if (this.material) this.object3D.material = this.material;
     globals.threeView.render();
+};
+
+Beam.prototype.setDefaultColor = function(){
+    this.object3D.material.color.setHex(0xaaaaaa);
 };
 
 Beam.prototype.setColor = function(hex){

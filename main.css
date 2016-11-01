@@ -54,6 +54,16 @@ body{
     float:right;
 }
 
+#controlsLeft{
+    position: absolute;
+    top:0;
+    left:0;
+    /*width: 420px;*/
+    padding: 20px 20px 20px 20px;
+    max-height: 100%;
+    overflow: auto;
+}
+
 .sliderInput{
     float:right;
     display: inline-block;
@@ -138,10 +148,11 @@ img{
     /*margin:20px;*/
 }
 #logo{
-    margin: 20px 0 0 20px;
+    /*margin: 20px 0 0 20px;*/
     display: inline-block;
-    z-index: 2;
-    position: absolute;
+    /*z-index: 2;*/
+    /*position: absolute;*/
+    margin-bottom: 20px;
 }
 
 #activeLogo{

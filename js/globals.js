@@ -9,7 +9,11 @@ function initGlobals(){
         //edit geo
         addForceMode: false,
 
-        viewMode: "geometry"
+        viewMode: "geometry",
+
+        lockForces: false,
+        lockTopology: false,
+        lockNodePositions: false
     };
 
     _globals.threeView = initThreeView(_globals);
