@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>VR Truss Optimization</title>
+
+    <link href="dependencies/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" type="text/css" href="dependencies/flat-ui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="dependencies/jquery-ui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="main.css"/>
+
+    <script type="text/javascript" src="dependencies/jquery-3.1.0.min.js"></script>
+    <script type="text/javascript" src="dependencies/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="dependencies/flat-ui.min.js"></script>
+    <script type="text/javascript" src="dependencies/three.js"></script>
+    <!--<script type="text/javascript" src="dependencies/binary_stl_writer.js"></script>-->
+    <script type="text/javascript" src="dependencies/OrbitControls.js"></script>
+    <script type="text/javascript" src="dependencies/underscore-min.js"></script>
+    <!--<script type="text/javascript" src="dependencies/numeric-1.2.6.min.js"></script>-->
+    <!--<script type="text/javascript" src="dependencies/FileSaver.min.js"></script>-->
+
+    <script type="text/javascript" src="js/threeView.js"></script>
+    <script type="text/javascript" src="js/controls.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+</head>
+<body>
+<div  id="threeContainer"></div>
+<div id="controls">
+    <a href="#" id="about" class="btn btn-lg btn-default">About</a><br/><br/>
+
+</div>
+<a id="logo" target="_blank" href="http://cba.mit.edu/">
+    <img id="inactiveLogo" src="logo.png"/>
+    <img id="activeLogo" src="logo-active.png"/>
+</a>
+<div id="scaleBars"></div>
+<div id="moreInfo"><span></span><input value="" type="text"></div>
+<div class="modal fade" id="aboutModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body">
+        <p><b>VR Truss Optimization</b><br/><br/>
+            <!--http://nptel.ac.in/courses/105101085/downloads/lec-31.pdf-->
+            <br/>
+            Built by <a href="http://www.amandaghassaei.com/" target="_blank">Amanda Ghassaei</a> as a homework assignment for <a href="https://architecture.mit.edu/subject/fall-2016-4450" target="_blank">Computational Structural Design and Optimization</a>.
+            Code available on <a href="https://github.com/amandaghassaei/ShellFormFinding" target="_blank">Github</a>.
+        </p>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+</body>
+</html>

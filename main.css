@@ -1,0 +1,293 @@
+html{
+    width:100%;
+    height:100%;
+    padding:0;
+    overflow: hidden;
+}
+
+body{
+    width:100%;
+    height:100%;
+    padding:0;
+    margin:0;
+    overflow: hidden;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none;   /* Chrome/Safari/Opera */
+    -khtml-user-select: none;    /* Konqueror */
+    -moz-user-select: none;      /* Firefox */
+    -ms-user-select: none;       /* Internet Explorer/Edge */
+    user-select: none;           /* Non-prefixed version, currently
+                                  not supported by any browser */
+}
+
+#moreInfo{
+    position: absolute;
+    background: white;
+    padding:0 10px;
+    top: 0;
+    left: 0;
+    height: 36px;
+    line-height: 36px;
+    z-index: 3;
+    display: none;
+}
+
+#moreInfo>input{
+    height: 36px;
+    width: 90px;
+    outline:none;
+    border:none;
+    display: none;
+}
+
+#controls{
+    position: absolute;
+    top:0;
+    right:0;
+    width:420px;
+    padding:20px 20px;
+    overflow: auto;
+    max-height: 100%;
+    /*background: rgba(255,255,255,0.5);*/
+}
+#controls>a{
+    float:right;
+}
+
+.sliderInput{
+    float:right;
+    display: inline-block;
+    margin-bottom:15px;
+}
+.sliderContainer{
+    display: block;
+    margin-bottom:15px;
+}
+
+.indent{
+    padding-left:20px;
+}
+
+#gpuMathCanvas{
+    display: none;
+}
+
+a{
+    color:#8cbaed;
+}
+a:hover{
+    color:#8cbaed;
+}
+
+#controls .radio{
+    height: 42px;
+display: inline-block;
+    width: 100%;
+}
+
+#scaleBars{
+    height:100%;
+    padding: 20px 0 50px 10px;
+    width:100px;
+    position: absolute;
+    top:0;
+    right:-100px;
+    line-height: 0;
+}
+
+#scaleBars>div{
+    width:100%;
+    height:4.7%;
+}
+.colorSwatch{
+    width:10px;
+    height:100%;
+    background: black;
+    display: inline-block;
+}
+#scaleBars>div>span{
+    margin-left: 7px;
+    top: -25%;
+    position: relative;
+}
+
+input.form-control {
+    width: 90px;
+    display: inline-block;
+}
+
+.radioSlider{
+    display: inline-block;
+    float:right;
+}
+
+.floatRight{
+    float:right;
+}
+
+.modal-body li{
+    margin-bottom:10px;
+}
+
+img{
+    width:60px;
+    /*position: absolute;*/
+    top:0;
+    left:0;
+    z-index: 5;
+    /*margin:20px;*/
+}
+#logo{
+    margin: 20px 0 0 20px;
+    display: inline-block;
+    z-index: 2;
+    position: absolute;
+}
+
+#activeLogo{
+    display: none;
+}
+
+#threeContainer {
+    width:100%;
+    height:100%;
+    padding:0;
+    position: absolute;
+}
+
+
+
+.slider.slider-horizontal {
+    width: 200px;
+    margin: 0;
+    padding: 20px;
+    top: 10px;
+}
+
+.slider.slider-vertical {
+    height: 200px;
+    margin: 0;
+    padding: 20px;
+}
+
+.flat-slider.ui-corner-all,
+.flat-slider .ui-corner-all {
+  border-radius: 0;
+}
+
+.flat-slider.ui-slider {
+  border: 0;
+  background: #ffffff;
+  border-radius: 7px;
+}
+
+.flat-slider.ui-slider-horizontal {
+  height: 6px;
+}
+
+.flat-slider.ui-slider-vertical {
+  width: 6px;
+}
+
+.flat-slider .ui-slider-handle {
+  width: 20px;
+  height: 20px;
+  background: #666;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+}
+
+.flat-slider.ui-slider-horizontal .ui-slider-handle {
+  top: 50%;
+  margin-top: -10px;
+    opacity: 0.8;
+}
+
+.flat-slider.ui-slider-vertical .ui-slider-handle {
+  left: 50%;
+  margin-left: -10px;
+    opacity: 0.8;
+}
+
+.flat-slider .ui-slider-handle:hover {
+  opacity: 0.7;
+}
+
+.flat-slider .ui-slider-handle:focus { outline: none; }
+
+
+.flat-slider{
+    vertical-align: middle;
+    display: inline-block;
+    width: 130px;
+    position: relative;
+    margin: 10px 10px 10px 10px;
+    /*padding: 4px 0;*/
+}
+
+.modal-content{
+    border-radius: 0;
+}
+.modal-body{
+    padding: 20px 35px;
+    padding-top: 40px;
+}
+
+span.modal-close{
+    display: none;
+}
+.titleSpan{
+    display: inline-block;
+    width:100%;
+    margin-top:15px;
+}
+.form-control:focus{
+    border-color: #666;
+}
+
+.checkbox input.custom-checkbox[type="checkbox"]:checked + .icons .icon-checked, .radio input.custom-checkbox[type="checkbox"]:checked + .icons .icon-checked, .checkbox input.custom-radio[type="radio"]:checked + .icons .icon-checked, .radio input.custom-radio[type="radio"]:checked + .icons .icon-checked {
+    color: #666;
+}
+
+.radio .icon-checked{
+    transition-duration: 0s;
+}
+
+.radio .icon-unchecked{
+    transition-duration: 0s;
+}
+
+#controls .checkbox input.custom-radio[type="radio"]:checked + .icons, #controls .radio input.custom-radio[type="radio"]:checked + .icons {
+    margin-top:9px;
+}
+#controls .radio .icons {
+    margin-top:9px;
+}
+
+.sliderInput>.flat-slider{
+   width: 162px;
+}
+
+.label-slider{
+    font-size: 15px;
+}
+
+#extraSpace{
+    display: inline-block;
+    width:100%;
+    height:15px;
+}
+
+.flipped
+{
+    direction: rtl;
+}
+.flipped>div
+{
+    direction: ltr;
+}
+
+#paddingBottom{
+    margin-bottom: 50px;
+}
