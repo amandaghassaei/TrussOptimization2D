@@ -52,7 +52,7 @@ Node.prototype.setFixed = function(fixed){
 Node.prototype.addExternalForce = function(force){
     this.externalForces.push(force);
     force.setOrigin(this.getPosition());
-    if (this.fixed) foroce.hide();
+    if (this.fixed) force.hide();
 };
 
 Node.prototype.removeForce = function(force){

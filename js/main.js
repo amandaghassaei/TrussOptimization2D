@@ -36,6 +36,10 @@ $(function() {
     _.each(edgeConnections, function(connection){
         edges.push(new Beam([nodes[connection[0]], nodes[connection[1]]], globals));
     });
+
+    var force = new Force(new THREE.Vector3(2,1.4,0.2), globals);
+    nodes[3].addExternalForce(force);
+
     globals.threeView.render();
 
 
@@ -45,6 +49,7 @@ $(function() {
     var highlightedObj;
     var isDragging = false;
     var isDraggingNode = false;
+    var isDraggingForce = false;
     var mouseDown = false;
 
     document.addEventListener('mousedown', function(){
@@ -54,6 +59,10 @@ $(function() {
     document.addEventListener('mouseup', function(e){
         if (isDraggingNode){
             isDraggingNode = false;
+            globals.threeView.enableControls(true);
+        }
+        if (isDraggingForce){
+            isDraggingForce = false;
             globals.threeView.enableControls(true);
         }
         isDragging = false;
@@ -80,17 +89,32 @@ $(function() {
             if (highlightedObj && (_highlightedObj != highlightedObj)) highlightedObj.unhighlight();
             highlightedObj = _highlightedObj;
         } else if (isDragging && highlightedObj){
-            var position = highlightedObj.getPosition();
-            var cameraOrientation = globals.threeView.camera.getWorldDirection();
-            var dist = position.dot(cameraOrientation);
-            raycasterPlane.set(cameraOrientation, -dist);
-            var intersection = new THREE.Vector3();
-            raycaster.ray.intersectPlane(raycasterPlane, intersection);
+
             if (highlightedObj.type == "node"){
                 if (!isDraggingNode) {
                     isDraggingNode = true;
                     globals.threeView.enableControls(false);
                 }
+                var position = highlightedObj.getPosition();
+                var cameraOrientation = globals.threeView.camera.getWorldDirection();
+                var dist = position.dot(cameraOrientation);
+                raycasterPlane.set(cameraOrientation, -dist);
+                var intersection = new THREE.Vector3();
+                raycaster.ray.intersectPlane(raycasterPlane, intersection);
+                highlightedObj.move(intersection);
+                globals.threeView.render();
+            } else if (highlightedObj.type == "beam"){
+            } else if (highlightedObj.type == "force"){
+                if (!isDraggingForce) {
+                    isDraggingForce = true;
+                    globals.threeView.enableControls(false);
+                }
+                var position = highlightedObj.getPosition();
+                var cameraOrientation = globals.threeView.camera.getWorldDirection();
+                var dist = position.dot(cameraOrientation);
+                raycasterPlane.set(cameraOrientation, -dist);
+                var intersection = new THREE.Vector3();
+                raycaster.ray.intersectPlane(raycasterPlane, intersection);
                 highlightedObj.move(intersection);
                 globals.threeView.render();
             }

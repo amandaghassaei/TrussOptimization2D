@@ -7,6 +7,7 @@ var beamGeometry = new THREE.CylinderGeometry(0.1, 0.1, 1);
 
 function Beam(nodes, globals){
 
+    this.type = "beam";
     nodes[0].addBeam(this);
     nodes[1].addBeam(this);
     this.nodes = nodes;
