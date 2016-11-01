@@ -65,14 +65,22 @@ $(function() {
         mouseDown = true;
 
         if (beamInProgress){
-            if (highlightedObj && highlightedObj.type == "node") {
-                if (beamInProgress.shouldBuildBeam(highlightedObj)) {
+            if (highlightedObj && highlightedObj.type == "node"){
+                if (beamInProgress.shouldBuildBeam(highlightedObj)){
                     edges.push(new Beam([nodes[beamInProgress.node.getIndex()], nodes[highlightedObj.getIndex()]], globals));
                 }
             }
             beamInProgress.destroy();
             beamInProgress = null;
             globals.threeView.render();
+        } else if (globals.addForceMode) {
+            if (highlightedObj && highlightedObj.type == "node" && highlightedObj.externalForce === null){
+                var force = new Force(new THREE.Vector3(), globals);
+                highlightedObj.addExternalForce(force);
+                highlightedObj.unhighlight();
+                highlightedObj = force;
+            }
+            globals.addForceMode = false;
         }
 
     }, false);

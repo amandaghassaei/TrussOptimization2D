@@ -22,7 +22,7 @@ function Node(position, index, globals){
     globals.threeView.sceneAdd(this.object3D);
 
     this.beams = [];
-    this.externalForces = [];
+    this.externalForce = null;
     this.fixed = false;
 
     this.move(position);
@@ -38,10 +38,10 @@ Node.prototype.setFixed = function(fixed){
         this.object3D.material = nodeMaterial;
         this.object3D.geometry = nodeGeo;
     }
-    _.each(this.externalForces, function(force){
-        if (fixed) force.hide();
-        else force.show();
-    });
+    if (this.externalForce){
+        if (fixed) this.externalForce.hide();
+        else this.externalForce.show();
+    }
 };
 
 
@@ -50,15 +50,13 @@ Node.prototype.setFixed = function(fixed){
 //forces
 
 Node.prototype.addExternalForce = function(force){
-    this.externalForces.push(force);
+    this.externalForce = force;
     force.setOrigin(this.getPosition());
     if (this.fixed) force.hide();
 };
 
-Node.prototype.removeForce = function(force){
-    if (this.externalForces === null) return;
-    var index = this.externalForces.indexOf(force);
-    if (index>=0) this.externalForces.splice(index, 1);
+Node.prototype.removeForce = function(){
+    this.externalForce = null;
 };
 
 
@@ -118,9 +116,7 @@ Node.prototype.move = function(position){
     _.each(this.beams, function(beam){
         beam.render();
     });
-    _.each(this.externalForces, function(force){
-        force.setOrigin(position.clone());
-    });
+    if (this.externalForce) this.externalForce.setOrigin(position.clone());
 };
 
 Node.prototype.getPosition = function(){
@@ -136,9 +132,7 @@ Node.prototype.getPosition = function(){
 Node.prototype.clone = function(){
     var node = new Node(this.getPosition(), this.getIndex());
     node.setFixed(this.fixed);
-    _.each(this.externalForces, function(force){
-        node.addExternalForce(force);
-    });
+    if (this.externalForce) node.addExternalForce(this.externalForce);
     return node;
 };
 
@@ -150,8 +144,6 @@ Node.prototype.destroy = function(){
     this.object3D._myNode = null;
     this.object3D = null;
     this.beams = null;
-    _.each(this.externalForces, function(force){
-        force.destroy();
-    });
-    this.externalForces = null;
+    if (this.externalForce) this.externalForce.destroy();
+    this.externalForce = null;
 };
