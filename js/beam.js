@@ -3,6 +3,7 @@
  */
 
 var beamMaterialHighlight = new THREE.MeshLambertMaterial({color: 0xffffff});
+var beamMaterialDelete = new THREE.MeshBasicMaterial({color:0xff0000});
 var beamGeometry = new THREE.CylinderGeometry(0.1, 0.1, 1);
 
 function Beam(nodes, globals){
@@ -21,13 +22,12 @@ function Beam(nodes, globals){
 }
 
 Beam.prototype.highlight = function(){
-    this.object3D.material = beamMaterialHighlight;
-    globals.threeView.render();
+    if (globals.deleteMode) this.object3D.material = beamMaterialDelete;
+    else this.object3D.material = beamMaterialHighlight;
 };
 
 Beam.prototype.unhighlight = function(){
     if (this.material) this.object3D.material = this.material;
-    globals.threeView.render();
 };
 
 Beam.prototype.setDefaultColor = function(){
@@ -67,6 +67,10 @@ Beam.prototype.getForce = function(){
 Beam.prototype.getOtherNode = function(node){
     if (this.nodes[0] == node) return this.nodes[1];
     return this.nodes[0];
+};
+
+Beam.prototype.setDeleteMode = function(){
+    this.object3D.material = beamMaterialDelete;
 };
 
 

@@ -13,6 +13,10 @@ function Force(force, globals){
     globals.threeView.sceneAdd(this.object3D);
 }
 
+Force.prototype.setNode = function(node){
+    this.node = node;
+};
+
 Force.prototype.getObject3D = function(){
     return this.object3D;
 };
@@ -20,6 +24,10 @@ Force.prototype.getObject3D = function(){
 Force.prototype.setForce = function(force){
     this.force = force;
     this.update();
+};
+
+Force.prototype.setMagnitude = function(mag){
+    this.setForce(this.getForce().normalize().multiplyScalar(mag));
 };
 
 Force.prototype.setOrigin = function(origin){
@@ -44,15 +52,18 @@ Force.prototype.getForce = function(){
 };
 
 Force.prototype.highlight = function(){
-    this.object3D.line.material.color.setHex(0x000000);
-    this.object3D.cone.material.color.setHex(0x000000);
-    globals.threeView.render();
+    if (globals.deleteMode){
+        this.object3D.line.material.color.setHex(0xff0000);
+        this.object3D.cone.material.color.setHex(0xff0000);
+    } else {
+        this.object3D.line.material.color.setHex(0xd0abf5);
+        this.object3D.cone.material.color.setHex(0xd0abf5);
+    }
 };
 
 Force.prototype.unhighlight = function(){
     this.object3D.line.material.color.setHex(0xb67df0);
     this.object3D.cone.material.color.setHex(0xb67df0);
-    globals.threeView.render();
 };
 
 Force.prototype.getPosition = function(){
@@ -78,4 +89,6 @@ Force.prototype.destroy = function(){
     globals.threeView.sceneRemove(this.object3D);
     this.object3D.cone._myForce = null;
     this.object3D = null;
+    this.node.removeExternalForce(this);
+    this.node = null;
 };

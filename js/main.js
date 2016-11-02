@@ -70,6 +70,7 @@ $(function() {
         }
         highlightedObj = object;
         if (highlightedObj) highlightedObj.highlight();
+        globals.threeView.render();
     }
 
     $(document).dblclick(function() {
@@ -129,6 +130,27 @@ $(function() {
                     //todo solve
                     globals.threeView.render();
                 }
+            } else if (globals.deleteMode){
+                globals.deleteMode = false;
+                if (highlightedObj && highlightedObj.type == "node"){
+                    var oldNode = highlightedObj;
+                    setHighlightedObj(null);
+                    globals.removeNode(oldNode);
+                    //todo solve
+                    globals.threeView.render();
+                } else if (highlightedObj && highlightedObj.type == "beam"){
+                    var oldEdge = highlightedObj;
+                    setHighlightedObj(null);
+                    globals.removeEdge(oldEdge);
+                    //todo solve
+                    globals.threeView.render();
+                } else if (highlightedObj && highlightedObj.type == "force"){
+                    var oldForce = highlightedObj;
+                    setHighlightedObj(null);
+                    oldForce.destroy();
+                    //todo solve
+                    globals.threeView.render();
+                }
             }
             break;
         case 2://middle button
@@ -143,6 +165,13 @@ $(function() {
                 //globals.controls.editMoreInfo(highlightedObj.getLength().toFixed(2), e, function(val){
                 //    console.log(val);
                 //});
+            } else if (highlightedObj && highlightedObj.type == "force"){
+                globals.controls.editMoreInfo(highlightedObj.getLength().toFixed(2), e, function(val){
+                    val = parseFloat(val);
+                    if (isNaN(val)) return;
+                    highlightedObj.setMagnitude(val);
+                    globals.threeView.render();
+                });
             }
             break;
     }
@@ -200,6 +229,11 @@ $(function() {
                 }
             }
 
+            if (highlightedObj && highlightedObj.type == "force"){
+                globals.controls.showMoreInfo("Force: " +
+                            highlightedObj.getLength().toFixed(2) + " N", e);
+            }
+
             if (globals.viewMode == "length"){
                 if (highlightedObj && highlightedObj.type == "beam"){
                     globals.controls.showMoreInfo("Length: " +
@@ -226,6 +260,8 @@ $(function() {
                 globals.controls.viewModeCallback();
             } else if (highlightedObj.type == "beam"){
             } else if (highlightedObj.type == "force"){
+                globals.controls.showMoreInfo("Force: " +
+                            highlightedObj.getLength().toFixed(2) + " N", e);
                 if (globals.lockForces) return;
                 if (!isDraggingForce) {
                     isDraggingForce = true;
@@ -263,15 +299,14 @@ $(function() {
         if (intersections.length > 0) {
             var objectFound = false;
             _.each(intersections, function (thing) {
+                if (objectFound) return;
                 if (thing.object && thing.object._myNode && thing.object._myNode.type == "node"){
                     _highlightedObj = thing.object._myNode;
                     objectFound = true;
                 } else if (thing.object && thing.object._myBeam && thing.object._myBeam.type == "beam") {
-                    if (objectFound) return;
                     _highlightedObj = thing.object._myBeam;
                     objectFound = true;
                 } else if (thing.object && thing.object._myForce && thing.object._myForce.type == "force") {
-                    if (objectFound && high) return;
                     _highlightedObj = thing.object._myForce;
                     objectFound = true;
                 }

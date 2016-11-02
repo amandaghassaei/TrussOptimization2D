@@ -53,11 +53,12 @@ Node.prototype.setFixed = function(fixed){
 
 Node.prototype.addExternalForce = function(force){
     this.externalForce = force;
+    force.setNode(this);
     force.setOrigin(this.getPosition());
     if (this.fixed) force.hide();
 };
 
-Node.prototype.removeForce = function(){
+Node.prototype.removeExternalForce = function(){
     this.externalForce = null;
 };
 
@@ -73,6 +74,7 @@ Node.prototype.removeBeam = function(beam){
     if (this.beams === null) return;
     var index = this.beams.indexOf(beam);
     if (index>=0) this.beams.splice(index, 1);
+    if (this.beams.length == 0) globals.removeNode(this);
 };
 
 Node.prototype.getBeams = function(){
@@ -95,11 +97,10 @@ Node.prototype.setDeleteMode = function(){
 };
 
 Node.prototype.highlight = function(){
-    if (globals.addRemoveFixedMode && this.fixed) {
+    if (globals.deleteMode || (globals.addRemoveFixedMode && this.fixed)) {
         this.setDeleteMode();
     }
     else this.object3D.material = nodeMaterialHighlight;
-    globals.threeView.render();
 };
 
 Node.prototype.unhighlight = function(){
@@ -109,7 +110,6 @@ Node.prototype.unhighlight = function(){
     else {
         this.object3D.material = nodeMaterial;
     }
-    globals.threeView.render();
 };
 
 Node.prototype.hide = function(){
@@ -148,9 +148,15 @@ Node.prototype.clone = function(){
 //deallocate
 
 Node.prototype.destroy = function(){
+    if (this.deleting) return;
+    this.deleting = true;
     globals.threeView.sceneRemove(this.object3D);
     this.object3D._myNode = null;
     this.object3D = null;
+    for (var i=this.beams.length-1;i>=0;i--){
+        var beam = this.beams[i];
+        globals.removeEdge(beam);
+    }
     this.beams = null;
     if (this.externalForce) this.externalForce.destroy();
     this.externalForce = null;

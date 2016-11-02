@@ -10,6 +10,7 @@ function initGlobals(){
         //edit geo
         addForceMode: false,
         addRemoveFixedMode: false,
+        deleteMode: false,
 
         viewMode: "geometry",
 
@@ -19,7 +20,7 @@ function initGlobals(){
 
         nodes : [],
         addNode: addNode,
-        removeMode: removeNode,
+        removeNode: removeNode,
         edges: [],
         addEdge: addEdge,
         removeEdge: removeEdge
