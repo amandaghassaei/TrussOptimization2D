@@ -55,6 +55,12 @@ Beam.prototype.getLength = function(){
     return vertex1Pos.sub(vertex2Pos).length();
 };
 
+Beam.prototype.getVector = function(fromNode){
+    var toNode = this.nodes[0];
+    if (this.nodes[0] == fromNode) toNode = this.nodes[1];
+    return toNode.getPosition().sub(fromNode.getPosition());
+};
+
 Beam.prototype.isFixed = function(){
     return this.nodes[0].fixed && this.nodes[1].fixed;
 };

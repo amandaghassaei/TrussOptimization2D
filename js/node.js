@@ -26,9 +26,6 @@ function Node(position, globals){
     this.move(position);
 }
 
-Node.prototype.setIndex = function(index){
-    this.index = index;
-};
 
 Node.prototype.setFixed = function(fixed){
     this.fixed = fixed;
@@ -62,6 +59,11 @@ Node.prototype.removeExternalForce = function(){
     this.externalForce = null;
 };
 
+Node.prototype.getExternalForce = function(){
+    if (this.externalForce) return this.externalForce.getForce();
+    return new THREE.Vector3(0,0,0);
+};
+
 
 
 //beams
@@ -84,9 +86,6 @@ Node.prototype.getBeams = function(){
 
 
 
-Node.prototype.getIndex = function(){//in nodes array
-    return this.index;
-};
 
 Node.prototype.getObject3D = function(){
     return this.object3D;
@@ -138,7 +137,7 @@ Node.prototype.getPosition = function(){
 
 
 Node.prototype.clone = function(){
-    var node = new Node(this.getPosition(), this.getIndex());
+    var node = new Node(this.getPosition(), globals);
     node.setFixed(this.fixed);
     if (this.externalForce) node.addExternalForce(this.externalForce);
     return node;

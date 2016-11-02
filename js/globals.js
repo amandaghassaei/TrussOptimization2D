@@ -28,12 +28,11 @@ function initGlobals(){
 
 
     function addNode(node){
-        node.setIndex(_globals.nodes.length);
         _globals.nodes.push(node);
     }
     function removeNode(node){
         //if (_globals.nodes.length < 2) return;
-        var index = node.getIndex();
+        var index = _globals.nodes.indexOf(node);
         if (index>=0) _globals.nodes.splice(index, 1);
         node.destroy();
     }
@@ -50,6 +49,7 @@ function initGlobals(){
 
     _globals.threeView = initThreeView(_globals);
     _globals.controls = initControls(_globals);
+    _globals.solver = initSolver(_globals);
 
     return _globals;
 }

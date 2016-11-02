@@ -40,6 +40,10 @@ function initControls(globals){
         globals.deleteMode = true;
     });
 
+    setLink("#solve", function(){
+        globals.solver.solve();
+    });
+
     setCheckbox("#lockForces", globals.lockForces, function(val){
         globals.lockForces = val;
     });
