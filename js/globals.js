@@ -32,6 +32,7 @@ function initGlobals(){
         _globals.nodes.push(node);
     }
     function removeNode(node){
+        //if (_globals.nodes.length < 2) return;
         var index = node.getIndex();
         if (index>=0) _globals.nodes.splice(index, 1);
         node.destroy();
@@ -41,6 +42,7 @@ function initGlobals(){
         _globals.edges.push(edge);
     }
     function removeEdge(edge){
+        //if (_globals.edges.length == 1) return;
         var index = _globals.edges.indexOf(edge);
         if (index>=0) _globals.edges.splice(index, 1);
         edge.destroy();

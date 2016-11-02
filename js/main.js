@@ -55,6 +55,8 @@ $(function() {
 
     var beamInProgress = null;
     var dummyFixed = new Node(new THREE.Vector3(), globals);
+    globals.threeView.sceneRemove(dummyFixed.getObject3D());
+    globals.threeView.scene.add(dummyFixed.getObject3D());
     dummyFixed.setFixed(true);
     dummyFixed.type = "dummy";
     dummyFixed.getObject3D().material = dummyFixed.getObject3D().material.clone();
@@ -62,6 +64,20 @@ $(function() {
     dummyFixed.getObject3D().material.side = THREE.DoubleSide;
     dummyFixed.getObject3D().material.opacity = 0.5;
     dummyFixed.hide();
+
+    var dummyForce = new Force(new THREE.Vector3(), globals);
+    globals.threeView.sceneRemove(dummyForce.getObject3D());
+    globals.threeView.scene.add(dummyForce.getObject3D());
+    dummyForce.type = "dummy";
+    dummyForce.getObject3D().line.material = dummyForce.getObject3D().line.material.clone();
+    dummyForce.getObject3D().cone.material = dummyForce.getObject3D().cone.material.clone();
+    dummyForce.getObject3D().line.material.transparent = true;
+    dummyForce.getObject3D().line.material.opacity = 0.5;
+    dummyForce.getObject3D().cone.material.transparent = true;
+    dummyForce.getObject3D().cone.material.side = THREE.DoubleSide;
+    dummyForce.getObject3D().cone.material.opacity = 0.5;
+    dummyForce.hide();
+
 
     function setHighlightedObj(object){
         if (highlightedObj && (object != highlightedObj)) {
@@ -115,6 +131,7 @@ $(function() {
                 //todo solve
                 globals.threeView.render();
             } else if (globals.addForceMode) {
+                dummyForce.hide();
                 if (highlightedObj && highlightedObj.type == "node" && highlightedObj.externalForce === null){
                     var force = new Force(new THREE.Vector3(), globals);
                     highlightedObj.addExternalForce(force);
@@ -122,14 +139,15 @@ $(function() {
                     //todo solve
                 }
                 globals.addForceMode = false;
+                globals.threeView.render();
             } else if (globals.addRemoveFixedMode){
                 globals.addRemoveFixedMode = false;
                 dummyFixed.hide();
                 if (highlightedObj && highlightedObj.type == "node"){
                     highlightedObj.setFixed(!highlightedObj.fixed);
                     //todo solve
-                    globals.threeView.render();
                 }
+                globals.threeView.render();
             } else if (globals.deleteMode){
                 globals.deleteMode = false;
                 if (highlightedObj && highlightedObj.type == "node"){
@@ -137,20 +155,18 @@ $(function() {
                     setHighlightedObj(null);
                     globals.removeNode(oldNode);
                     //todo solve
-                    globals.threeView.render();
                 } else if (highlightedObj && highlightedObj.type == "beam"){
                     var oldEdge = highlightedObj;
                     setHighlightedObj(null);
                     globals.removeEdge(oldEdge);
                     //todo solve
-                    globals.threeView.render();
                 } else if (highlightedObj && highlightedObj.type == "force"){
                     var oldForce = highlightedObj;
                     setHighlightedObj(null);
                     oldForce.destroy();
                     //todo solve
-                    globals.threeView.render();
                 }
+                globals.threeView.render();
             }
             break;
         case 2://middle button
@@ -227,6 +243,11 @@ $(function() {
                     dummyFixed.show();
                     globals.threeView.render();
                 }
+            } else if (globals.addForceMode){
+                var intersection = getIntersectionWithObjectPlane(new THREE.Vector3());
+                dummyForce.setOrigin(intersection);
+                dummyForce.show();
+                globals.threeView.render();
             }
 
             if (highlightedObj && highlightedObj.type == "force"){
