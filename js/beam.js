@@ -57,7 +57,7 @@ Beam.prototype.getLength = function(){
 
 Beam.prototype.getVector = function(fromNode){
     var toNode = this.nodes[0];
-    if (this.nodes[0] == fromNode) toNode = this.nodes[1];
+    if (toNode == fromNode) toNode = this.nodes[1];
     return toNode.getPosition().sub(fromNode.getPosition());
 };
 

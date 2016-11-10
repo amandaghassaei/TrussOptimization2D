@@ -6,7 +6,11 @@
 function initSolver(globals){
 
     var K_matrix = null;
+    var K_A_transpose = null;
     var F_matrix = null;
+
+    var u = null;
+    var internalForces = null;
 
     function initEmptyArray(dim1, dim2, dim3){
         if (dim2 === undefined) dim2 = 0;
@@ -26,7 +30,7 @@ function initSolver(globals){
         return array;
     }
 
-    function solveMatrixForm(){
+    function solve(){
         var nodes = globals.nodes;
         var edges = globals.edges;
 
@@ -75,7 +79,8 @@ function initSolver(globals){
                 var edge = edges[freeEdges[i]];
                 k[i][i] = 200000000000/edge.getLength();
             }
-            var mat = numeric.dot(numeric.dot(A, k), A_transpose);
+            K_A_transpose = numeric.dot(k, A_transpose);
+            var mat = numeric.dot(A, K_A_transpose);
             var determinant = numeric.det(mat);
             if (determinant == 0) {
                 console.warn("unsolvable");
@@ -95,10 +100,9 @@ function initSolver(globals){
             }
         }
 
-        var u = numeric.dot(F_matrix, K_matrix);
-        console.log(K_matrix);
-        console.log(u);
-
+        u = numeric.dot(F_matrix, K_matrix);
+        internalForces = numeric.dot(K_A_transpose, u);
+        console.log(internalForces);
     }
 
     function resetF_matrix(){
@@ -106,10 +110,6 @@ function initSolver(globals){
     }
     function resetK_matrix(){
         K_matrix = null;
-    }
-
-    function solve(){
-        solveMatrixForm();
     }
 
 

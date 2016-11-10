@@ -10,21 +10,18 @@ $(function() {
 
     var nodePositions = [
         [0, 0, 0],
-        [0, 0, 1],
-        [1, 0, 0],
-        [1, 0, 1],
-        [2, 0, 0],
-        [2, 0, 1]
+        [0, 0, 10],
+        [7, 0, 5],
+        [1, 10, 1]
     ];
 
     var edgeConnections = [
-        [0,1],
-        [2, 3],
-        [4, 5],
-        [0, 2],
-        [1, 3],
-        [2, 4],
-        [3, 5]
+        //[0,1],
+        //[1,2],
+        //[2,0],
+        [0,3],
+        [1,3],
+        [2,3]
     ];
 
     _.each(nodePositions, function(pos){
@@ -39,6 +36,8 @@ $(function() {
 
     var force = new Force(new THREE.Vector3(2,1.4,0.2), globals);
     globals.nodes[3].addExternalForce(force);
+    globals.nodes[0].setFixed(true);
+    globals.nodes[1].setFixed(true);
     globals.nodes[2].setFixed(true);
 
     //todo solve
