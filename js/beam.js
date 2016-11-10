@@ -43,7 +43,7 @@ Beam.prototype.setHSLColor = function(val, max, min){
         this.object3D.material.color.setHex(0x000000);
         return;
     }
-    var scaledVal = (val - min)/(max - min) * 0.7;
+    var scaledVal = (1-(val - min)/(max - min)) * 0.7;
     var color = new THREE.Color();
     color.setHSL(scaledVal, 1, 0.5);
     this.object3D.material.color.set(color);
