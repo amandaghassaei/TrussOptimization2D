@@ -2,7 +2,7 @@
  * Created by ghassaei on 9/16/16.
  */
 
-var beamMaterialHighlight = new THREE.MeshLambertMaterial({color: 0xffffff});
+var beamMaterialHighlight = new THREE.MeshBasicMaterial({color: 0xffffff});
 var beamMaterialDelete = new THREE.MeshBasicMaterial({color:0xff0000});
 var beamGeometry = new THREE.CylinderGeometry(0.1, 0.1, 1);
 
@@ -13,7 +13,7 @@ function Beam(nodes, globals){
     nodes[1].addBeam(this);
     this.nodes = nodes;
 
-    this.material = new THREE.MeshLambertMaterial();
+    this.material = new THREE.MeshBasicMaterial();
     this.object3D = new THREE.Mesh(beamGeometry, this.material);
     this.setDefaultColor();
     this.object3D._myBeam = this;
@@ -31,7 +31,7 @@ Beam.prototype.unhighlight = function(){
 };
 
 Beam.prototype.setDefaultColor = function(){
-    this.object3D.material.color.setHex(0xaaaaaa);
+    this.object3D.material.color.setHex(0x444444);
 };
 
 Beam.prototype.setColor = function(hex){
@@ -47,6 +47,19 @@ Beam.prototype.setHSLColor = function(val, max, min){
     var color = new THREE.Color();
     color.setHSL(scaledVal, 1, 0.5);
     this.object3D.material.color.set(color);
+};
+
+Beam.prototype.redBlueColor = function(val, max){
+    var scaledVal = Math.pow(val/max, 1/2);
+    if (this.isInCompression()){
+        this.object3D.material.color.setRGB(scaledVal, 0, 0);
+    } else {
+        this.object3D.material.color.setRGB(0, 0, scaledVal);
+    }
+};
+
+Beam.prototype.isInCompression = function(){
+    return this.force>0;
 };
 
 Beam.prototype.getLength = function(){
@@ -84,6 +97,14 @@ Beam.prototype.getForce = function(){
     return this.force;
 };
 
+Beam.prototype.setDeformation = function(deformation){
+    this.deformation = deformation;
+};
+
+Beam.prototype.getDeformation = function(){
+    if (this.isFixed()) return null;
+    return this.deformation;
+};
 
 
 

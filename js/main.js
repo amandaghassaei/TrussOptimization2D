@@ -16,9 +16,6 @@ $(function() {
     ];
 
     var edgeConnections = [
-        //[0,1],
-        //[1,2],
-        //[2,0],
         [0,3],
         [1,3],
         [2,3]
@@ -274,7 +271,17 @@ $(function() {
             } else if (globals.viewMode == "force"){
                 if (highlightedObj && highlightedObj.type == "beam"){
                     globals.controls.showMoreInfo("Internal Force: " +
-                            highlightedObj.getForce().toFixed(2) + " N", e);
+                            Math.abs(highlightedObj.getForce()).toFixed(2) + " N", e);
+                }
+            } else if (globals.viewMode == "tensionCompression"){
+                if (highlightedObj && highlightedObj.type == "beam"){
+                    if (highlightedObj.isInCompression()){
+                        globals.controls.showMoreInfo("Compression: " +
+                            Math.abs(highlightedObj.getForce()).toFixed(2) + " N", e);
+                    } else {
+                        globals.controls.showMoreInfo("Tension: " +
+                            Math.abs(highlightedObj.getForce()).toFixed(2) + " N", e);
+                    }
                 }
             }
 

@@ -36,7 +36,8 @@
     <a href="#" id="addForce" class="btn btn-lg btn-default">Add Force</a><br/><br/>
     <a href="#" id="addRemoveFixed" class="btn btn-lg btn-default">Add/Remove Fixed Nodes</a><br/><br/>
     <a href="#" id="deleteMode" class="btn btn-lg btn-default">Delete Mode</a><br/><br/>
-    <a href="#" id="solve" class="btn btn-lg btn-default">Solve</a><br/><br/>
+    <!--<a href="#" id="solve" class="btn btn-lg btn-default">Solve</a><br/><br/>-->
+    <div id="FLContainer">&Sigma; | F<sub>i</sub> L<sub>i</sub> | = <span id="FL"></span> Nm</div>
 </div>
 <div id="controlsLeft">
     <a id="logo" target="_blank" href="http://cba.mit.edu/">
@@ -71,15 +72,24 @@
                 <input name="viewMode" value="length" data-toggle="radio" class="custom-radio" type="radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
                 Edge Length (m)
             </label>
-        <label class="radio">
-            <input name="viewMode" value="force" data-toggle="radio" class="custom-radio" type="radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
-                Internal Forces (N)
-        </label>
+            <label class="radio">
+                <input name="viewMode" value="force" data-toggle="radio" class="custom-radio" type="radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
+                    Internal Forces (N)
+            </label>
+            <label class="radio">
+                <input name="viewMode" value="tensionCompression" data-toggle="radio" class="custom-radio" type="radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
+                    Tension/Compression (N)
+            </label>
+            <!--<label class="radio">-->
+                <!--<input name="viewMode" value="deformation" data-toggle="radio" class="custom-radio" type="radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>-->
+                    <!--Deformation (m)-->
+            <!--</label>-->
         </div>
     </div>
 </div>
 
 <div id="scaleBars"></div>
+<div id="tension-compressionScale"></div>
 <div id="moreInfo"><span></span><input value="" type="text"></div>
 <div class="modal fade" id="aboutModal" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-lg">

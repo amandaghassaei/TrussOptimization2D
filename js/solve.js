@@ -83,7 +83,14 @@ function initSolver(globals){
             var mat = numeric.dot(A, K_A_transpose);
             var determinant = numeric.det(mat);
             if (determinant == 0) {
-                console.warn("unsolvable");
+                //console.warn("unsolvable");
+                resetK_matrix();
+                for (var i=0;i<freeEdges.length;i++){
+                    edges[freeEdges[i]].setInternalForce(0);
+                }
+                if (globals.viewMode == "force"){
+                    globals.controls.viewModeCallback();
+                }
                 return;
             }
             K_matrix = numeric.inv(mat);
@@ -103,13 +110,17 @@ function initSolver(globals){
         u = numeric.dot(F_matrix, K_matrix);
         internalForces = numeric.dot(K_A_transpose, u);
 
+        var sumFL = 0;
         for (var i=0;i<freeEdges.length;i++){
-            edges[freeEdges[i]].setInternalForce(internalForces[i]);
+            var edge = edges[freeEdges[i]];
+            edge.setInternalForce(internalForces[i]);
+            sumFL += Math.abs(internalForces[i])*edge.getLength();
         }
-        if (globals.viewMode == "force"){
+        if (globals.viewMode == "force" || globals.viewMode == "tensionCompression"){
             globals.controls.viewModeCallback();
         }
-        //console.log(internalForces);
+
+        $("#FL").html(sumFL.toFixed(2));
     }
 
     function resetF_matrix(){

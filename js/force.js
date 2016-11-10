@@ -6,7 +6,7 @@
 function Force(force, globals){
     this.type = "force";
     this.force = force.clone();
-    this.object3D = new THREE.ArrowHelper(this.getDirection(), new THREE.Vector3(), this.getLength(), 0xb67df0);
+    this.object3D = new THREE.ArrowHelper(this.getDirection(), new THREE.Vector3(), this.getLength(), 0xcccccc);
     this.object3D.line.material.linewidth = 4;
     this.update();
     this.object3D.cone._myForce = this;
@@ -56,14 +56,14 @@ Force.prototype.highlight = function(){
         this.object3D.line.material.color.setHex(0xff0000);
         this.object3D.cone.material.color.setHex(0xff0000);
     } else {
-        this.object3D.line.material.color.setHex(0xd0abf5);
-        this.object3D.cone.material.color.setHex(0xd0abf5);
+        this.object3D.line.material.color.setHex(0x000000);
+        this.object3D.cone.material.color.setHex(0x000000);
     }
 };
 
 Force.prototype.unhighlight = function(){
-    this.object3D.line.material.color.setHex(0xb67df0);
-    this.object3D.cone.material.color.setHex(0xb67df0);
+    this.object3D.line.material.color.setHex(0xaaaaaa);
+    this.object3D.cone.material.color.setHex(0xaaaaaa);
 };
 
 Force.prototype.getPosition = function(){

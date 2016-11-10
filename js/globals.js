@@ -12,7 +12,7 @@ function initGlobals(){
         addRemoveFixedMode: false,
         deleteMode: false,
 
-        viewMode: "geometry",
+        viewMode: "force",
 
         lockForces: false,
         lockTopology: false,

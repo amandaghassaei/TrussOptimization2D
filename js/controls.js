@@ -63,6 +63,16 @@ function initControls(globals){
     }
     $("#scaleBars").html(scaleHTML);
 
+    var scaleHTML = "";
+    for (var i=0;i<=20;i++){
+        scaleHTML += "<div>";
+        scaleHTML += "<div id='tension" + i + "' class='colorSwatch'></div>";
+        scaleHTML += "<div id='compression" + i + "' class='colorSwatch'></div>";
+        if (i%5 == 0) scaleHTML += "<span id='labelCT" + i + "'></span>";
+        scaleHTML += "</div>";
+    }
+    $("#tension-compressionScale").html(scaleHTML);
+
     function updateScaleBars(min, max){
         for (var i=0;i<=20;i++){
             var val = (max-min)*(20-i)/20+min;
@@ -74,6 +84,22 @@ function initControls(globals){
         var scaledVal = (1-(val - min)/(max - min)) * 0.7;
         var color = new THREE.Color();
         color.setHSL(scaledVal, 1, 0.5);
+        return "#" + color.getHexString();
+    }
+
+    function updateRedBlueScaleBars(max){
+        for (var i=0;i<=20;i++){
+            var val = (max-0)*(20-i)/20+0;
+            $("#tension" + i).css("background", hexForRGBVal(val, max, false));
+            $("#compression" + i).css("background", hexForRGBVal(val, max, true));
+            if (i%5 == 0) $("#labelCT" + i).html(val.toFixed(2));
+        }
+    }
+    function hexForRGBVal(val, max, isCompression){
+        var scaledVal = Math.pow(val/max, 1/2);
+        var color = new THREE.Color();
+        if (isCompression) color.setRGB(scaledVal, 0, 0);
+        else color.setRGB(0, 0, scaledVal);
         return "#" + color.getHexString();
     }
 
@@ -93,8 +119,30 @@ function initControls(globals){
             }
         } else if (val == "force"){
             for (var i=0;i<globals.edges.length;i++){
-                data.push(Math.abs(globals.edges[i].getForce()));
+                var force = Math.abs(globals.edges[i].getForce());
+                if (force == 0) force = null;
+                data.push(force);
             }
+        } else if (val == "deformation"){
+            for (var i=0;i<globals.edges.length;i++){
+                var deformation = Math.abs(globals.edges[i].getDeformation());
+                if (deformation == 0) deformation = null;
+                data.push(deformation);
+            }
+        } else if (val == "tensionCompression"){
+            for (var i=0;i<globals.edges.length;i++){
+                var force = Math.abs(globals.edges[i].getForce());
+                data.push(force);
+            }
+            var max = _.max(data);
+            var min = _.min(data);
+            for (var i=0;i<globals.edges.length;i++){
+                var edge = globals.edges[i];
+                edge.redBlueColor(data[i], max);
+            }
+            updateRedBlueScaleBars(max);
+            globals.threeView.render();
+            return;
         }
         var max = _.max(data);
         var min = _.min(data);
@@ -109,14 +157,28 @@ function initControls(globals){
         globals.viewMode = val;
         var $scaleBars = $("#scaleBars");
         var $controls = $("#controls");
+        var $redBlue = $("#tension-compressionScale");
         if (val == "geometry"){
             $scaleBars.animate({right: -100});
+            $redBlue.animate({right: -100});
             $controls.animate({right:0});
         } else if (val == "length"){
+            $scaleBars.show();
+            $redBlue.hide();
             $scaleBars.animate({right: 0});
+            $redBlue.animate({right: 0});
             $controls.animate({right:100});
         } else if (val == "force"){
+            $scaleBars.show();
+            $redBlue.hide();
             $scaleBars.animate({right: 0});
+            $redBlue.animate({right: 0});
+            $controls.animate({right:100});
+        } else if (val == "tensionCompression"){
+            $scaleBars.hide();
+            $redBlue.show();
+            $scaleBars.animate({right: 0});
+            $redBlue.animate({right: 0});
             $controls.animate({right:100});
         }
         viewModeCallback();
