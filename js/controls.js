@@ -93,8 +93,7 @@ function initControls(globals){
             }
         } else if (val == "force"){
             for (var i=0;i<globals.edges.length;i++){
-                var edge = globals.edges[i];
-                data.push(i);
+                data.push(Math.abs(globals.edges[i].getForce()));
             }
         }
         var max = _.max(data);

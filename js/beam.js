@@ -65,10 +65,6 @@ Beam.prototype.isFixed = function(){
     return this.nodes[0].fixed && this.nodes[1].fixed;
 };
 
-Beam.prototype.getForce = function(){
-    if (this.isFixed()) return null;
-    //todo
-};
 
 Beam.prototype.getOtherNode = function(node){
     if (this.nodes[0] == node) return this.nodes[1];
@@ -77,6 +73,15 @@ Beam.prototype.getOtherNode = function(node){
 
 Beam.prototype.setDeleteMode = function(){
     this.object3D.material = beamMaterialDelete;
+};
+
+Beam.prototype.setInternalForce = function(force){
+    this.force = force;
+};
+
+Beam.prototype.getForce = function(){
+    if (this.isFixed()) return null;
+    return this.force;
 };
 
 

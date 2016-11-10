@@ -40,7 +40,7 @@ $(function() {
     globals.nodes[1].setFixed(true);
     globals.nodes[2].setFixed(true);
 
-    //todo solve
+    globals.solver.solve();
     globals.threeView.render();
 
     var raycaster = new THREE.Raycaster();
@@ -109,7 +109,7 @@ $(function() {
             globals.removeEdge(oldEdge);
             globals.solver.resetK_matrix();
             globals.solver.resetF_matrix();
-            //todo solve
+            globals.solver.solve();
             globals.controls.viewModeCallback();
         }
     });
@@ -131,7 +131,7 @@ $(function() {
                 beamInProgress = null;
                 globals.solver.resetK_matrix();
                 globals.solver.resetF_matrix();
-                //todo solve
+                globals.solver.solve();
                 globals.threeView.render();
             } else if (globals.addForceMode) {
                 dummyForce.hide();
@@ -140,7 +140,7 @@ $(function() {
                     highlightedObj.addExternalForce(force);
                     setHighlightedObj(force);
                     globals.solver.resetF_matrix();
-                    //todo solve
+                    globals.solver.solve();
                 }
                 globals.addForceMode = false;
                 globals.threeView.render();
@@ -151,7 +151,7 @@ $(function() {
                     highlightedObj.setFixed(!highlightedObj.fixed);
                     globals.solver.resetK_matrix();
                     globals.solver.resetF_matrix();
-                    //todo solve
+                    globals.solver.solve();
                 }
                 globals.threeView.render();
             } else if (globals.deleteMode){
@@ -162,20 +162,20 @@ $(function() {
                     globals.removeNode(oldNode);
                     globals.solver.resetK_matrix();
                     globals.solver.resetF_matrix();
-                    //todo solve
+                    globals.solver.solve();
                 } else if (highlightedObj && highlightedObj.type == "beam"){
                     var oldEdge = highlightedObj;
                     setHighlightedObj(null);
                     globals.removeEdge(oldEdge);
                     globals.solver.resetK_matrix();
                     globals.solver.resetF_matrix();
-                    //todo solve
+                    globals.solver.solve();
                 } else if (highlightedObj && highlightedObj.type == "force"){
                     var oldForce = highlightedObj;
                     setHighlightedObj(null);
                     oldForce.destroy();
                     globals.solver.resetF_matrix();
-                    //todo solve
+                    globals.solver.solve();
                 }
                 globals.threeView.render();
             }
@@ -289,7 +289,7 @@ $(function() {
                 var intersection = getIntersectionWithObjectPlane(highlightedObj.getPosition());
                 highlightedObj.move(intersection);
                 globals.solver.resetK_matrix();
-                //todo solve
+                globals.solver.solve();
                 globals.controls.viewModeCallback();
             } else if (highlightedObj.type == "beam"){
             } else if (highlightedObj.type == "force"){
@@ -303,7 +303,7 @@ $(function() {
                 var intersection = getIntersectionWithObjectPlane(highlightedObj.getPosition());
                 highlightedObj.move(intersection);
                 globals.solver.resetF_matrix();
-                //todo solve
+                globals.solver.solve();
                 globals.threeView.render();
             }
         }

@@ -102,7 +102,14 @@ function initSolver(globals){
 
         u = numeric.dot(F_matrix, K_matrix);
         internalForces = numeric.dot(K_A_transpose, u);
-        console.log(internalForces);
+
+        for (var i=0;i<freeEdges.length;i++){
+            edges[freeEdges[i]].setInternalForce(internalForces[i]);
+        }
+        if (globals.viewMode == "force"){
+            globals.controls.viewModeCallback();
+        }
+        //console.log(internalForces);
     }
 
     function resetF_matrix(){
