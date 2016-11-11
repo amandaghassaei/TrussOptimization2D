@@ -12,7 +12,7 @@ function BeamBuilding(startNode, end, globals){
     this.node = startNode;
     this.start = startNode.getPosition();
     this.end = end.clone();
-    this.object3D = new THREE.Mesh(beamGeometry, beamMaterialHighlight);
+    this.object3D = new THREE.Mesh(beamGeometry, new THREE.MeshBasicMaterial({color: 0x000000}));
     globals.threeView.sceneAdd(this.object3D);
     this.render();
 }

@@ -103,11 +103,11 @@ function initThreeView(globals) {
         if (!globals.xyOnly) controls.enableRotate = state;
     }
     function enableRotate(state){
-        controls.reset();
         controls.enableRotate = state;
     }
 
     function squareWithXY(){
+        controls.reset();
         camera.position.x = 0;
         camera.position.y = 0;
         camera.lookAt(new THREE.Vector3(0,0,0));
