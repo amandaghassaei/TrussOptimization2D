@@ -53,6 +53,14 @@ function initControls(globals){
     setCheckbox("#lockNodePositions", globals.lockNodePositions, function(val){
         globals.lockNodePositions = val;
     });
+    setCheckbox("#xyOnly", globals.xyOnly, function(val){
+        globals.xyOnly = val;
+        globals.threeView.enableRotate(!val);
+        if (val) globals.threeView.squareWithXY();
+        globals.solver.solve();
+    });
+    globals.threeView.enableRotate(!globals.xyOnly);
+    if (globals.xyOnly) globals.threeView.squareWithXY();
 
     var scaleHTML = "";
     for (var i=0;i<=20;i++){
@@ -120,7 +128,7 @@ function initControls(globals){
         } else if (val == "force"){
             for (var i=0;i<globals.edges.length;i++){
                 var force = Math.abs(globals.edges[i].getForce());
-                if (force == 0) force = null;
+                if (globals.edges[i].isFixed()) force = null;
                 data.push(force);
             }
         } else if (val == "deformation"){
@@ -153,7 +161,7 @@ function initControls(globals){
         updateScaleBars(min, max);
         globals.threeView.render();
     }
-    setRadio("viewMode", globals.viewMode, function(val){
+    function viewModeChange(val){
         globals.viewMode = val;
         var $scaleBars = $("#scaleBars");
         var $controls = $("#controls");
@@ -182,7 +190,9 @@ function initControls(globals){
             $controls.animate({right:100});
         }
         viewModeCallback();
-    });
+    }
+    setRadio("viewMode", globals.viewMode, viewModeChange);
+    viewModeChange(globals.viewMode);
 
     var $moreInfo = $("#moreInfo");
     var $moreInfoInput = $("#moreInfo>input");
@@ -323,6 +333,7 @@ function initControls(globals){
         showMoreInfo: showMoreInfo,
         hideMoreInfo: hideMoreInfo,
         editMoreInfo: editMoreInfo,
-        viewModeCallback: viewModeCallback
+        viewModeCallback: viewModeCallback,
+        setRadio: setRadio
     }
 }

@@ -61,7 +61,7 @@ body{
     /*width: 420px;*/
     padding: 20px 20px 20px 20px;
     max-height: 100%;
-    overflow: auto;
+    overflow: hidden;
 }
 
 .sliderInput{
@@ -308,4 +308,15 @@ span.modal-close{
 #linkedContainer{
     width: 300px;
     float: right;
+}
+
+.deleteLinked{
+    float: right;
+    color:darkred;
+}
+.deleteLinked:hover{
+    color:darkred;
+}
+.deleteLinked:visited{
+    color:darkred;
 }

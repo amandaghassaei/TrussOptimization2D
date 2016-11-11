@@ -13,6 +13,7 @@ function initGlobals(){
         deleteMode: false,
 
         viewMode: "force",
+        xyOnly: true,
 
         lockForces: false,
         lockTopology: false,

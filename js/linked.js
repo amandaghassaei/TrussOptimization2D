@@ -38,10 +38,24 @@ function initLinked(globals){
                 string += "Node " + globals.nodes.indexOf(group[j]);
                 if (j<group.length-1) string += ", ";
             }
-            string += " ] </label>";
+            string += ' ] <a href="#" data-index="' + i + '" class="deleteLinked"><span class="fui-cross"></span></a></label>';
         }
         $linkedNodes.html(string);
+        $(".deleteLinked").click(function(e){
+            e.preventDefault();
+            deleteLink($(e.target).parent().data("index"));
+        });
+        globals.controls.setRadio("visibleLinked", linked.length-1, function(val){
+            console.log(val);
+        });
         $button.show();
+    }
+
+    function deleteLink(index){
+        if (isNaN(index)) return;
+        if (index<0) return;
+        linked.splice(index, 1);
+        display();
     }
 
     function deselectAll(){

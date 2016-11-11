@@ -106,6 +106,14 @@ Beam.prototype.getDeformation = function(){
     return this.deformation;
 };
 
+Beam.prototype.getAngle = function(fromNode) {
+	var toNode = this.nodes[0];
+    if (toNode == fromNode) toNode = this.nodes[1];
+    var toPos = toNode.getPosition();
+    var fromPos = fromNode.getPosition();
+	return Math.atan2(fromPos.y-toPos.y, fromPos.x-toPos.x);
+};
+
 
 
 //render

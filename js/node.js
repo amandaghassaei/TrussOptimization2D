@@ -119,7 +119,6 @@ Node.prototype.show = function(){
 };
 
 Node.prototype.moveManually = function(position){
-    console.log("here");
     this.object3D.position.set(position.x, position.y, position.z);
     _.each(this.beams, function(beam){
         beam.render();

@@ -52,7 +52,7 @@ function initSolver(globals){
                 var node = nodes[freeNodes[i]];
                 A.push(initEmptyArray(freeEdges.length));
                 A.push(initEmptyArray(freeEdges.length));
-                A.push(initEmptyArray(freeEdges.length));
+                if (!globals.xyOnly) A.push(initEmptyArray(freeEdges.length));
                 for (var j=0;j<node.beams.length;j++){
                     var edge = node.beams[j];
                     if (edge.isFixed()) continue;
@@ -68,9 +68,14 @@ function initSolver(globals){
                         console.log("problem here");
                         return;
                     }
-                    A[i*3][index] = vector.x/length;
-                    A[i*3+1][index] = vector.y/length;
-                    A[i*3+2][index] = vector.z/length;
+                    if (globals.xyOnly){
+                        A[i*2][index] = vector.x/length;
+                        A[i*2+1][index] = vector.y/length;
+                    } else {
+                        A[i*3][index] = vector.x/length;
+                        A[i*3+1][index] = vector.y/length;
+                        A[i*3+2][index] = vector.z/length;
+                    }
                 }
             }
             var A_transpose = numeric.transpose(A);
@@ -83,14 +88,16 @@ function initSolver(globals){
             var mat = numeric.dot(A, K_A_transpose);
             var determinant = numeric.det(mat);
             if (determinant == 0) {
-                //console.warn("unsolvable");
+                console.warn("unsolvable");
                 resetK_matrix();
                 for (var i=0;i<freeEdges.length;i++){
-                    edges[freeEdges[i]].setInternalForce(0);
+                    var edge = edges[freeEdges[i]];
+                    edge.setInternalForce(0);
                 }
                 if (globals.viewMode == "force"){
                     globals.controls.viewModeCallback();
                 }
+                $("#FL").html(0.00);
                 return;
             }
             K_matrix = numeric.inv(mat);
@@ -103,7 +110,7 @@ function initSolver(globals){
                 var force = node.getExternalForce();
                 F_matrix.push(force.x);
                 F_matrix.push(force.y);
-                F_matrix.push(force.z);
+                if (!globals.xyOnly) F_matrix.push(force.z);
             }
         }
 

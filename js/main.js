@@ -9,16 +9,48 @@ $(function() {
     globals = initGlobals();
 
     var nodePositions = [
+        [-30, 0, 0],
+        [-30, 10, 0],
+        [-20, 0, 0],
+        [-20, 10, 0],
+        [-10, 0, 0],
+        [-10, 10, 0],
         [0, 0, 0],
-        [0, 0, 10],
-        [7, 0, 5],
-        [1, 10, 1]
+        [0, 10, 0],
+        [10, 0, 0],
+        [10, 10, 0],
+        [20, 0, 0],
+        [20, 10, 0],
+        [30, 0, 0],
+        [30, 10, 0]
     ];
 
     var edgeConnections = [
-        [0,3],
+        [0,1],
+        [2,3],
+        [4,5],
+        [6,7],
+        [8,9],
+        [10,11],
+        [12,13],
+        [0,2],
+        [2,4],
+        [4,6],
+        [6,8],
+        [8,10],
+        [10,12],
         [1,3],
-        [2,3]
+        [3,5],
+        [5,7],
+        [7,9],
+        [9,11],
+        [11,13],
+        [1, 2],
+        [3, 4],
+        [5, 6],
+        [6, 9],
+        [8, 11],
+        [10, 13]
     ];
 
     _.each(nodePositions, function(pos){
@@ -31,11 +63,16 @@ $(function() {
         globals.addEdge(edge);
     });
 
-    var force = new Force(new THREE.Vector3(2,1.4,0.2), globals);
-    globals.nodes[3].addExternalForce(force);
+    globals.nodes[2].addExternalForce(new Force(new THREE.Vector3(0,-10,0), globals));
+    globals.nodes[4].addExternalForce(new Force(new THREE.Vector3(0,-10,0), globals));
+    globals.nodes[6].addExternalForce(new Force(new THREE.Vector3(0,-10,0), globals));
+    globals.nodes[8].addExternalForce(new Force(new THREE.Vector3(0,-10,0), globals));
+    globals.nodes[10].addExternalForce(new Force(new THREE.Vector3(0,-10,0), globals));
+    globals.nodes[12].addExternalForce(new Force(new THREE.Vector3(0,-10,0), globals));
     globals.nodes[0].setFixed(true);
     globals.nodes[1].setFixed(true);
-    globals.nodes[2].setFixed(true);
+    globals.nodes[12].setFixed(true);
+    globals.nodes[13].setFixed(true);
 
     globals.solver.solve();
     globals.threeView.render();
@@ -313,6 +350,8 @@ $(function() {
                     globals.threeView.enableControls(false);
                 }
                 var intersection = getIntersectionWithObjectPlane(highlightedObj.getPosition());
+                globals.controls.showMoreInfo("Position: " +
+                            "x:" + intersection.x.toFixed(2) + " y:" + intersection.y.toFixed(2) + " z:" + intersection.z.toFixed(2) + " m", e);
                 highlightedObj.moveManually(intersection);
                 globals.solver.resetK_matrix();
                 globals.solver.solve();
@@ -338,7 +377,11 @@ $(function() {
     function getIntersectionWithObjectPlane(position){
         var cameraOrientation = globals.threeView.camera.getWorldDirection();
         var dist = position.dot(cameraOrientation);
-        raycasterPlane.set(cameraOrientation, -dist);
+        if (globals.xyOnly) {
+            raycasterPlane.set(new THREE.Vector3(0,0,1), 0);
+        } else {
+            raycasterPlane.set(cameraOrientation, -dist);
+        }
         var intersection = new THREE.Vector3();
         raycaster.ray.intersectPlane(raycasterPlane, intersection);
         return intersection;
