@@ -118,6 +118,15 @@ Node.prototype.show = function(){
     this.object3D.visible = true;
 };
 
+Node.prototype.moveManually = function(position){
+    console.log("here");
+    this.object3D.position.set(position.x, position.y, position.z);
+    _.each(this.beams, function(beam){
+        beam.render();
+    });
+    if (this.externalForce) this.externalForce.setOrigin(position.clone());
+};
+
 Node.prototype.move = function(position){
     this.object3D.position.set(position.x, position.y, position.z);
     _.each(this.beams, function(beam){

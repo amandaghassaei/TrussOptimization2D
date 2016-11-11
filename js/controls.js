@@ -318,6 +318,7 @@ function initControls(globals){
         });
     }
 
+
     return {
         showMoreInfo: showMoreInfo,
         hideMoreInfo: hideMoreInfo,

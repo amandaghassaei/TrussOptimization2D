@@ -89,13 +89,6 @@ a:hover{
     color:#8cbaed;
 }
 
-#controls .radio{
-    height: 42px;
-display: inline-block;
-    width: 100%;
-}
-
-
 #scaleBars, #tension-compressionScale{
     height:100%;
     padding: 20px 0 50px 10px;
@@ -274,12 +267,12 @@ span.modal-close{
     transition-duration: 0s;
 }
 
-#controls .checkbox input.custom-radio[type="radio"]:checked + .icons, #controls .radio input.custom-radio[type="radio"]:checked + .icons {
-    margin-top:9px;
-}
-#controls .radio .icons {
-    margin-top:9px;
-}
+/*#controls .checkbox input.custom-radio[type="radio"]:checked + .icons, #controls .radio input.custom-radio[type="radio"]:checked + .icons {*/
+    /*margin-top:9px;*/
+/*}*/
+/*#controls .radio .icons {*/
+    /*margin-top:9px;*/
+/*}*/
 
 .sliderInput>.flat-slider{
    width: 162px;
@@ -309,5 +302,10 @@ span.modal-close{
 }
 
 #FLContainer{
+    float: right;
+}
+
+#linkedContainer{
+    width: 300px;
     float: right;
 }

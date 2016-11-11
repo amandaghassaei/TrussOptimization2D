@@ -85,6 +85,22 @@ $(function() {
         globals.threeView.render();
     }
 
+    var shift = false;
+    $(document).on("keydown", function (e) {
+        if (e.keyCode == 16){
+            shift = true;
+        }
+    });
+    $(document).on("keyup", function (e) {
+        if (e.keyCode == 16){
+            shift = false;
+        } else if (e.keyCode == 13){
+            globals.linked.link();
+        }
+        //console.log(e.keyCode);
+    });
+
+
     $(document).dblclick(function() {
         if (highlightedObj && highlightedObj.type == "node"){
             if (globals.lockTopology) return;
@@ -213,6 +229,9 @@ $(function() {
             isDraggingForce = false;
             globals.threeView.enableControls(true);
         }
+        if (shift && highlightedObj && highlightedObj.type == "node"){
+            globals.linked.selectNode(highlightedObj);
+        }
         isDragging = false;
         mouseDown = false;
     }, false);
@@ -294,7 +313,7 @@ $(function() {
                     globals.threeView.enableControls(false);
                 }
                 var intersection = getIntersectionWithObjectPlane(highlightedObj.getPosition());
-                highlightedObj.move(intersection);
+                highlightedObj.moveManually(intersection);
                 globals.solver.resetK_matrix();
                 globals.solver.solve();
                 globals.controls.viewModeCallback();

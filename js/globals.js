@@ -34,6 +34,7 @@ function initGlobals(){
         //if (_globals.nodes.length < 2) return;
         var index = _globals.nodes.indexOf(node);
         if (index>=0) _globals.nodes.splice(index, 1);
+        _globals.linked.deleteNode(node);
         node.destroy();
     }
 
@@ -50,6 +51,7 @@ function initGlobals(){
     _globals.threeView = initThreeView(_globals);
     _globals.controls = initControls(_globals);
     _globals.solver = initSolver(_globals);
+    _globals.linked = initLinked(_globals);
 
     return _globals;
 }
