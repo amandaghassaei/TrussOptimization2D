@@ -97,26 +97,29 @@ function initGradientSolver(globals){
 
     function _grad(indices, positions, outputPos, outputNeg, axis, sign, numSolved){
         for (var i=0;i<indices.length;i++){
-            nodes[i].position = positions[i];
+            nodes[indices[i]].position = positions[i];
         }
         solver.resetK_matrix();
-        solver.resetF_matrix();
+        //solver.resetF_matrix();
         solver.solve(nodes, edges, globals.xyOnly, function(internalForces, freeEdges){
             var sumFL = 0;
             for (var i=0;i<freeEdges.length;i++){
                 var edge = edges[freeEdges[i]];
                 sumFL += Math.abs(internalForces[i])*edge.getLength();
             }
-            if (sign) outputPos[axis] = 1-sumFL/globals.sumFL;
-            else outputNeg[axis] = 1-sumFL/globals.sumFL;
+            var val = 1-sumFL/globals.sumFL;
+            if (val > 0){
+                if (sign) outputPos[axis] = val;
+                else outputNeg[axis] = val;
+            }
             numSolved[0]++;
             var numToSolve = 6;
             if (globals.xyOnly) numToSolve = 4;
             if (numSolved[0] == numToSolve){
                 var output = outputPos.clone().add(outputNeg);
                 //console.log(outputPos);
-                //console.log(output);
-                var length = output.length()*10;
+                //console.log(output.length());
+                var length = output.length()*20;
                 var dir = output.normalize();
                 arrow.setDirection(dir);
                 if (length<1.1) length = 1.1;//prevent arrow from having zero length
