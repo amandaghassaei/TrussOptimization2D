@@ -73,6 +73,7 @@ $(function() {
     globals.nodes[1].setFixed(true);
     globals.nodes[12].setFixed(true);
     globals.nodes[13].setFixed(true);
+    globals.gradient.syncNodes();
 
     globals.solver.solve();
     globals.threeView.render();
@@ -199,6 +200,7 @@ $(function() {
                 dummyFixed.hide();
                 if (highlightedObj && highlightedObj.type == "node"){
                     highlightedObj.setFixed(!highlightedObj.fixed);
+                    globals.gradient.syncFixed();
                     globals.solver.resetK_matrix();
                     globals.solver.resetF_matrix();
                     globals.solver.solve();
@@ -225,6 +227,7 @@ $(function() {
                     setHighlightedObj(null);
                     oldForce.destroy();
                     globals.solver.resetF_matrix();
+                    globals.gradient.resetF_matrix();
                     globals.solver.solve();
                 }
                 globals.threeView.render();
@@ -356,6 +359,7 @@ $(function() {
                 globals.solver.resetK_matrix();
                 globals.solver.solve();
                 globals.controls.viewModeCallback();
+                globals.gradient.calcGrad([highlightedObj], intersection);
             } else if (highlightedObj.type == "beam"){
             } else if (highlightedObj.type == "force"){
                 globals.controls.showMoreInfo("Force: " +
@@ -368,6 +372,7 @@ $(function() {
                 var intersection = getIntersectionWithObjectPlane(highlightedObj.getPosition());
                 highlightedObj.move(intersection);
                 globals.solver.resetF_matrix();
+                globals.gradient.resetF_matrix();
                 globals.solver.solve();
                 globals.threeView.render();
             }

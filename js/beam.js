@@ -6,19 +6,21 @@ var beamMaterialHighlight = new THREE.MeshBasicMaterial({color: 0xffffff});
 var beamMaterialDelete = new THREE.MeshBasicMaterial({color:0xff0000});
 var beamGeometry = new THREE.CylinderGeometry(0.1, 0.1, 1);
 
-function Beam(nodes, globals){
+function Beam(nodes, globals, noAdd){
 
     this.type = "beam";
     nodes[0].addBeam(this);
     nodes[1].addBeam(this);
     this.nodes = nodes;
 
-    this.material = new THREE.MeshBasicMaterial();
-    this.object3D = new THREE.Mesh(beamGeometry, this.material);
-    this.setDefaultColor();
-    this.object3D._myBeam = this;
-    globals.threeView.sceneAdd(this.object3D);
-    this.render();
+    if (noAdd === undefined){
+        this.material = new THREE.MeshBasicMaterial();
+        this.object3D = new THREE.Mesh(beamGeometry, this.material);
+        this.setDefaultColor();
+        this.object3D._myBeam = this;
+        globals.threeView.sceneAdd(this.object3D);
+        this.render();
+    }
 }
 
 Beam.prototype.highlight = function(){

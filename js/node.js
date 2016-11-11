@@ -11,19 +11,22 @@ nodeGeo.rotateX(Math.PI/2);
 var nodeFixedGeo = new THREE.CubeGeometry(0.5, 0.5, 0.5);
 
 
-function Node(position, globals){
+function Node(position, globals, noAdd){
 
     this.type = "node";
-
-    this.object3D = new THREE.Mesh(nodeGeo, nodeMaterial);
-    this.object3D._myNode = this;
-    globals.threeView.sceneAdd(this.object3D);
 
     this.beams = [];
     this.externalForce = null;
     this.fixed = false;
 
-    this.move(position);
+    if (noAdd === undefined){
+        this.object3D = new THREE.Mesh(nodeGeo, nodeMaterial);
+        this.object3D._myNode = this;
+        globals.threeView.sceneAdd(this.object3D);
+        this.move(position);
+    } else {
+        this.position = position.clone();
+    }
 }
 
 
@@ -135,6 +138,7 @@ Node.prototype.move = function(position){
 };
 
 Node.prototype.getPosition = function(){
+    if (this.position) return this.position.clone();
     return this.object3D.position.clone();
 };
 
@@ -145,9 +149,9 @@ Node.prototype.getPosition = function(){
 
 
 Node.prototype.clone = function(){
-    var node = new Node(this.getPosition(), globals);
-    node.setFixed(this.fixed);
-    if (this.externalForce) node.addExternalForce(this.externalForce);
+    var node = new Node(this.getPosition(), globals, true);
+    node.fixed = this.fixed;
+    if (this.externalForce) node.externalForce = this.externalForce;
     return node;
 };
 

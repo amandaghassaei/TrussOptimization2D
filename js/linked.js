@@ -94,7 +94,8 @@ function initLinked(globals){
         deleteNode: deleteNode,
         deselectAll: deselectAll,
         selectNode: selectNode,
-        link: link
+        link: link,
+        linked: linked
     }
 
 }

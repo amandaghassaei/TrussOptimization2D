@@ -20,6 +20,8 @@
     <!--<script type="text/javascript" src="dependencies/FileSaver.min.js"></script>-->
 
     <script type="text/javascript" src="js/linked.js"></script>
+    <script type="text/javascript" src="js/solver.js"></script>
+    <script type="text/javascript" src="js/gradient.js"></script>
     <script type="text/javascript" src="js/beam.js"></script>
     <script type="text/javascript" src="js/beamBuilding.js"></script>
     <script type="text/javascript" src="js/node.js"></script>
@@ -41,7 +43,8 @@
     <div id="FLContainer">&Sigma; | F<sub>i</sub> L<sub>i</sub> | = <span id="FL"></span> Nm</div><br/><br/>
     <div id="linkedContainer">Optimization Variables:<br/>
         <div class="indent" id="linkedNodes"></div>
-    </div>
+    </div><br/><br/><br/>
+    <a href="#" id="optimize" class="btn btn-lg btn-success">Auto Optimize</a>
 </div>
 <div id="controlsLeft">
     <a id="logo" target="_blank" href="http://cba.mit.edu/">
@@ -93,8 +96,7 @@
                     <!--Deformation (m)-->
             <!--</label>-->
         </div>
-    </div><br/>
-    <a href="#" id="optimize" class="btn btn-lg btn-success">Auto Optimize</a><br/><br/>
+    </div>
 </div>
 
 <div id="scaleBars"></div>

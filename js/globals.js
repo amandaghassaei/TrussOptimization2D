@@ -15,6 +15,9 @@ function initGlobals(){
         viewMode: "force",
         xyOnly: true,
 
+        gradStepSize: 1,
+        sumFL: 0,
+
         lockForces: false,
         lockTopology: false,
         lockNodePositions: false,
@@ -30,6 +33,7 @@ function initGlobals(){
 
     function addNode(node){
         _globals.nodes.push(node);
+        _globals.gradient.syncNodes();
     }
     function removeNode(node){
         //if (_globals.nodes.length < 2) return;
@@ -37,10 +41,12 @@ function initGlobals(){
         if (index>=0) _globals.nodes.splice(index, 1);
         _globals.linked.deleteNode(node);
         node.destroy();
+        _globals.gradient.syncNodes();
     }
 
     function addEdge(edge){
         _globals.edges.push(edge);
+        _globals.gradient.syncNodes();
     }
     function removeEdge(edge){
         //if (_globals.edges.length == 1) return;
@@ -53,6 +59,7 @@ function initGlobals(){
     _globals.controls = initControls(_globals);
     _globals.solver = initSolver(_globals);
     _globals.linked = initLinked(_globals);
+    _globals.gradient = initGradientSolver(_globals);
 
     return _globals;
 }
