@@ -108,22 +108,24 @@ function initGradientSolver(globals){
                 sumFL += Math.abs(internalForces[i])*edge.getLength();
             }
             var val = 1-sumFL/globals.sumFL;
-            if (val > 0){
+            //if (val > 0){
                 if (sign) outputPos[axis] = val;
                 else outputNeg[axis] = val;
-            }
+            //}
             numSolved[0]++;
             var numToSolve = 6;
             if (globals.xyOnly) numToSolve = 4;
             if (numSolved[0] == numToSolve){
-                var output = outputPos.clone().add(outputNeg);
-                //console.log(outputPos);
-                //console.log(output.length());
-                var length = output.length()*20;
+                var output = outputPos.clone().sub(outputNeg);
+                var length = output.length()*100;
                 var dir = output.normalize();
                 arrow.setDirection(dir);
-                if (length<1.1) length = 1.1;//prevent arrow from having zero length
+                arrow.visible = !(length < 0.001);
+                if (length<1.1) {//prevent arrow from having zero length
+                    length = 1.1;
+                }
                 arrow.setLength(length, 1, 1);
+
             }
         });
     }

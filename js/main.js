@@ -358,8 +358,8 @@ $(function() {
                 highlightedObj.moveManually(intersection);
                 globals.solver.resetK_matrix();
                 globals.solver.solve();
-                globals.controls.viewModeCallback();
                 globals.gradient.calcGrad([highlightedObj], intersection);
+                globals.controls.viewModeCallback();
             } else if (highlightedObj.type == "beam"){
             } else if (highlightedObj.type == "force"){
                 globals.controls.showMoreInfo("Force: " +
