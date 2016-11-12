@@ -93,9 +93,14 @@ function initLinked(globals){
     function selectNode(node){
         var index = selectedNodes.indexOf(node);
         if (index > -1) {
+            selectedNodes[index].setSelected(false);
             selectedNodes.splice(index, 1);
         } else {
             selectedNodes.push(node);
+            if (selectedNodes.length>2){
+                selectedNodes[0].setSelected(false);
+                selectedNodes.shift();
+            }
         }
         //for (var i=0;i<globals.nodes.length;i++){
         //    globals.nodes[i].setSelected(false);
