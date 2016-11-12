@@ -359,6 +359,7 @@ $(function() {
                 globals.controls.showMoreInfo("Position: " +
                             "x:" + intersection.x.toFixed(2) + " y:" + intersection.y.toFixed(2) + " z:" + intersection.z.toFixed(2) + " m", e);
                 highlightedObj.moveManually(intersection);
+                globals.linked.move(highlightedObj, intersection);
                 globals.solver.resetK_matrix();
                 globals.solver.solve();
                 globals.gradient.calcGrad([highlightedObj], intersection);

@@ -106,12 +106,28 @@ function initLinked(globals){
         display();
     }
 
+    function move(node, position){
+        for (var i=0;i<linked.length;i++){
+            var index = linked[i].indexOf(node);
+            if (index >= 0){
+                var reflected = position.clone();
+                reflected.x *= -1;
+                for (var j=0;j<linked[i].length;j++){
+                    if (j == index) continue;
+                    linked[i][j].moveManually(reflected);
+                }
+                return;
+            }
+        }
+    }
+
     return {
         deleteNode: deleteNode,
         deselectAll: deselectAll,
         selectNode: selectNode,
         link: link,
-        linked: linked
+        linked: linked,
+        move: move
     }
 
 }
