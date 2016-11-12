@@ -71,7 +71,7 @@ Solver.prototype.solve = function(nodes, edges, xyOnly, callback){
         var determinant = numeric.det(mat);
         if (determinant == 0) {
             console.warn("unsolvable");
-            resetK_matrix();
+            this.resetK_matrix();
             if (callback) callback(this.initEmptyArray(freeEdges.length), freeEdges);
             return;
         }

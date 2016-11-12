@@ -5,8 +5,6 @@
 
 function initGradientSolver(globals){
 
-    var linked = globals.linked.linked;
-
     var solver = new Solver();
 
     var arrow = new THREE.ArrowHelper(new THREE.Vector3(1,0,0), new THREE.Vector3(), 1, 0xff00ff);
@@ -64,7 +62,7 @@ function initGradientSolver(globals){
 
     var coordinates = ["x", "y", "z"];
     if (globals.xyOnly) coordinates = ["x", "y"];
-    function calcGrad(variableNodes, position){
+    function calcGrad(node, linked, position){
         syncPosition();
 
         arrow.position.set(position.x, position.y, position.z);
@@ -72,8 +70,8 @@ function initGradientSolver(globals){
         var stepSize = globals.gradStepSize;
 
         var indices = [];
-        for (var i = 0; i < variableNodes.length; i++) {
-            var index = globals.nodes.indexOf(variableNodes[i]);
+        for (var i = 0; i < linked.length; i++) {
+            var index = globals.nodes.indexOf(linked[i]);
             if (index < 0) {
                 console.warn("node not found");
                 return;
@@ -86,13 +84,19 @@ function initGradientSolver(globals){
         var numSolved = [0];
         for (var j=0;j<coordinates.length*2;j++) {
             var newPositions = [];
-            for (var i = 0; i < variableNodes.length; i++) {
-                var position = variableNodes[i].getPosition();
-                if (j<coordinates.length) position[coordinates[j%2]] += stepSize;
-                else position[coordinates[j%2]] -= stepSize;
+            for (var i = 0; i < linked.length; i++) {
+                var _node = linked[i];
+                var position = _node.getPosition();
+                if (coordinates[j%2] == "y" || _node == node){
+                    if (j<coordinates.length) position[coordinates[j%2]] += stepSize;
+                    else position[coordinates[j%2]] -= stepSize;
+                } else {
+                    if (j<coordinates.length) position[coordinates[j%2]] -= stepSize;
+                    else position[coordinates[j%2]] += stepSize;
+                }
                 newPositions.push(position);
-                _grad(indices, newPositions, outputPos, outputNeg, coordinates[j%2], j<coordinates.length, numSolved);
             }
+            _grad(indices, newPositions, outputPos, outputNeg, coordinates[j%2], j<coordinates.length, numSolved);
         }
     }
 
@@ -101,7 +105,6 @@ function initGradientSolver(globals){
             nodes[indices[i]].position = positions[i];
         }
         solver.resetK_matrix();
-        //solver.resetF_matrix();
         solver.solve(nodes, edges, globals.xyOnly, function(internalForces, freeEdges){
             var sumFL = 0;
             for (var i=0;i<freeEdges.length;i++){

@@ -362,7 +362,7 @@ $(function() {
                 globals.linked.move(highlightedObj, intersection);
                 globals.solver.resetK_matrix();
                 globals.solver.solve();
-                globals.gradient.calcGrad([highlightedObj], intersection);
+                globals.gradient.calcGrad(highlightedObj, globals.linked.getLinked(highlightedObj), intersection);
                 globals.controls.viewModeCallback();
             } else if (highlightedObj.type == "beam"){
             } else if (highlightedObj.type == "force"){

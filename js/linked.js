@@ -61,6 +61,13 @@ function initLinked(globals){
         if (index<0) return;
         linked.splice(index, 1);
         display();
+        for (var i=0;i<globals.nodes.length;i++){
+            globals.nodes[i].setSelected(false);
+        }
+        for (var i=0;i<selectedNodes.length;i++){
+            selectedNodes[i].setSelected(true);
+        }
+        globals.threeView.render();
     }
 
     function deselectAll(){
@@ -121,13 +128,24 @@ function initLinked(globals){
         }
     }
 
+    function getLinked(node){
+        for (var i=0;i<linked.length;i++){
+            var index = linked[i].indexOf(node);
+            if (index >= 0){
+                return linked[i];
+            }
+        }
+        return [node];
+    }
+
     return {
         deleteNode: deleteNode,
         deselectAll: deselectAll,
         selectNode: selectNode,
         link: link,
         linked: linked,
-        move: move
+        move: move,
+        getLinked: getLinked
     }
 
 }
