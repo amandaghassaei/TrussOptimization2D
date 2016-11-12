@@ -33,30 +33,30 @@ Beam.prototype.unhighlight = function(){
 };
 
 Beam.prototype.setDefaultColor = function(){
-    this.object3D.material.color.setHex(0x444444);
+    this.material.color.setHex(0x444444);
 };
 
 Beam.prototype.setColor = function(hex){
-    this.object3D.material.color.setHex(hex);
+    this.material.color.setHex(hex);
 };
 
 Beam.prototype.setHSLColor = function(val, max, min){
     if (val === null){
-        this.object3D.material.color.setHex(0x000000);
+        this.material.color.setHex(0x000000);
         return;
     }
     var scaledVal = (1-(val - min)/(max - min)) * 0.7;
     var color = new THREE.Color();
     color.setHSL(scaledVal, 1, 0.5);
-    this.object3D.material.color.set(color);
+    this.material.color.set(color);
 };
 
 Beam.prototype.redBlueColor = function(val, max){
     var scaledVal = Math.pow(val/max, 1/2);
     if (this.isInCompression()){
-        this.object3D.material.color.setRGB(scaledVal, 0, 0);
+        this.material.color.setRGB(scaledVal, 0, 0);
     } else {
-        this.object3D.material.color.setRGB(0, 0, scaledVal);
+        this.material.color.setRGB(0, 0, scaledVal);
     }
 };
 

@@ -45,6 +45,7 @@ function initGradientSolver(globals){
             edges.push(new Beam(edgeNodes, globals, true));
         }
         solver.resetF_matrix();
+        $("#resetOptimization").hide();
     }
 
     function syncFixed(){
@@ -154,7 +155,18 @@ function initGradientSolver(globals){
         arrow.visible = false;
     }
 
+    var originalPositions = [];
+    function saveOriginalPositions(){
+        originalPositions = [];
+        for (var i=0;i<globals.nodes.length;i++){
+            originalPositions.push(globals.nodes[i].getPosition());
+        }
+    }
+
     function startOptimization(){
+
+        saveOriginalPositions();
+
         var linkedNum = 0;
         var lastFL = globals.sumFL;
         $("#optimize").blur();
@@ -187,9 +199,16 @@ function initGradientSolver(globals){
         globals.threeView.stopAnimation();
         $("#pauseOptimization").hide();
         $("#optimize").show();
+        $("#resetOptimization").show();
     }
     function resetOptimization(){
-
+        for (var i=0;i<originalPositions.length;i++) {
+            globals.nodes[i].moveManually(originalPositions[i]);
+        }
+        globals.solver.resetK_matrix();
+        globals.solver.solve();
+        globals.controls.viewModeCallback();
+        $("#resetOptimization").hide();
     }
 
     return {

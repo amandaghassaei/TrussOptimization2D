@@ -239,12 +239,17 @@ function initControls(globals){
     setLink("#optimize", function(){
         $("#pauseOptimization").show();
         $("#optimize").hide();
+        $("#resetOptimization").hide();
         globals.gradient.startOptimization();
     });
     setLink("#pauseOptimization", function(){
         $("#pauseOptimization").hide();
         $("#optimize").show();
+        $("#resetOptimization").show();
         globals.gradient.pauseOptimization();
+    });
+    setLink("#resetOptimization", function(){
+        globals.gradient.resetOptimization();
     });
 
 

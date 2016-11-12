@@ -325,6 +325,11 @@ span.modal-close{
     display: none;
 }
 
+#resetOptimization{
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
 #gradOptions{
     display: inline-block;
     float:right;
