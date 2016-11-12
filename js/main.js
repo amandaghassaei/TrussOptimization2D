@@ -134,6 +134,8 @@ $(function() {
             shift = false;
         } else if (e.keyCode == 13){
             globals.linked.link();
+        } else if (e.keyCode == 27){
+            globals.linked.deselectAll();
         }
         //console.log(e.keyCode);
     });

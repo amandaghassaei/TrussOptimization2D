@@ -143,7 +143,6 @@ function initControls(globals){
                 data.push(force);
             }
             var max = _.max(data);
-            var min = _.min(data);
             for (var i=0;i<globals.edges.length;i++){
                 var edge = globals.edges[i];
                 edge.redBlueColor(data[i], max);
@@ -152,8 +151,9 @@ function initControls(globals){
             globals.threeView.render();
             return;
         }
-        var max = _.max(data);
-        var min = _.min(data);
+        var noNulls = _.without(data, null);
+        var max = _.max(noNulls);
+        var min = _.min(noNulls);
         for (var i=0;i<globals.edges.length;i++){
             var edge = globals.edges[i];
             edge.setHSLColor(data[i], max, min);
@@ -227,6 +227,10 @@ function initControls(globals){
             callback(newVal);
         });
     }
+
+    setInput("#gradStepSize", globals.gradStepSize, function(val){
+        globals.gradStepSize = val;
+    }, 0.0001);
 
 
     function setLink(id, callback){

@@ -142,6 +142,13 @@ Node.prototype.getPosition = function(){
     return this.object3D.position.clone();
 };
 
+Node.prototype.setSelected = function(state){
+    if (state){
+        this.object3D.scale.set(2,2,2);
+    } else {
+        this.object3D.scale.set(1,1,1);
+    }
+};
 
 
 

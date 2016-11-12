@@ -33,21 +33,26 @@ function initLinked(globals){
         for (var i=0;i<linked.length;i++){
             var group = linked[i];
             string += '<label class="radio"> <input name="visibleLinked" value="' + i + '" data-toggle="radio" class="custom-radio" type="radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>';
-            string += "[ ";
             for (var j=0;j<group.length;j++){
                 string += "Node " + globals.nodes.indexOf(group[j]);
                 if (j<group.length-1) string += ", ";
             }
-            string += ' ] <a href="#" data-index="' + i + '" class="deleteLinked"><span class="fui-cross"></span></a></label>';
+            string += ' <a href="#" data-index="' + i + '" class="deleteLinked"><span class="fui-cross"></span></a></label>';
         }
         $linkedNodes.html(string);
         $(".deleteLinked").click(function(e){
             e.preventDefault();
             deleteLink($(e.target).parent().data("index"));
         });
-        globals.controls.setRadio("visibleLinked", linked.length-1, function(val){
-            console.log(val);
-        });
+        var selectionCallback = function(val){
+            deselectAll();
+            for (var i=0;i<linked[val].length;i++){
+                linked[val][i].setSelected(true);
+            }
+            globals.threeView.render();
+        };
+        globals.controls.setRadio("visibleLinked", linked.length-1, selectionCallback);
+        selectionCallback(linked.length-1);
         $button.show();
     }
 
@@ -59,7 +64,11 @@ function initLinked(globals){
     }
 
     function deselectAll(){
+        for (var i=0;i<globals.nodes.length;i++){
+            globals.nodes[i].setSelected(false);
+        }
         selectedNodes = [];
+        globals.threeView.render();
     }
 
     function selectNode(node){
@@ -69,6 +78,13 @@ function initLinked(globals){
         } else {
             selectedNodes.push(node);
         }
+        for (var i=0;i<globals.nodes.length;i++){
+            globals.nodes[i].setSelected(false);
+        }
+        for (var i=0;i<selectedNodes.length;i++){
+            selectedNodes[i].setSelected(true);
+        }
+        globals.threeView.render();
     }
 
     function link(){

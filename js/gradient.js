@@ -118,7 +118,7 @@ function initGradientSolver(globals){
             if (globals.xyOnly) numToSolve = 4;
             if (numSolved[0] == numToSolve){
                 var output = outputPos.clone().sub(outputNeg);
-                var length = output.length()*100;
+                var length = output.length()*100/globals.gradStepSize;
                 var dir = output.normalize();
                 arrow.setDirection(dir);
                 arrow.visible = !(length < 0.001);
