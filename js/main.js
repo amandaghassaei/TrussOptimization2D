@@ -99,17 +99,15 @@ $(function() {
     dummyFixed.getObject3D().material.opacity = 0.5;
     dummyFixed.hide();
 
-    var dummyForce = new Force(new THREE.Vector3(), globals);
+    var dummyForce = new Force(new THREE.Vector3(0,1,0), globals);
     globals.threeView.sceneRemove(dummyForce.getObject3D());
     globals.threeView.scene.add(dummyForce.getObject3D());
     dummyForce.type = "dummy";
-    dummyForce.getObject3D().line.material = dummyForce.getObject3D().line.material.clone();
-    dummyForce.getObject3D().cone.material = dummyForce.getObject3D().cone.material.clone();
-    dummyForce.getObject3D().line.material.transparent = true;
-    dummyForce.getObject3D().line.material.opacity = 0.5;
-    dummyForce.getObject3D().cone.material.transparent = true;
-    dummyForce.getObject3D().cone.material.side = THREE.DoubleSide;
-    dummyForce.getObject3D().cone.material.opacity = 0.5;
+    dummyForce.arrow.axis.material.transparent = true;
+    dummyForce.arrow.axis.material.opacity = 0.5;
+    dummyForce.arrow.cone.material.transparent = true;
+    dummyForce.arrow.cone.material.side = THREE.DoubleSide;
+    dummyForce.arrow.cone.material.opacity = 0.5;
     dummyForce.hide();
 
 
@@ -356,8 +354,10 @@ $(function() {
                     globals.threeView.enableControls(false);
                 }
                 var intersection = getIntersectionWithObjectPlane(highlightedObj.getPosition());
-                globals.controls.showMoreInfo("Position: " +
-                            "x:" + intersection.x.toFixed(2) + " y:" + intersection.y.toFixed(2) + " z:" + intersection.z.toFixed(2) + " m", e);
+                var data = "Position: " +
+                            "x:" + intersection.x.toFixed(2) + " y:" + intersection.y.toFixed(2);
+                if (!globals.xyOnly) data += " z:" + intersection.z.toFixed(2);
+                globals.controls.showMoreInfo(data  + " m", e);
                 highlightedObj.moveManually(intersection);
                 globals.linked.move(highlightedObj, intersection);
                 globals.solver.resetK_matrix();

@@ -6,10 +6,10 @@
 function Force(force, globals){
     this.type = "force";
     this.force = force.clone();
-    this.object3D = new THREE.ArrowHelper(this.getDirection(), new THREE.Vector3(), this.getLength(), 0xcccccc);
-    this.object3D.line.material.linewidth = 4;
+    this.arrow = new Arrow(new THREE.Vector3(), this.getDirection(), this.getLength(), 0.15, 0xcccccc);
+    this.object3D = this.arrow.getObject3D();
     this.update();
-    this.object3D.cone._myForce = this;
+    this.object3D.children[0]._myForce = this;
     globals.threeView.sceneAdd(this.object3D);
 }
 
@@ -31,7 +31,7 @@ Force.prototype.setMagnitude = function(mag){
 };
 
 Force.prototype.setOrigin = function(origin){
-    this.object3D.position.set(origin.x, origin.y, origin.z);
+    this.arrow.setOrigin(origin);
 };
 
 Force.prototype.getLength = function(){
@@ -53,21 +53,18 @@ Force.prototype.getForce = function(){
 
 Force.prototype.highlight = function(){
     if (globals.deleteMode){
-        this.object3D.line.material.color.setHex(0xff0000);
-        this.object3D.cone.material.color.setHex(0xff0000);
+        this.arrow.material.color.setHex(0xff0000);
     } else {
-        this.object3D.line.material.color.setHex(0x000000);
-        this.object3D.cone.material.color.setHex(0x000000);
+        this.arrow.material.color.setHex(0x000000);
     }
 };
 
 Force.prototype.unhighlight = function(){
-    this.object3D.line.material.color.setHex(0xaaaaaa);
-    this.object3D.cone.material.color.setHex(0xaaaaaa);
+    this.arrow.material.color.setHex(0xcccccc);
 };
 
 Force.prototype.getPosition = function(){
-    return this.object3D.position.clone().add(this.object3D.cone.position);
+    return this.object3D.position.clone().add(this.arrow.cone.position);
 };
 
 Force.prototype.hide = function(){
@@ -79,16 +76,18 @@ Force.prototype.show = function(){
 };
 
 Force.prototype.update = function(){
-    this.object3D.setDirection(this.getDirection());
+    this.arrow.setDirection(this.getDirection());
     var length = this.getLength();
     if (length<1.1) length = 1.1;//prevent arrow from having zero length
-    this.object3D.setLength(length, 1, 1);
+    this.arrow.setLength(length, 1, 1);
 };
 
 Force.prototype.destroy = function(){
     globals.threeView.sceneRemove(this.object3D);
-    this.object3D.cone._myForce = null;
+    this.object3D.children[0]._myForce = null;
     this.object3D = null;
+    this.arrow.destroy();
+    this.arrow = null;
     this.node.removeExternalForce(this);
     this.node = null;
 };

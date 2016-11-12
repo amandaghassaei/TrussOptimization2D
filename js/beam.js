@@ -132,6 +132,7 @@ Beam.prototype.render = function(){
     this.object3D.scale.y = this.getLength();
     var beamAxis = this.nodes[0].getPosition().sub(this.nodes[1].getPosition());
     var axis = (new THREE.Vector3(0,1,0)).cross(beamAxis).normalize();
+    if (axis.length() == 0) axis = new THREE.Vector3(1,0,0);
     var angle = Math.acos(new THREE.Vector3(0,1,0).dot(beamAxis.normalize()));
     var quaternion = (new THREE.Quaternion()).setFromAxisAngle(axis, angle);
     var position = (this.nodes[0].getPosition().add(this.nodes[1].getPosition())).multiplyScalar(0.5);

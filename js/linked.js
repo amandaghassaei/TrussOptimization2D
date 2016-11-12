@@ -49,8 +49,7 @@ function initLinked(globals){
         });
         var selectionCallback = function(val){
             deselectAll();
-            if (val < -1){
-            } else if (val == -1){
+            if (val == -1){
                 for (var j=0;j<linked.length;j++) {
                     for (var i = 0; i < linked[j].length; i++) {
                         linked[j][i].setSelected(true);
@@ -72,7 +71,6 @@ function initLinked(globals){
         if (isNaN(index)) return;
         if (index<0) return;
         linked.splice(index, 1);
-        display();
         for (var i=0;i<globals.nodes.length;i++){
             globals.nodes[i].setSelected(false);
         }
@@ -80,6 +78,7 @@ function initLinked(globals){
             selectedNodes[i].setSelected(true);
         }
         globals.threeView.render();
+        display();
     }
 
     function deselectAll(){
