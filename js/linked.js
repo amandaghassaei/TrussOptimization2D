@@ -39,6 +39,9 @@ function initLinked(globals){
             }
             string += ' <a href="#" data-index="' + i + '" class="deleteLinked"><span class="fui-cross"></span></a></label>';
         }
+        string += '<label class="radio"> <input name="visibleLinked" value="-1" data-toggle="radio" class="custom-radio" type="radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>';
+        string += "Show all Optimization Nodes";
+        string += '</label>';
         $linkedNodes.html(string);
         $(".deleteLinked").click(function(e){
             e.preventDefault();
@@ -46,13 +49,22 @@ function initLinked(globals){
         });
         var selectionCallback = function(val){
             deselectAll();
-            for (var i=0;i<linked[val].length;i++){
-                linked[val][i].setSelected(true);
+            if (val < -1){
+            } else if (val == -1){
+                for (var j=0;j<linked.length;j++) {
+                    for (var i = 0; i < linked[j].length; i++) {
+                        linked[j][i].setSelected(true);
+                    }
+                }
+            } else {
+                for (var i=0;i<linked[val].length;i++){
+                    linked[val][i].setSelected(true);
+                }
             }
             globals.threeView.render();
         };
-        globals.controls.setRadio("visibleLinked", linked.length-1, selectionCallback);
-        selectionCallback(linked.length-1);
+        globals.controls.setRadio("visibleLinked", -1, selectionCallback);
+        selectionCallback(-1);
         $options.show();
     }
 
@@ -85,11 +97,11 @@ function initLinked(globals){
         } else {
             selectedNodes.push(node);
         }
-        for (var i=0;i<globals.nodes.length;i++){
-            globals.nodes[i].setSelected(false);
-        }
+        //for (var i=0;i<globals.nodes.length;i++){
+        //    globals.nodes[i].setSelected(false);
+        //}
         for (var i=0;i<selectedNodes.length;i++){
-            selectedNodes[i].setSelected(true);
+            selectedNodes[i].setSelected(true, true);
         }
         globals.threeView.render();
     }
