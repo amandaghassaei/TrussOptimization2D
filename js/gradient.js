@@ -172,27 +172,24 @@ function initGradientSolver(globals){
         $("#optimize").blur();
         hide();
         globals.threeView.startAnimation(function(){
-            if (linkedNum >= globals.linked.linked.length) {
-                linkedNum = 0;
-                if (lastFL-globals.sumFL < globals.gradTolerance){
-                    pauseOptimization();
-                    return;
-                }
-                lastFL = globals.sumFL;
-            }
-            var currentLinked = globals.linked.linked[linkedNum];
-            calcGrad(currentLinked, function(directions){
-                for (var i=0;i<currentLinked.length;i++){
-                    currentLinked[i].moveManually(currentLinked[i].getPosition().add(directions[i]));
-                }
-                globals.solver.resetK_matrix();
-                globals.solver.solve();
-                globals.controls.viewModeCallback();
-                linkedNum++;
-            });
-            //for each linked
-            //calc gradient and figure out next move
 
+            lastFL = globals.sumFL;
+
+            for (var j=0;j<globals.linked.linked.length;j++){
+                var currentLinked = globals.linked.linked[j];
+                calcGrad(currentLinked, function(directions){
+                    for (var i=0;i<currentLinked.length;i++){
+                        currentLinked[i].moveManually(currentLinked[i].getPosition().add(directions[i]));
+                    }
+                    globals.solver.resetK_matrix();
+                    globals.solver.solve();
+                });
+            }
+
+            globals.controls.viewModeCallback();
+            if (lastFL-globals.sumFL < globals.gradTolerance){
+                pauseOptimization();
+            }
         });
     }
     function pauseOptimization(){
