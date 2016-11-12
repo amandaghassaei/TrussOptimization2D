@@ -297,6 +297,7 @@ $(function() {
         }
 
         if (!isDragging) {
+            globals.gradient.hide();
             var objsToIntersect = globals.threeView.getObjToIntersect();
             _highlightedObj = checkForIntersections(e, objsToIntersect);
             setHighlightedObj(_highlightedObj);

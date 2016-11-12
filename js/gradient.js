@@ -12,6 +12,7 @@ function initGradientSolver(globals){
     var arrow = new THREE.ArrowHelper(new THREE.Vector3(1,0,0), new THREE.Vector3(), 1, 0xff00ff);
     arrow.line.material.linewidth = 4;
     globals.threeView.sceneAdd(arrow);
+    hide();
 
     var nodes = [];
     var edges = [];
@@ -136,10 +137,15 @@ function initGradientSolver(globals){
         solver.resetF_matrix();
     }
 
+    function hide(){
+        arrow.visible = false;
+    }
+
     return {
         syncNodes: syncNodes,
         syncFixed: syncFixed,
         calcGrad: calcGrad,
-        resetF_matrix: resetF_matrix
+        resetF_matrix: resetF_matrix,
+        hide: hide
     }
 }
