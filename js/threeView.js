@@ -10,6 +10,8 @@ function initThreeView(globals) {
     var renderer = new THREE.WebGLRenderer({antialias: true});
     var controls;
 
+    var animating = false;
+
     init();
 
     function init() {
@@ -50,16 +52,21 @@ function initThreeView(globals) {
     }
 
     function render() {
-        renderer.render(scene, camera);
+        if (!animating) _render();
     }
 
     function startAnimation(callback){
+        animating = true;
         console.log("starting animation");
         _loop(function(){
-            if (!globals.stlEditing) callback();//only run dynamic sim if not editing stl
+            callback();
             _render();
         });
+    }
 
+    function stopAnimation(){
+        console.log("stop animation");
+        animating = false;
     }
 
     function _render(){
@@ -69,7 +76,7 @@ function initThreeView(globals) {
     function _loop(callback){
         callback();
         requestAnimationFrame(function(){
-            _loop(callback);
+            if (animating) _loop(callback);
         });
     }
 
@@ -125,7 +132,8 @@ function initThreeView(globals) {
         sceneClear: sceneClear,
         render: render,
         onWindowResize: onWindowResize,
-        //startAnimation: startAnimation,
+        startAnimation: startAnimation,
+        stopAnimation: stopAnimation,
         enableControls: enableControls,
         enableRotate: enableRotate,
         squareWithXY: squareWithXY,

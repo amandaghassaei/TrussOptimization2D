@@ -232,6 +232,17 @@ function initControls(globals){
         globals.gradStepSize = val;
     }, 0.0001);
 
+    setLink("#optimize", function(){
+        $("#pauseOptimization").show();
+        $("#optimize").hide();
+        globals.gradient.startOptimization();
+    });
+    setLink("#pauseOptimization", function(){
+        $("#pauseOptimization").hide();
+        $("#optimize").show();
+        globals.gradient.pauseOptimization();
+    });
+
 
     function setLink(id, callback){
         $(id).click(function(e){

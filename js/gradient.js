@@ -62,10 +62,11 @@ function initGradientSolver(globals){
 
     var coordinates = ["x", "y", "z"];
     if (globals.xyOnly) coordinates = ["x", "y"];
-    function calcGrad(node, linked, position){
+    function calcGrad(linked, callback, node, _position){
         syncPosition();
 
-        arrow.position.set(position.x, position.y, position.z);
+        if (_position) arrow.position.set(_position.x, _position.y, _position.z);
+        if (node === undefined) node = linked[0];
 
         var stepSize = globals.gradStepSize;
 
@@ -96,11 +97,11 @@ function initGradientSolver(globals){
                 }
                 newPositions.push(position);
             }
-            _grad(indices, newPositions, outputPos, outputNeg, coordinates[j%2], j<coordinates.length, numSolved);
+            _grad(indices, newPositions, outputPos, outputNeg, coordinates[j%2], j<coordinates.length, numSolved, callback);
         }
     }
 
-    function _grad(indices, positions, outputPos, outputNeg, axis, sign, numSolved){
+    function _grad(indices, positions, outputPos, outputNeg, axis, sign, numSolved, callback){
         for (var i=0;i<indices.length;i++){
             nodes[indices[i]].position = positions[i];
         }
@@ -123,13 +124,21 @@ function initGradientSolver(globals){
                 var output = outputPos.clone().sub(outputNeg);
                 var length = output.length()*100/globals.gradStepSize;
                 var dir = output.normalize();
+
+                if (callback){
+                    var directions = [dir.clone().multiplyScalar(globals.gradStepSize)];
+                    var reflection = directions[0].clone();
+                    reflection.x *= -1;
+                    directions.push(reflection);
+                    callback(directions);
+                }
+
                 arrow.setDirection(dir);
                 arrow.visible = !(length < 0.001);
                 if (length<1.1) {//prevent arrow from having zero length
                     length = 1.1;
                 }
                 arrow.setLength(length, 1, 1);
-
             }
         });
     }
@@ -144,11 +153,40 @@ function initGradientSolver(globals){
         arrow.visible = false;
     }
 
+    function startOptimization(){
+        var linkedNum = 0;
+        globals.threeView.startAnimation(function(){
+            if (linkedNum >= globals.linked.linked.length) linkedNum = 0;
+            var currentLinked = globals.linked.linked[linkedNum];
+            calcGrad(currentLinked, function(directions){
+                for (var i=0;i<currentLinked.length;i++){
+                    currentLinked[i].moveManually(currentLinked[i].getPosition().add(directions[i]));
+                }
+                globals.solver.resetK_matrix();
+                globals.solver.solve();
+                globals.controls.viewModeCallback();
+                linkedNum++;
+            });
+            //for each linked
+            //calc gradient and figure out next move
+
+        });
+    }
+    function pauseOptimization(){
+        globals.threeView.stopAnimation();
+    }
+    function resetOptimization(){
+
+    }
+
     return {
         syncNodes: syncNodes,
         syncFixed: syncFixed,
         calcGrad: calcGrad,
         resetF_matrix: resetF_matrix,
-        hide: hide
+        hide: hide,
+        startOptimization: startOptimization,
+        pauseOptimization: pauseOptimization,
+        resetOptimization: resetOptimization
     }
 }
