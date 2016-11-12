@@ -16,6 +16,7 @@ function initGlobals(){
         xyOnly: true,
 
         gradStepSize: 0.1,
+        gradTolerance: 0.000001,
         sumFL: 0,
 
         lockForces: false,

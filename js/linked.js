@@ -23,10 +23,10 @@ function initLinked(globals){
 
     function display(){
         var $linkedNodes = $("#linkedNodes");
-        var $button = $("#optimize");
+        var $options = $("#gradOptions");
         if (linked.length == 0){
             $linkedNodes.html("<b>No Nodes Selected</b> (Shift+click to select a node or a group of nodes, Enter to add them to list.)");
-            $button.hide();
+            $options.hide();
             return;
         }
         var string = "";
@@ -53,7 +53,7 @@ function initLinked(globals){
         };
         globals.controls.setRadio("visibleLinked", linked.length-1, selectionCallback);
         selectionCallback(linked.length-1);
-        $button.show();
+        $options.show();
     }
 
     function deleteLink(index){

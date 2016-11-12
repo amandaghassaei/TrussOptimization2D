@@ -232,6 +232,10 @@ function initControls(globals){
         globals.gradStepSize = val;
     }, 0.0001);
 
+    setInput("#gradTolerance", globals.gradTolerance, function(val){
+        globals.gradTolerance = val;
+    }, 0);
+
     setLink("#optimize", function(){
         $("#pauseOptimization").show();
         $("#optimize").hide();

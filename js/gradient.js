@@ -122,17 +122,22 @@ function initGradientSolver(globals){
             if (globals.xyOnly) numToSolve = 4;
             if (numSolved[0] == numToSolve){
                 var output = outputPos.clone().sub(outputNeg);
-                var length = output.length()*100/globals.gradStepSize;
+                var length = output.length();
                 var dir = output.normalize();
 
                 if (callback){
-                    var directions = [dir.clone().multiplyScalar(globals.gradStepSize)];
-                    var reflection = directions[0].clone();
-                    reflection.x *= -1;
-                    directions.push(reflection);
-                    callback(directions);
+                    if (length<globals.gradTolerance){
+                        callback(null, true);
+                    } else {
+                        var directions = [dir.clone().multiplyScalar(globals.gradStepSize)];
+                        var reflection = directions[0].clone();
+                        reflection.x *= -1;
+                        directions.push(reflection);
+                        callback(directions);
+                    }
                 }
 
+                length *= 100/globals.gradStepSize;
                 arrow.setDirection(dir);
                 arrow.visible = !(length < 0.001);
                 if (length<1.1) {//prevent arrow from having zero length
@@ -155,16 +160,29 @@ function initGradientSolver(globals){
 
     function startOptimization(){
         var linkedNum = 0;
+        var numConverged = 0;
         globals.threeView.startAnimation(function(){
-            if (linkedNum >= globals.linked.linked.length) linkedNum = 0;
+            if (linkedNum >= globals.linked.linked.length) {
+                linkedNum = 0;
+                numConverged = 0;
+            }
             var currentLinked = globals.linked.linked[linkedNum];
-            calcGrad(currentLinked, function(directions){
-                for (var i=0;i<currentLinked.length;i++){
-                    currentLinked[i].moveManually(currentLinked[i].getPosition().add(directions[i]));
+            calcGrad(currentLinked, function(directions, converged){
+                if (converged){
+                    numConverged++;
+                    console.log(numConverged);
+                    if (numConverged == globals.linked.linked.length){
+                        pauseOptimization();
+                        return;
+                    }
+                } else {
+                    for (var i=0;i<currentLinked.length;i++){
+                        currentLinked[i].moveManually(currentLinked[i].getPosition().add(directions[i]));
+                    }
+                    globals.solver.resetK_matrix();
+                    globals.solver.solve();
+                    globals.controls.viewModeCallback();
                 }
-                globals.solver.resetK_matrix();
-                globals.solver.solve();
-                globals.controls.viewModeCallback();
                 linkedNum++;
             });
             //for each linked
@@ -174,6 +192,8 @@ function initGradientSolver(globals){
     }
     function pauseOptimization(){
         globals.threeView.stopAnimation();
+        $("#pauseOptimization").hide();
+        $("#optimize").show();
     }
     function resetOptimization(){
 

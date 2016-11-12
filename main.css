@@ -324,3 +324,12 @@ span.modal-close{
 #pauseOptimization{
     display: none;
 }
+
+#gradOptions{
+    display: inline-block;
+    float:right;
+}
+
+#gradOptions>a{
+    float:right;
+}
