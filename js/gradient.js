@@ -126,24 +126,20 @@ function initGradientSolver(globals){
                 var dir = output.normalize();
 
                 if (callback){
-                    if (length<globals.gradTolerance){
-                        callback(null, true);
-                    } else {
-                        var directions = [dir.clone().multiplyScalar(globals.gradStepSize)];
-                        var reflection = directions[0].clone();
-                        reflection.x *= -1;
-                        directions.push(reflection);
-                        callback(directions);
+                    var directions = [dir.clone().multiplyScalar(globals.gradStepSize)];
+                    var reflection = directions[0].clone();
+                    reflection.x *= -1;
+                    directions.push(reflection);
+                    callback(directions);
+                } else {
+                    length *= 100/globals.gradStepSize;
+                    arrow.setDirection(dir);
+                    arrow.visible = !(length < 0.001);
+                    if (length<1.1) {//prevent arrow from having zero length
+                        length = 1.1;
                     }
+                    arrow.setLength(length, 1, 1);
                 }
-
-                length *= 100/globals.gradStepSize;
-                arrow.setDirection(dir);
-                arrow.visible = !(length < 0.001);
-                if (length<1.1) {//prevent arrow from having zero length
-                    length = 1.1;
-                }
-                arrow.setLength(length, 1, 1);
             }
         });
     }
@@ -160,29 +156,26 @@ function initGradientSolver(globals){
 
     function startOptimization(){
         var linkedNum = 0;
-        var numConverged = 0;
+        var lastFL = globals.sumFL;
+        $("#optimize").blur();
+        hide();
         globals.threeView.startAnimation(function(){
             if (linkedNum >= globals.linked.linked.length) {
                 linkedNum = 0;
-                numConverged = 0;
+                if (lastFL-globals.sumFL < globals.gradTolerance){
+                    pauseOptimization();
+                    return;
+                }
+                lastFL = globals.sumFL;
             }
             var currentLinked = globals.linked.linked[linkedNum];
-            calcGrad(currentLinked, function(directions, converged){
-                if (converged){
-                    numConverged++;
-                    console.log(numConverged);
-                    if (numConverged == globals.linked.linked.length){
-                        pauseOptimization();
-                        return;
-                    }
-                } else {
-                    for (var i=0;i<currentLinked.length;i++){
-                        currentLinked[i].moveManually(currentLinked[i].getPosition().add(directions[i]));
-                    }
-                    globals.solver.resetK_matrix();
-                    globals.solver.solve();
-                    globals.controls.viewModeCallback();
+            calcGrad(currentLinked, function(directions){
+                for (var i=0;i<currentLinked.length;i++){
+                    currentLinked[i].moveManually(currentLinked[i].getPosition().add(directions[i]));
                 }
+                globals.solver.resetK_matrix();
+                globals.solver.solve();
+                globals.controls.viewModeCallback();
                 linkedNum++;
             });
             //for each linked
