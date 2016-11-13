@@ -229,6 +229,7 @@ function initLinked(globals){
         selectNode: selectNode,
         link: link,
         linked: linked,
+        locked: locked,
         move: move,
         getLinked: getLinked,
         setSymmetryAngle: setSymmetryAngle,

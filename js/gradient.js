@@ -172,7 +172,6 @@ function initGradientSolver(globals){
         globals.solver.resetK_matrix();
         globals.solver.solve();
 
-        var linkedNum = 0;
         var lastFL = globals.sumFL;
         $("#optimize").blur();
         hide();
@@ -181,9 +180,14 @@ function initGradientSolver(globals){
             lastFL = globals.sumFL;
 
             for (var j=0;j<globals.linked.linked.length;j++){
+                if (globals.linked.locked[j][0] && globals.linked.locked[j][1]){
+                    continue;
+                }
                 var currentLinked = globals.linked.linked[j];
                 calcGrad(currentLinked, function(directions){
                     for (var i=0;i<currentLinked.length;i++){
+                        if (globals.linked.locked[j][0]) directions[i].x = 0;
+                        if (globals.linked.locked[j][1]) directions[i].y = 0;
                         currentLinked[i].moveManually(currentLinked[i].getPosition().add(directions[i]));
                     }
                     globals.solver.resetK_matrix();
