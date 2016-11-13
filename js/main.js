@@ -370,8 +370,8 @@ $(function() {
                 }
                 var intersection = getIntersectionWithObjectPlane(highlightedObj.getPosition());
                 var data = "Position: " +
-                            "x:" + intersection.x.toFixed(2) + " y:" + intersection.y.toFixed(2);
-                if (!globals.xyOnly) data += " z:" + intersection.z.toFixed(2);
+                            "&nbsp;&nbsp;  x : " + intersection.x.toFixed(2) + "&nbsp;  y : " + intersection.y.toFixed(2);
+                if (!globals.xyOnly) data += "&nbsp;  z : " + intersection.z.toFixed(2);
                 globals.controls.showMoreInfo(data  + " m", e);
                 highlightedObj.moveManually(intersection);
                 globals.linked.move(highlightedObj, intersection);
