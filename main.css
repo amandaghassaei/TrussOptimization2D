@@ -338,6 +338,9 @@ span.modal-close{
 .deleteLinked{
     float: right;
     color:darkred;
+    margin-top: 3px;
+    /*margin-left: 10px;*/
+    height: 21px;
 }
 .deleteLinked:hover{
     color:darkred;
@@ -362,4 +365,19 @@ span.modal-close{
 
 #gradOptions>a{
     float:right;
+}
+
+.optLocks>.checkbox{
+    display: inline-block;
+    margin-right: 8px;
+}
+.optLocks{
+    display: inline-block;
+    float:right;
+}
+.optVariable>.radio{
+    display: inline-block;
+}
+.optVariable .radio, .optVariable .checkbox{
+    padding-left: 27px;
 }

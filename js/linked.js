@@ -6,6 +6,7 @@
 function initLinked(globals){
 
     var linked = [];
+    var locked = [];
     var selectedNodes = [];
 
     var lineGeometry = new THREE.Geometry();
@@ -35,8 +36,14 @@ function initLinked(globals){
             if (index > -1){
                 linked[i].splice(index, 1);
             }
-            display();
         }
+        for (var i = linked.length-1; i >= 0; i--) {
+            if (linked[i].length == 0) {
+                linked.splice(i, 1);
+                locked.splice(i, 1);
+            }
+        }
+        display();
     }
 
     function display(){
@@ -54,17 +61,39 @@ function initLinked(globals){
         for (var i=0;i<linked.length;i++){
             var group = linked[i];
             if (group.length == 2) showSymmetry = true;
+            string += '<div class="optVariable">';
             string += '<label class="radio"> <input name="visibleLinked" value="' + i + '" data-toggle="radio" class="custom-radio" type="radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>';
+            string += "Node";
+            if (group.length>1) string += "s";
+            string += " ";
             for (var j=0;j<group.length;j++){
-                string += "Node " + globals.nodes.indexOf(group[j]);
+                string += globals.nodes.indexOf(group[j]);
                 if (j<group.length-1) string += ", ";
             }
-            string += ' <a href="#" data-index="' + i + '" class="deleteLinked"><span class="fui-cross"></span></a></label>';
+            string += '</label>';
+            string += ' <a href="#" data-index="' + i + '" class="deleteLinked"><span class="fui-cross"></span></a>';
+            string += '<div class="optLocks"><label class="checkbox" for="lock' + i + '0">' +
+                '<input id="lock' + i + '0" data-toggle="checkbox" class="custom-checkbox"';
+            if (locked[i][0]) string += ' checked="checked"';
+            string += ' type="checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>' +
+                'Lock X </label>';
+            string += '<label class="checkbox" for="lock' + i + '1">' +
+                '<input id="lock' + i + '1" data-toggle="checkbox" class="custom-checkbox"';
+            if (locked[i][1]) string += ' checked="checked"';
+            string += ' type="checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>' +
+                'Lock Y </label></div>';
+            string += '</div>';
         }
         string += '<label class="radio"> <input name="visibleLinked" value="-1" data-toggle="radio" class="custom-radio" type="radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>';
         string += "Show all Optimization Nodes";
         string += '</label>';
         $linkedNodes.html(string);
+        $(".optLocks .custom-checkbox").click(function(e){
+            var id = $(e.target).attr('id');
+            var axis = id.charAt(id.length - 1);
+            var index = id.charAt(id.length - 2);
+            locked[index][axis] = !locked[index][axis];
+        });
         $(".deleteLinked").click(function(e){
             e.preventDefault();
             deleteLink($(e.target).parent().data("index"));
@@ -98,6 +127,7 @@ function initLinked(globals){
         if (isNaN(index)) return;
         if (index<0) return;
         linked.splice(index, 1);
+        locked.splice(index, 1);
         for (var i=0;i<globals.nodes.length;i++){
             globals.nodes[i].setSelected(false);
         }
@@ -149,9 +179,13 @@ function initLinked(globals){
             }
         }
         for (var i = linked.length-1; i >= 0; i--) {
-            if (linked[i].length == 0) linked.splice(i, 1);
+            if (linked[i].length == 0) {
+                linked.splice(i, 1);
+                locked.splice(i, 1);
+            }
         }
         linked.push(selectedNodes);
+        locked.push([false, false]);
         deselectAll();
         display();
     }
