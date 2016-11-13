@@ -19,6 +19,9 @@ function initGlobals(){
         gradTolerance: 1,
         sumFL: 0,
 
+        symmetryAngle: 90,
+        symmetryPoint: new THREE.Vector3(0,0,0),
+
         lockForces: false,
         lockTopology: false,
         lockNodePositions: false,

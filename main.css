@@ -332,6 +332,7 @@ span.modal-close{
 #linkedContainer{
     width: 300px;
     float: right;
+    margin-bottom:30px;
 }
 
 .deleteLinked{

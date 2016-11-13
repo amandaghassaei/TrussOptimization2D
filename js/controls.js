@@ -347,6 +347,12 @@ function initControls(globals){
         globals.gradient.resetOptimization();
     });
 
+    setInput("#symmetryAngle", globals.symmetryAngle, function(val){
+        globals.symmetryAngle = val;
+        globals.linked.setSymmetryAngle(val);
+        globals.threeView.render();
+    }, 0, 360);
+
 
     function setLink(id, callback){
         $(id).click(function(e){

@@ -87,22 +87,19 @@ function initGradientSolver(globals){
         for (var j=0;j<coordinates.length*2;j++) {
             var newPositions = [];
             for (var i = 0; i < linked.length; i++) {
-                var _node = linked[i];
-                var position = _node.getPosition();
-                if (coordinates[j%2] == "y" || _node == node){
-                    if (j<coordinates.length) position[coordinates[j%2]] += stepSize;
-                    else position[coordinates[j%2]] -= stepSize;
-                } else {
-                    if (j<coordinates.length) position[coordinates[j%2]] -= stepSize;
-                    else position[coordinates[j%2]] += stepSize;
+                var position = node.getPosition();
+                if (j<coordinates.length) position[coordinates[j%2]] += stepSize;
+                else position[coordinates[j%2]] -= stepSize;
+                if (linked[i] != node){
+                    position = globals.linked.getSymmetricPosition(position);
                 }
                 newPositions.push(position);
             }
-            _grad(indices, newPositions, outputPos, outputNeg, coordinates[j%2], j<coordinates.length, numSolved, callback);
+            _grad(indices, newPositions, outputPos, outputNeg, coordinates[j%2], j<coordinates.length, numSolved, node, callback);
         }
     }
 
-    function _grad(indices, positions, outputPos, outputNeg, axis, sign, numSolved, callback){
+    function _grad(indices, positions, outputPos, outputNeg, axis, sign, numSolved, node, callback){
         for (var i=0;i<indices.length;i++){
             nodes[indices[i]].position = positions[i];
         }
@@ -114,10 +111,10 @@ function initGradientSolver(globals){
                 sumFL += Math.abs(internalForces[i])*edge.getLength();
             }
             var val = 1-sumFL/globals.sumFL;
-            //if (val > 0){
+            if (val > 0){
                 if (sign) outputPos[axis] = val;
                 else outputNeg[axis] = val;
-            //}
+            }
             numSolved[0]++;
             var numToSolve = 6;
             if (globals.xyOnly) numToSolve = 4;
@@ -128,9 +125,10 @@ function initGradientSolver(globals){
 
                 if (callback){
                     var directions = [dir.clone().multiplyScalar(globals.gradStepSize)];
-                    var reflection = directions[0].clone();
-                    reflection.x *= -1;
-                    directions.push(reflection);
+                    directions.push(directions[0].clone());
+                    //todo does this make sense?
+                    if (globals.nodes[indices[0]] == node) directions[1] = globals.linked.getSymmetricPosition(directions[1]);
+                    else directions[0] = globals.linked.getSymmetricPosition(directions[0]);
                     callback(directions);
                 } else {
                     length *= 100/globals.gradStepSize;
@@ -166,6 +164,13 @@ function initGradientSolver(globals){
     function startOptimization(){
 
         saveOriginalPositions();
+        for (var i=0;i<globals.linked.linked.length;i++){
+            if (globals.linked.linked[i].length == 2){
+                globals.linked.linked[i][1].moveManually(globals.linked.getSymmetricPosition(globals.linked.linked[i][0].getPosition()));
+            }
+        }
+        globals.solver.resetK_matrix();
+        globals.solver.solve();
 
         var linkedNum = 0;
         var lastFL = globals.sumFL;
