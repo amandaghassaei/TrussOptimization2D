@@ -195,36 +195,131 @@ function initControls(globals){
     viewModeChange(globals.viewMode);
 
     var $moreInfo = $("#moreInfo");
+    var $moreInfoX = $("#moreInfoX");
+    var $moreInfoY = $("#moreInfoY");
+    var $moreInfoZ = $("#moreInfoZ");
     var $moreInfoInput = $("#moreInfo>input");
+    var $moreInfoInputX = $("#moreInfoX>input");
+    var $moreInfoInputY = $("#moreInfoY>input");
+    var $moreInfoInputZ = $("#moreInfoZ>input");
     var $moreInfoSpan = $("#moreInfo>span");
     function showMoreInfo(string, e){
-        $moreInfo.children("span").html(string);
+        $moreInfoSpan.html(string);
         $moreInfo.css({top: e.clientY - 50, left: e.clientX + 10});
         $moreInfoSpan.show();
         $moreInfoInput.hide();
+        $moreInfoX.hide();
+        $moreInfoY.hide();
+        $moreInfoZ.hide();
         $moreInfo.show();
     }
     function hideMoreInfo(){
         $moreInfo.hide();
+        $moreInfoInput.hide();
         $moreInfoInput.unbind("change");
+        $moreInfoX.hide();
+        $moreInfoInputX.unbind("change");
+        $moreInfoY.hide();
+        $moreInfoInputY.unbind("change");
+        $moreInfoZ.hide();
+        $moreInfoInputZ.unbind("change");
     }
+    function setComponent(comp){
+        if (comp == "x"){
+            $moreInfoInputX.unbind("change");
+        } else if (comp == "y"){
+            $moreInfoInputY.unbind("change");
+        } else {
+            $moreInfoInputZ.unbind("change");
+        }
+    }
+
     function editMoreInfo(val, e, callback){
         var $moreInfo = $("#moreInfo");
         $moreInfo.css({top: e.clientY - 50, left: e.clientX + 10});
         $moreInfoInput.show();
+        $moreInfoX.hide();
+        $moreInfoY.hide();
+        $moreInfoZ.hide();
         $moreInfoSpan.hide();
         $moreInfo.show();
         $moreInfoInput.focus();
-        //$moreInfoInput.val("");
         $moreInfoInput.val(val);
+        $moreInfoInput.select();
         $moreInfoInput.change(function(){
-            $moreInfoInput.hide();
-            $moreInfoInput.unbind("change");
-            $moreInfo.hide();
             var newVal = $moreInfoInput.val();
             if (isNaN(parseFloat(newVal))) return;
             newVal = parseFloat(newVal);
             callback(newVal);
+            hideMoreInfo();
+        });
+    }
+    function editMoreInfoXYZ(val, e, callback){
+        var $moreInfo = $("#moreInfo");
+        $moreInfo.css({top: e.clientY - 50, left: e.clientX + 10});
+        $moreInfoX.show();
+        $moreInfoY.show();
+        $moreInfoZ.show();
+        $moreInfoSpan.html("tab to switch x/y/z<br/>");
+        $moreInfoSpan.show();
+        $moreInfo.show();
+        $moreInfoInputX.focus();
+        $moreInfoInputX.val(val.x);
+        $moreInfoInputY.val(val.y);
+        $moreInfoInputZ.val(val.z);
+        $moreInfoInputX.select();
+
+        $moreInfoInputX.change(function(){
+            setComponent("x");
+            var newVal = $moreInfoInputX.val();
+            if (isNaN(parseFloat(newVal))) return;
+            newVal = parseFloat(newVal);
+            callback(newVal, "x");
+        });
+        $moreInfoInputY.change(function(){
+            setComponent("y");
+            var newVal = $moreInfoInputY.val();
+            if (isNaN(parseFloat(newVal))) return;
+            newVal = parseFloat(newVal);
+            callback(newVal, "y");
+        });
+        $moreInfoInputZ.change(function(){
+            setComponent("z");
+            var newVal = $moreInfoInputZ.val();
+            if (isNaN(parseFloat(newVal))) return;
+            newVal = parseFloat(newVal);
+            callback(newVal, "z");
+            hideMoreInfo();
+        });
+    }
+    function editMoreInfoXY(val, e, callback){
+        var $moreInfo = $("#moreInfo");
+        $moreInfo.css({top: e.clientY - 50, left: e.clientX + 10});
+        $moreInfoX.show();
+        $moreInfoY.show();
+        $moreInfoZ.hide();
+        $moreInfoSpan.html("tab to switch x/y<br/>");
+        $moreInfoSpan.show();
+        $moreInfo.show();
+        $moreInfoInputX.focus();
+        $moreInfoInputX.val(val.x);
+        $moreInfoInputY.val(val.y);
+        $moreInfoInputX.select();
+
+        $moreInfoInputX.change(function(){
+            setComponent("x");
+            var newVal = $moreInfoInputX.val();
+            if (isNaN(parseFloat(newVal))) return;
+            newVal = parseFloat(newVal);
+            callback(newVal, "x");
+        });
+        $moreInfoInputY.change(function(){
+            setComponent("y");
+            var newVal = $moreInfoInputY.val();
+            if (isNaN(parseFloat(newVal))) return;
+            newVal = parseFloat(newVal);
+            callback(newVal, "y");
+            hideMoreInfo();
         });
     }
 
@@ -355,6 +450,7 @@ function initControls(globals){
 
     return {
         showMoreInfo: showMoreInfo,
+        editMoreInfoXY: editMoreInfoXY,
         hideMoreInfo: hideMoreInfo,
         editMoreInfo: editMoreInfo,
         viewModeCallback: viewModeCallback,

@@ -238,18 +238,33 @@ $(function() {
         case 3://right button
 
             if (highlightedObj && highlightedObj.type == "node"){
-                //globals.controls.editMoreInfo(highlightedObj.getLength().toFixed(2), e, function(val){
-                //    console.log(val);
-                //});
+                var position = highlightedObj.getPosition();
+                globals.controls.editMoreInfoXY({x:position.x.toFixed(2), y:position.y.toFixed(2)}, e, function(val, axis){
+                    val = parseFloat(val);
+                    if (isNaN(val)) return;
+                    var _position = highlightedObj.getPosition();
+                    _position[axis] = val;
+                    highlightedObj.moveManually(_position);
+                    globals.linked.move(highlightedObj, _position);
+                    globals.solver.resetK_matrix();
+                    globals.solver.solve();
+                    globals.threeView.render();
+                });
             } else if (highlightedObj && highlightedObj.type == "beam"){
                 //globals.controls.editMoreInfo(highlightedObj.getLength().toFixed(2), e, function(val){
                 //    console.log(val);
                 //});
             } else if (highlightedObj && highlightedObj.type == "force"){
-                globals.controls.editMoreInfo(highlightedObj.getLength().toFixed(2), e, function(val){
+                var force = highlightedObj.getForce();
+                globals.controls.editMoreInfoXY({x:force.x.toFixed(2), y:force.y.toFixed(2)}, e, function(val, axis){
                     val = parseFloat(val);
                     if (isNaN(val)) return;
-                    highlightedObj.setMagnitude(val);
+                    var _force = highlightedObj.getForce();
+                    _force[axis] = val;
+                    highlightedObj.setForce(_force);
+                    globals.solver.resetF_matrix();
+                    globals.gradient.resetF_matrix();
+                    globals.solver.solve();
                     globals.threeView.render();
                 });
             }

@@ -26,7 +26,7 @@ body{
     padding:0 10px;
     top: 0;
     left: 0;
-    height: 36px;
+    /*height: 36px;*/
     line-height: 36px;
     z-index: 3;
     display: none;
@@ -38,6 +38,30 @@ body{
     outline:none;
     border:none;
     display: none;
+    background: rgba(255,255,255,0);
+}
+
+#moreInfo>.input-group{
+    height: 36px;
+}
+#moreInfo>.input-group>input{
+    height: 36px;
+    line-height: 36px;
+    font-size: 18px;
+    width: 90px;
+    outline:none;
+    border:none;
+    border-radius: 0;
+    background: rgba(255,255,255,0);
+}
+#moreInfo>.input-group>span{
+    height: 36px;
+    line-height: 36px;
+    font-size: 18px;
+    background: rgba(255,255,255,0);
+    border: none;
+    padding: 0 10px;
+    color: #444;
 }
 
 #controls{
