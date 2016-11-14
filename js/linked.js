@@ -13,7 +13,7 @@ function initLinked(globals){
     lineGeometry.vertices.push(new THREE.Vector3(-1000,0,0));
     lineGeometry.vertices.push(new THREE.Vector3(1000,0,0));
     lineGeometry.computeLineDistances();
-    var symmetryLine = new THREE.Line(lineGeometry, new THREE.LineDashedMaterial({transparent: true, opacity: 0.5,  dashSize: 1, gapSize: 1, linewidth:2, color:0x8cbaed}));
+    var symmetryLine = new THREE.Line(lineGeometry, new THREE.LineDashedMaterial({transparent: true, opacity: 0.5,  dashSize: 10, gapSize: 10, linewidth:2, color:0x8cbaed}));
     globals.threeView.sceneAdd(symmetryLine);
     setSymmetryAngle(globals.symmetryAngle);
     setSymmetryPoint(globals.symmetryPoint);
@@ -234,7 +234,8 @@ function initLinked(globals){
         getLinked: getLinked,
         setSymmetryAngle: setSymmetryAngle,
         setSymmetryPoint: setSymmetryPoint,
-        getSymmetricPosition: getSymmetricPosition
+        getSymmetricPosition: getSymmetricPosition,
+        display: display
     }
 
 }

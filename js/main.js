@@ -75,6 +75,21 @@ $(function() {
     globals.nodes[13].setFixed(true);
     globals.gradient.syncNodes();
 
+    globals.linked.selectNode(globals.nodes[7]);
+    globals.linked.link();
+    globals.linked.selectNode(globals.nodes[5]);
+    globals.linked.selectNode(globals.nodes[9]);
+    globals.linked.link();
+    globals.linked.selectNode(globals.nodes[3]);
+    globals.linked.selectNode(globals.nodes[11]);
+    globals.linked.link();
+    globals.linked.selectNode(globals.nodes[1]);
+    globals.linked.selectNode(globals.nodes[13]);
+    globals.linked.link();
+    globals.linked.locked[0][0] = true;
+    globals.linked.locked[3][0] = true;
+    globals.linked.display();
+
     globals.solver.solve();
     globals.threeView.render();
 
