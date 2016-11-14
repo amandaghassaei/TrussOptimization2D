@@ -130,7 +130,7 @@ function initGradientSolver(globals){
                     else directions[0] = globals.linked.getSymmetricPosition(directions[0]);
                     callback(directions);
                 } else {
-                    length *= 10000/globals.gradStepSize;
+                    length *= 20000/globals.gradStepSize;
                     arrow.setDirection(dir);
                     arrow.visible = !(length < 0.01);
                     if (length<10.1) {//prevent arrow from having zero length
