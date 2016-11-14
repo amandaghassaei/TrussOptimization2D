@@ -6,7 +6,7 @@
 function Force(force, globals){
     this.type = "force";
     this.force = force.clone();
-    this.arrow = new Arrow(new THREE.Vector3(), this.getDirection(), this.getLength(), 0.15, 0xcccccc);
+    this.arrow = new Arrow(new THREE.Vector3(), this.getDirection(), this.getLength(), 2, 0xcccccc);
     this.object3D = this.arrow.getObject3D();
     this.update();
     this.object3D.children[0]._myForce = this;

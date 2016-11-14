@@ -3,7 +3,6 @@
  */
 
 
-var beamGeometry = new THREE.CylinderGeometry(0.1, 0.1, 1);
 
 function BeamBuilding(startNode, end, globals){
 

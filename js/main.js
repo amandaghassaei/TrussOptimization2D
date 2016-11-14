@@ -9,20 +9,20 @@ $(function() {
     globals = initGlobals();
 
     var nodePositions = [
-        [-30, 0, 0],
-        [-30, 10, 0],
-        [-20, 0, 0],
-        [-20, 10, 0],
-        [-10, 0, 0],
-        [-10, 10, 0],
+        [-360, 0, 0],
+        [-360, 72, 0],
+        [-240, 0, 0],
+        [-240, 72, 0],
+        [-120, 0, 0],
+        [-120, 72, 0],
         [0, 0, 0],
-        [0, 10, 0],
-        [10, 0, 0],
-        [10, 10, 0],
-        [20, 0, 0],
-        [20, 10, 0],
-        [30, 0, 0],
-        [30, 10, 0]
+        [0, 72, 0],
+        [120, 0, 0],
+        [120, 72, 0],
+        [240, 0, 0],
+        [240, 72, 0],
+        [360, 0, 0],
+        [360, 72, 0]
     ];
 
     var edgeConnections = [
@@ -63,12 +63,12 @@ $(function() {
         globals.addEdge(edge);
     });
 
-    globals.nodes[2].addExternalForce(new Force(new THREE.Vector3(0,-10,0), globals));
-    globals.nodes[4].addExternalForce(new Force(new THREE.Vector3(0,-10,0), globals));
-    globals.nodes[6].addExternalForce(new Force(new THREE.Vector3(0,-10,0), globals));
-    globals.nodes[8].addExternalForce(new Force(new THREE.Vector3(0,-10,0), globals));
-    globals.nodes[10].addExternalForce(new Force(new THREE.Vector3(0,-10,0), globals));
-    globals.nodes[12].addExternalForce(new Force(new THREE.Vector3(0,-10,0), globals));
+    globals.nodes[1].addExternalForce(new Force(new THREE.Vector3(0,-40,0), globals));
+    globals.nodes[3].addExternalForce(new Force(new THREE.Vector3(0,-40,0), globals));
+    globals.nodes[5].addExternalForce(new Force(new THREE.Vector3(0,-40,0), globals));
+    globals.nodes[7].addExternalForce(new Force(new THREE.Vector3(0,-40,0), globals));
+    globals.nodes[9].addExternalForce(new Force(new THREE.Vector3(0,-40,0), globals));
+    globals.nodes[11].addExternalForce(new Force(new THREE.Vector3(0,-40,0), globals));
     globals.nodes[0].setFixed(true);
     globals.nodes[1].setFixed(true);
     globals.nodes[12].setFixed(true);

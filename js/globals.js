@@ -15,7 +15,7 @@ function initGlobals(){
         viewMode: "force",
         xyOnly: true,
 
-        gradStepSize: 0.1,
+        gradStepSize: 1,
         gradTolerance: 0,
         sumFL: 0,
 

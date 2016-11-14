@@ -126,18 +126,17 @@ function initGradientSolver(globals){
                 if (callback){
                     var directions = [dir.clone().multiplyScalar(globals.gradStepSize)];
                     directions.push(directions[0].clone());
-                    //todo does this make sense?
                     if (globals.nodes[indices[0]] == node) directions[1] = globals.linked.getSymmetricPosition(directions[1]);
                     else directions[0] = globals.linked.getSymmetricPosition(directions[0]);
                     callback(directions);
                 } else {
-                    length *= 100/globals.gradStepSize;
+                    length *= 10000/globals.gradStepSize;
                     arrow.setDirection(dir);
-                    arrow.visible = !(length < 0.001);
-                    if (length<1.1) {//prevent arrow from having zero length
-                        length = 1.1;
+                    arrow.visible = !(length < 0.01);
+                    if (length<10.1) {//prevent arrow from having zero length
+                        length = 10.1;
                     }
-                    arrow.setLength(length, 1, 1);
+                    arrow.setLength(length, 10, 10);
                 }
             }
         });

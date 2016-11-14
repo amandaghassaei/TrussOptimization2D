@@ -4,7 +4,7 @@
 
 var beamMaterialHighlight = new THREE.MeshBasicMaterial({color: 0xffffff});
 var beamMaterialDelete = new THREE.MeshBasicMaterial({color:0xff0000});
-var beamGeometry = new THREE.CylinderGeometry(0.1, 0.1, 1);
+var beamGeometry = new THREE.CylinderGeometry(2, 2, 1);
 
 function Beam(nodes, globals, noAdd){
 
