@@ -175,9 +175,11 @@ function initGradientSolver(globals){
         var lastFL = globals.sumFL;
         $("#optimize").blur();
         hide();
+        var numConverged = 0;
         globals.threeView.startAnimation(function(){
 
             lastFL = globals.sumFL;
+            numConverged = 0;
 
             for (var j=0;j<globals.linked.linked.length;j++){
                 if (globals.linked.locked[j][0] && globals.linked.locked[j][1]){
@@ -192,13 +194,18 @@ function initGradientSolver(globals){
                     }
                     globals.solver.resetK_matrix();
                     globals.solver.solve();
+                    if (lastFL-globals.sumFL < globals.gradTolerance){
+                        numConverged++;
+                    }
+                    lastFL = globals.sumFL;
                 });
             }
 
             globals.controls.viewModeCallback();
-            if (lastFL-globals.sumFL < globals.gradTolerance){
+            if (numConverged == globals.linked.linked.length){
                 pauseOptimization();
             }
+
         });
     }
     function pauseOptimization(){
