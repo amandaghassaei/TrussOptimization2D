@@ -194,7 +194,7 @@ function initGradientSolver(globals){
                     }
                     globals.solver.resetK_matrix();
                     globals.solver.solve();
-                    if (lastFL-globals.sumFL < globals.gradTolerance){
+                    if (lastFL-globals.sumFL <= globals.gradTolerance){
                         numConverged++;
                     }
                     lastFL = globals.sumFL;

@@ -381,3 +381,7 @@ span.modal-close{
 .optVariable .radio, .optVariable .checkbox{
     padding-left: 27px;
 }
+
+#symmetryOptions{
+    margin-bottom:20px;
+}
