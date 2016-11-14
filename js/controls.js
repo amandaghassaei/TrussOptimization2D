@@ -358,6 +358,18 @@ function initControls(globals){
         saveAs(blob, "truss.txt");
     });
 
+    setLink("#saveVariables", function(){
+        //x1 = n1-y, x2 = n3-x, x3 = n3-y, x4 = n5-x, x5 = n5-y, x6 = n7-y
+        var array = [];
+        array.push(globals.nodes[1].getPosition().y);
+        array.push(globals.nodes[3].getPosition().x);
+        array.push(globals.nodes[3].getPosition().y);
+        array.push(globals.nodes[5].getPosition().x);
+        array.push(globals.nodes[5].getPosition().y);
+        array.push(globals.nodes[7].getPosition().y);
+        console.log(array.join(", "));
+    });
+
     function setLink(id, callback){
         $(id).click(function(e){
             e.preventDefault();
