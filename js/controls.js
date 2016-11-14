@@ -353,6 +353,10 @@ function initControls(globals){
         globals.threeView.render();
     }, 0, 360);
 
+    setLink("#download", function(){
+        var blob = new Blob([globals.getInfo()], {type: "text/plain;charset=utf-8"});
+        saveAs(blob, "truss.txt");
+    });
 
     function setLink(id, callback){
         $(id).click(function(e){

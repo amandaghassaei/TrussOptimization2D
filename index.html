@@ -17,7 +17,7 @@
     <script type="text/javascript" src="dependencies/OrbitControls.js"></script>
     <script type="text/javascript" src="dependencies/underscore-min.js"></script>
     <script type="text/javascript" src="dependencies/numeric-1.2.6.min.js"></script>
-    <!--<script type="text/javascript" src="dependencies/FileSaver.min.js"></script>-->
+    <script type="text/javascript" src="dependencies/FileSaver.min.js"></script>
 
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -99,7 +99,7 @@
             </label>
             <label class="radio">
                 <input name="viewMode" value="length" data-toggle="radio" class="custom-radio" type="radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
-                Edge Length (m)
+                Length (m)
             </label>
             <label class="radio">
                 <input name="viewMode" value="force" data-toggle="radio" class="custom-radio" type="radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
@@ -114,7 +114,8 @@
                     <!--Deformation (m)-->
             <!--</label>-->
         </div>
-    </div>
+    </div><br/>
+    <a href="#" id="download" class="btn btn-lg btn-default">Download Design Info (.txt)</a>
 </div>
 
 <div id="scaleBars"></div>
@@ -139,19 +140,21 @@
     <div class="modal-content">
       <div class="modal-body">
         <p><b>Truss Optimization 2D</b><br/><br/>
-            This is a design and optimization tool for structures that uses real-time simulation feedback to inform the design process.
-            <a href="https://ocw.mit.edu/courses/civil-and-environmental-engineering/1-050-solid-mechanics-fall-2004/readings/emech5_04.pdf" target="_blank">Finite Element Analysis</a> is used to numerically solve for the internal forces in 2D truss structures assuming only axial forces in beams.
-            The advantage of this approach over analytical approaches (such as <a href="https://en.wikibooks.org/wiki/Statics/Method_of_Joints" target="_blank">Method of Joints</a>) is that it generalizes to statically indeterminate structures.
+            This is a design and optimization tool for structures that uses real-time simulation feedback to inform the end user.
+            It uses <a href="https://ocw.mit.edu/courses/civil-and-environmental-engineering/1-050-solid-mechanics-fall-2004/readings/emech5_04.pdf" target="_blank">Finite Element Analysis</a> to numerically solve for internal forces in 2D truss structures assuming only axial forces in beams.
+            The beams have high stiffness (EA = 50 GPa m<sup>2</sup>) so that elastic deformations of the structure are negligible.
+            The advantage of this numerical approach over analytical approaches (such as <a href="https://en.wikibooks.org/wiki/Statics/Method_of_Joints" target="_blank">Method of Joints</a>) is that it generalizes to statically indeterminate structures.
             <br/><br/>
-            The optimization process attempts to minimize the volume of material needed (calculated by &Sigma; | F<sub>i</sub> L<sub>i</sub> | for all beams i in the structure) by adjusting the positions of the nodes.
+            Real-time simulation feedback shows the user how to adjust the positions of the nodes to minimize the volume of material used in the beams of the truss (proportional to &Sigma; | F<sub>i</sub> L<sub>i</sub> | for all beams i in the structure).
             As you drag a node, a pink arrow indicates the direction of the gradient around the node's current position.
-            Move nodes in the direction of the gradient to minimize the structure's volume.
-            The gradient is calculated numerically by sampling the space around the node's current position, the step size of this sampling is controlled by "Gradient Step Size".<br/><br/>
-            Nodes may be added as variables in an automated optimization process either as single nodes or in mirrored pairs.
-            Hold down Shift and select a single node or a pair of nodes and hit Enter to add them to the optimization process.
+            Move nodes in the direction of the gradient to minimize the total material volume.
+            The gradient is calculated numerically by sampling the space around the selected node's current position, the step size of this sampling is controlled by "Gradient Step Size".
+            <br/><br/>
+            Add nodes as variables to an automated optimization process either as single nodes or in mirrored pairs by holding down Shift, selecting a single node or a pair of nodes, and hitting Enter.
             Once added, you may constrain their x/y position or change the axis of symmetry in your structure through the controls under "Optimization Variables".
             Click "Auto Optimize" to begin the automated optimization process.
-            This process will adjust the positions of the nodes to minimize the total volume of the beams in the structure until further gains are less than "Gradient Tolerance".
+            This process will incrementally adjust the positions of the nodes to minimize the total volume of the beams in the structure until further gains are less than "Gradient Tolerance".
+            This optimization process (gradient descent) is not guaranteed to find a globally optimal solution, run the optimization process from many initial starting configurations to find other local minima.
             <br/><br/>
             <b>Instructions:</b><br/>
             <ul>
@@ -161,12 +164,13 @@
                 <li> Fixed nodes are indicated with a black square, click on the "Add/Remove Fixed Nodes" button and select a node to toggle its fixed state.</li>
                 <li> Double click on a beam to add a node to it, double click on a node to begin drawing a new beam.</li>
                 <li> Click the "Delete Mode" button and select a node, beam, or external force to remove it.</li>
-                <li> Toggle between viewing geometry, edge length, internal forces, and tension compression of beams in the structure using the controls on the left.  Mouse over a beam to get more detailed information about it.</li>
+                <li> Toggle between viewing geometry, length, internal forces, and tension/compression of beams in the structure using the controls on the left.  Mouse over a beam to get more detailed information about it.</li>
                 <li> Lock external force magnitudes, topology (the connectivity of nodes and beams), and the positions of the nodes by selecting the checkboxes in the upper left.</li>
+                <li> Click "Download Design Info" to save a text file containing geometric information about the current structure.</li>
             </ul>
             <br/>
             Built by <a href="http://www.amandaghassaei.com/" target="_blank">Amanda Ghassaei</a> as a homework assignment for <a href="https://architecture.mit.edu/subject/fall-2016-4450" target="_blank">Computational Structural Design and Optimization</a>.
-            Code available on <a href="https://github.com/amandaghassaei/ShellFormFinding" target="_blank">Github</a>.
+            Code available on <a href="https://github.com/amandaghassaei/TrussOptimization2D" target="_blank">Github</a>.
         </p>
       </div>
     </div><!-- /.modal-content -->

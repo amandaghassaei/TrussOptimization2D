@@ -64,7 +64,7 @@ Solver.prototype.solve = function(nodes, edges, xyOnly, callback){
         var k = this.initEmptyArray(freeEdges.length, freeEdges.length);
         for (var i=0;i<freeEdges.length;i++){
             var edge = edges[freeEdges[i]];
-            k[i][i] = 200000000000/edge.getLength();
+            k[i][i] = 50000000000/edge.getLength();
         }
         this.K_A_transpose = numeric.dot(k, A_transpose);
         var mat = numeric.dot(A, this.K_A_transpose);

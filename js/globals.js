@@ -31,9 +31,41 @@ function initGlobals(){
         removeNode: removeNode,
         edges: [],
         addEdge: addEdge,
-        removeEdge: removeEdge
+        removeEdge: removeEdge,
+        getInfo: getInfo
     };
 
+    function getInfo(){
+        var data = {};
+        var nodes = _globals.nodes;
+        var edges = _globals.edges;
+
+        data.numNodes = nodes.length;
+        data.nodes = [];
+        data.externalForces = [];
+        _.each(nodes, function(node){
+            var position = node.getPosition().clone();
+            var externalForce = node.getExternalForce();
+            data.nodes.push([position.x, position.y, position.z]);
+            data.externalForces.push([externalForce.x, externalForce.y, externalForce.z]);
+        });
+
+        data.fixedNodesIndices = [];
+        _.each(nodes, function(node, index){
+            if (node.fixed) data.fixedNodesIndices.push(index);
+        });
+
+        data.numEdges = edges.length;
+        data.edges = [];
+        data.edgeLengths = [];
+        _.each(edges, function(edge){
+            data.edges.push([nodes.indexOf(edge.nodes[0]), nodes.indexOf(edge.nodes[1])]);
+            data.edgeLengths.push(edge.getLength());
+        });
+        data.sumFL = _globals.sumFL;
+
+        return JSON.stringify(data, null, 2);
+    }
 
     function addNode(node){
         _globals.nodes.push(node);
