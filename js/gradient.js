@@ -44,6 +44,7 @@ function initGradientSolver(globals){
             }
             edges.push(new Beam(edgeNodes, globals, true));
         }
+        solver.resetK_matrix();
         solver.resetF_matrix();
         $("#resetOptimization").hide();
     }

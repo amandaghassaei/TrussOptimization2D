@@ -208,6 +208,7 @@ $(function() {
                     highlightedObj.addExternalForce(force);
                     setHighlightedObj(force);
                     globals.solver.resetF_matrix();
+                    globals.gradient.syncNodes();
                     globals.solver.solve();
                 }
                 globals.addForceMode = false;
@@ -228,7 +229,7 @@ $(function() {
                 if (highlightedObj && highlightedObj.type == "node"){
                     var oldNode = highlightedObj;
                     setHighlightedObj(null);
-                    globals.removeNode(oldNode);
+                    globals.gradient.syncNodes();
                     globals.solver.resetK_matrix();
                     globals.solver.resetF_matrix();
                     globals.solver.solve();

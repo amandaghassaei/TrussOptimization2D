@@ -64,6 +64,14 @@ Solver.prototype.solve = function(nodes, edges, xyOnly, callback){
         var k = this.initEmptyArray(freeEdges.length, freeEdges.length);
         for (var i=0;i<freeEdges.length;i++){
             var edge = edges[freeEdges[i]];
+            if (edge.getLength() <= 0){
+                //unsolvable
+                $("#unsolvable").show();
+                console.warn("unsolvable");
+                this.resetK_matrix();
+                if (callback) callback(this.initEmptyArray(freeEdges.length), freeEdges);
+                return;
+            }
             k[i][i] = 50000000000/edge.getLength();
         }
         this.K_A_transpose = numeric.dot(k, A_transpose);
@@ -71,10 +79,12 @@ Solver.prototype.solve = function(nodes, edges, xyOnly, callback){
         var determinant = numeric.det(mat);
         if (determinant == 0) {
             console.warn("unsolvable");
+            $("#unsolvable").show();
             this.resetK_matrix();
             if (callback) callback(this.initEmptyArray(freeEdges.length), freeEdges);
             return;
         }
+        $("#unsolvable").hide();
         this.K_matrix = numeric.inv(mat);
     }
 
