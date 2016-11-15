@@ -8,7 +8,7 @@ var nodeMaterialDelete = new THREE.MeshBasicMaterial({color: 0xff0000});
 var nodeMaterialHighlight = new THREE.MeshBasicMaterial({color: 0xffffff});
 var nodeGeo = new THREE.CircleGeometry(5);
 //nodeGeo.applyMatrix(new THREE.Matrix4().makeRotationY(Math.PI));
-var nodeFixedGeo = new THREE.CubeGeometry(10, 10, 10);
+var nodeFixedGeo = new THREE.CubeGeometry(12, 12, 12);
 
 var optGeo = new THREE.Geometry();
 optGeo.vertices.push(new THREE.Vector3(8.5, -4, 0));
