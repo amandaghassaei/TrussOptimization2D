@@ -89,6 +89,7 @@ function initGlobals(){
         var index = _globals.edges.indexOf(edge);
         if (index>=0) _globals.edges.splice(index, 1);
         edge.destroy();
+        _globals.gradient.syncNodes();
     }
 
     _globals.threeView = initThreeView(_globals);

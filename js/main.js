@@ -229,7 +229,7 @@ $(function() {
                 if (highlightedObj && highlightedObj.type == "node"){
                     var oldNode = highlightedObj;
                     setHighlightedObj(null);
-                    globals.gradient.syncNodes();
+                    globals.removeNode(oldNode);
                     globals.solver.resetK_matrix();
                     globals.solver.resetF_matrix();
                     globals.solver.solve();
@@ -245,7 +245,7 @@ $(function() {
                     setHighlightedObj(null);
                     oldForce.destroy();
                     globals.solver.resetF_matrix();
-                    globals.gradient.resetF_matrix();
+                    globals.gradient.syncNodes();
                     globals.solver.solve();
                 }
                 globals.threeView.render();
