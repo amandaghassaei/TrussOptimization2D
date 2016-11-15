@@ -4,7 +4,14 @@
 
 var beamMaterialHighlight = new THREE.MeshBasicMaterial({color: 0xffffff});
 var beamMaterialDelete = new THREE.MeshBasicMaterial({color:0xff0000});
-var beamGeometry = new THREE.CylinderGeometry(2, 2, 1);
+//var beamGeometry = new THREE.CylinderGeometry(2, 2, 1);
+var beamGeometry = new THREE.Geometry();
+beamGeometry.vertices.push(new THREE.Vector3(-2,-0.5,0));
+beamGeometry.vertices.push(new THREE.Vector3(-2,0.5,0));
+beamGeometry.vertices.push(new THREE.Vector3(2,0.5,0));
+beamGeometry.vertices.push(new THREE.Vector3(2,-0.5,0));
+beamGeometry.faces.push(new THREE.Face3(1,0,3));
+beamGeometry.faces.push(new THREE.Face3(3,2,1));
 
 function Beam(nodes, globals, noAdd){
 
@@ -130,14 +137,10 @@ Beam.prototype.getNodes = function(){
 
 Beam.prototype.render = function(){
     this.object3D.scale.y = this.getLength();
-    var beamAxis = this.nodes[0].getPosition().sub(this.nodes[1].getPosition());
-    var axis = (new THREE.Vector3(0,1,0)).cross(beamAxis).normalize();
-    if (axis.length() == 0) axis = new THREE.Vector3(1,0,0);
-    var angle = Math.acos(new THREE.Vector3(0,1,0).dot(beamAxis.normalize()));
-    var quaternion = (new THREE.Quaternion()).setFromAxisAngle(axis, angle);
+    var angle = this.getAngle(this.nodes[0])-Math.PI/2;
     var position = (this.nodes[0].getPosition().add(this.nodes[1].getPosition())).multiplyScalar(0.5);
     this.object3D.position.set(position.x, position.y, position.z);
-    this.object3D.quaternion.set(quaternion.x, quaternion.y, quaternion.z, quaternion.w);
+    this.object3D.rotation.z = angle;
 };
 
 

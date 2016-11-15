@@ -87,7 +87,9 @@ $(function() {
     globals.linked.selectNode(globals.nodes[13]);
     globals.linked.link();
     globals.linked.locked[0][0] = true;
+    globals.linked.linked[0][0].setOptVis(0, !globals.linked.locked[0][0]);
     globals.linked.locked[3][0] = true;
+    globals.linked.linked[3][0].setOptVis(0, !globals.linked.locked[3][0]);
     globals.linked.display();
 
     globals.solver.solve();

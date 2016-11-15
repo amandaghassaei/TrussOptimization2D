@@ -10,6 +10,17 @@ var nodeGeo = new THREE.SphereGeometry(5);
 nodeGeo.rotateX(Math.PI/2);
 var nodeFixedGeo = new THREE.CubeGeometry(10, 10, 10);
 
+var optGeo = new THREE.Geometry();
+optGeo.vertices.push(new THREE.Vector3(8.5, -4, 0));
+optGeo.vertices.push(new THREE.Vector3(8.5, 4, 0));
+optGeo.vertices.push(new THREE.Vector3(14.5, 0, 0));
+optGeo.vertices.push(new THREE.Vector3(-8.5, -4, 0));
+optGeo.vertices.push(new THREE.Vector3(-8.5, 4, 0));
+optGeo.vertices.push(new THREE.Vector3(-14.5, 0, 0));
+optGeo.faces.push(new THREE.Face3(0,2,1));
+optGeo.faces.push(new THREE.Face3(3,4,5));
+var optMaterial = new THREE.MeshBasicMaterial({color:0x444444, transparent:true, opacity:0.5});
+var optMaterialHighlight = new THREE.MeshBasicMaterial({color:0xff00ff, transparent:true, opacity:0.95});
 
 function Node(position, globals, noAdd){
 
@@ -20,15 +31,23 @@ function Node(position, globals, noAdd){
     this.fixed = false;
 
     if (noAdd === undefined){
+
+        var optimizationArrows = new THREE.Object3D();
+        optimizationArrows.add(new THREE.Mesh(optGeo, optMaterial));
+        optimizationArrows.add(new THREE.Mesh(optGeo, optMaterial));
+        optimizationArrows.children[1].rotation.z = Math.PI/2;
+        globals.threeView.secondPassSceneAdd(optimizationArrows);
+        this.optimizationArrows = optimizationArrows;
+        this.optimizationArrows.visible = false;
+
         this.object3D = new THREE.Mesh(nodeGeo, nodeMaterial);
         this.object3D._myNode = this;
         globals.threeView.sceneAdd(this.object3D);
+
         this.move(position);
     } else {
         this.position = position.clone();
     }
-
-
 }
 
 
@@ -124,6 +143,7 @@ Node.prototype.show = function(){
 };
 
 Node.prototype.moveManually = function(position){
+    this.optimizationArrows.position.set(position.x, position.y, position.z);
     this.object3D.position.set(position.x, position.y, position.z);
     _.each(this.beams, function(beam){
         beam.render();
@@ -132,6 +152,7 @@ Node.prototype.moveManually = function(position){
 };
 
 Node.prototype.move = function(position){
+    this.optimizationArrows.position.set(position.x, position.y, position.z);
     this.object3D.position.set(position.x, position.y, position.z);
     _.each(this.beams, function(beam){
         beam.render();
@@ -144,16 +165,34 @@ Node.prototype.getPosition = function(){
     return this.object3D.position.clone();
 };
 
-Node.prototype.setSelected = function(state, extrabig){
-    if (extrabig){
-        this.object3D.scale.set(3,3,3);
+Node.prototype.setSelected = function(state, highlighted){
+    if (highlighted){
+        this.optimizationArrows.visible = true;
+        this.optimizationArrows.children[0].material = optMaterialHighlight;
+        this.optimizationArrows.children[0].visible = true;
+        this.optimizationArrows.children[1].material = optMaterialHighlight;
+        this.optimizationArrows.children[1].visible = true;
         return;
     }
-    if (state){
-        this.object3D.scale.set(2,2,2);
-    } else {
-        this.object3D.scale.set(1,1,1);
+    this.optimizationArrows.children[0].material = optMaterial;
+    this.optimizationArrows.children[1].material = optMaterial;
+    this.optimizationArrows.visible = state;
+    if (state == false){
+        var linked = globals.linked.linked;
+        for (var i=0;i<linked.length;i++){
+            for (var j=0;j<linked[i].length;j++){
+                if (linked[i][j] == this){
+                    this.setOptVis(0, !globals.linked.locked[i][0]);
+                    this.setOptVis(1, !globals.linked.locked[i][1]);
+                    return;
+                }
+            }
+        }
     }
+};
+
+Node.prototype.setOptVis = function(axis, state){
+    this.optimizationArrows.children[axis].visible = state;
 };
 
 
@@ -174,6 +213,8 @@ Node.prototype.clone = function(){
 Node.prototype.destroy = function(){
     if (this.deleting) return;
     this.deleting = true;
+    if (this.optimizationArrows) globals.threeView.secondPassSceneRemove(this.optimizationArrows);
+    this.optimizationArrows = null;
     globals.threeView.sceneRemove(this.object3D);
     this.object3D._myNode = null;
     this.object3D = null;

@@ -40,7 +40,7 @@ Force.prototype.getLength = function(){
 
 Force.prototype.move = function(position){
     var force = position.sub(this.node.object3D.position);
-    var length = force.length() - 10;
+    var length = force.length() - 13;
     var direction = force.normalize();
     if (length<=0) {
         this.setForce(new THREE.Vector3());

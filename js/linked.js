@@ -93,6 +93,10 @@ function initLinked(globals){
             var axis = id.charAt(id.length - 1);
             var index = id.charAt(id.length - 2);
             locked[index][axis] = !locked[index][axis];
+            for (var a=0;a<linked[index].length;a++){
+                linked[index][a].setOptVis(axis, !locked[index][axis]);
+            }
+            globals.threeView.render();
         });
         $(".deleteLinked").click(function(e){
             e.preventDefault();
@@ -103,25 +107,28 @@ function initLinked(globals){
         else $symmetryOptions.hide();
         symmetryLine.visible = showSymmetry;
 
-        var selectionCallback = function(val){
-            deselectAll();
-            if (val == -1){
-                for (var j=0;j<linked.length;j++) {
-                    for (var i = 0; i < linked[j].length; i++) {
-                        linked[j][i].setSelected(true);
-                    }
-                }
-            } else {
-                for (var i=0;i<linked[val].length;i++){
-                    linked[val][i].setSelected(true);
-                }
-            }
-            globals.threeView.render();
-        };
         globals.controls.setRadio("visibleLinked", -1, selectionCallback);
         selectionCallback(-1);
         $options.show();
     }
+    var selectionCallback = function(val, noClearSelected){
+        for (var i=0;i<globals.nodes.length;i++){
+            globals.nodes[i].setSelected(false);
+        }
+        if (noClearSelected === undefined)selectedNodes = [];
+        if (val == -1){
+            for (var j=0;j<linked.length;j++) {
+                for (var i = 0; i < linked[j].length; i++) {
+                    linked[j][i].setSelected(true);
+                }
+            }
+        } else {
+            for (var i=0;i<linked[val].length;i++){
+                linked[val][i].setSelected(true);
+            }
+        }
+        globals.threeView.render();
+    };
 
     function deleteLink(index){
         if (isNaN(index)) return;
@@ -138,29 +145,38 @@ function initLinked(globals){
         display();
     }
 
-    function deselectAll(){
+    function deselectAll(noClearSelected){
         for (var i=0;i<globals.nodes.length;i++){
             globals.nodes[i].setSelected(false);
         }
-        selectedNodes = [];
+        if (noClearSelected === undefined) {
+            selectedNodes = [];
+        }
+        var visibleLinked = $("input[name=visibleLinked]:checked");
+        if (visibleLinked.length>0) {
+            selectionCallback(visibleLinked.val(), noClearSelected);
+            for (var i=0;i<linked.length;i++){
+                for (var j=0;j<linked[i].length;j++){
+                    linked[i][j].setOptVis(0, !locked[i][0]);
+                    linked[i][j].setOptVis(1, !locked[i][1]);
+                }
+            }
+        }
         globals.threeView.render();
     }
 
     function selectNode(node){
         var index = selectedNodes.indexOf(node);
         if (index > -1) {
-            selectedNodes[index].setSelected(false);
+            deselectAll(true);
             selectedNodes.splice(index, 1);
         } else {
             selectedNodes.push(node);
             if (selectedNodes.length>2){
-                selectedNodes[0].setSelected(false);
+                deselectAll(true);
                 selectedNodes.shift();
             }
         }
-        //for (var i=0;i<globals.nodes.length;i++){
-        //    globals.nodes[i].setSelected(false);
-        //}
         for (var i=0;i<selectedNodes.length;i++){
             selectedNodes[i].setSelected(true, true);
         }

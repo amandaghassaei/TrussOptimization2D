@@ -76,9 +76,9 @@ function initThreeView(globals) {
         renderer.clear();
         renderer.render(scene, camera);
         renderer.clearDepth();
-        renderer.render(secondPassScene, camera);
-        renderer.clearDepth();
         renderer.render(thirdPassScene, camera);
+        renderer.clearDepth();
+        renderer.render(secondPassScene, camera);
     }
 
     function _loop(callback){

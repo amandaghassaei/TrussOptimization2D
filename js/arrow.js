@@ -10,6 +10,7 @@ axisGeo.applyMatrix(new THREE.Matrix4().makeTranslation(0,0.5,0));
 function Arrow(origin, direction, length, radius, color){
     this.material = new THREE.MeshBasicMaterial({color: color});
     this.cone = new THREE.Mesh(coneGeo, this.material);
+    //this.cone.position.y = 3;
     this.axis = new THREE.Mesh(axisGeo, this.material);
     this.object3D = new THREE.Object3D();
     this.object3D.add(this.cone);
