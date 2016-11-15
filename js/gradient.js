@@ -7,9 +7,8 @@ function initGradientSolver(globals){
 
     var solver = new Solver();
 
-    var arrow = new THREE.ArrowHelper(new THREE.Vector3(1,0,0), new THREE.Vector3(), 1, 0xff00ff);
-    arrow.line.material.linewidth = 4;
-    globals.threeView.sceneAdd(arrow);
+    var arrow = new Force(new THREE.Vector3(), globals, true);
+    arrow.arrow.cone.material.color.setHex(0xff00ff);
     hide();
 
     var nodes = [];
@@ -67,7 +66,7 @@ function initGradientSolver(globals){
     function calcGrad(linked, callback, node, _position){
         syncPosition();
 
-        if (_position) arrow.position.set(_position.x, _position.y, _position.z);
+        if (_position) arrow.setOrigin(_position);
         if (node === undefined) node = linked[0];
 
         var stepSize = globals.gradStepSize;
@@ -132,12 +131,9 @@ function initGradientSolver(globals){
                     callback(directions);
                 } else {
                     length *= 20000/globals.gradStepSize;
-                    arrow.setDirection(dir);
-                    arrow.visible = !(length < 0.01);
-                    if (length<10.1) {//prevent arrow from having zero length
-                        length = 10.1;
-                    }
-                    arrow.setLength(length, 10, 10);
+                    if (length > 50) length = 50;
+                    arrow.object3D.visible = !(length < 0.01);
+                    arrow.setForce(dir.multiplyScalar(length));
                 }
             }
         });
@@ -150,7 +146,7 @@ function initGradientSolver(globals){
     }
 
     function hide(){
-        arrow.visible = false;
+        arrow.object3D.visible = false;
     }
 
     var originalPositions = [];

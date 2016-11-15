@@ -7,6 +7,7 @@ function initThreeView(globals) {
     var scene = new THREE.Scene();
     var secondPassScene = new THREE.Scene();
     var thirdPassScene = new THREE.Scene();
+    var forthPassScene = new THREE.Scene();
     var wrapper = new THREE.Object3D();
     var camera = new THREE.OrthographicCamera(window.innerWidth / -2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / -2, -1000, 1000);//-40, 40);
     var renderer = new THREE.WebGLRenderer({antialias: true});
@@ -79,6 +80,8 @@ function initThreeView(globals) {
         renderer.render(thirdPassScene, camera);
         renderer.clearDepth();
         renderer.render(secondPassScene, camera);
+        renderer.clearDepth();
+        renderer.render(forthPassScene, camera);
     }
 
     function _loop(callback){
@@ -100,6 +103,10 @@ function initThreeView(globals) {
     }
     function thirdPassSceneRemove(object){
         thirdPassScene.remove(object);
+    }
+
+    function forthPassSceneAdd(object){
+        forthPassScene.add(object);
     }
 
     function sceneAdd(object) {
@@ -163,6 +170,7 @@ function initThreeView(globals) {
         secondPassSceneRemove: secondPassSceneRemove,
         thirdPassSceneAdd: thirdPassSceneAdd,
         thirdPassSceneRemove: thirdPassSceneRemove,
+        forthPassSceneAdd: forthPassSceneAdd,
         scene: scene,
         camera: camera
     }
