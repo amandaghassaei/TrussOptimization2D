@@ -225,13 +225,13 @@ function initControls(globals){
         $moreInfoInputZ.unbind("change");
     }
     function setComponent(comp){
-        if (comp == "x"){
-            $moreInfoInputX.unbind("change");
-        } else if (comp == "y"){
-            $moreInfoInputY.unbind("change");
-        } else {
-            $moreInfoInputZ.unbind("change");
-        }
+        //if (comp == "x"){
+        //    $moreInfoInputX.unbind("change");
+        //} else if (comp == "y"){
+        //    $moreInfoInputY.unbind("change");
+        //} else {
+        //    $moreInfoInputZ.unbind("change");
+        //}
     }
 
     function editMoreInfo(val, e, callback){
