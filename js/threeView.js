@@ -144,7 +144,7 @@ function initThreeView(globals) {
     }
 
     function getObjToIntersect(){
-        return wrapper.children.concat(thirdPassScene.children);
+        return thirdPassScene.children.concat(wrapper.children);
     }
 
     return {

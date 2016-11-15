@@ -6,8 +6,8 @@ var nodeMaterial = new THREE.MeshBasicMaterial({color: 0x000000});
 var nodeMaterialFixed = new THREE.MeshBasicMaterial({color: 0x000000});
 var nodeMaterialDelete = new THREE.MeshBasicMaterial({color: 0xff0000});
 var nodeMaterialHighlight = new THREE.MeshBasicMaterial({color: 0xffffff});
-var nodeGeo = new THREE.SphereGeometry(5);
-nodeGeo.rotateX(Math.PI/2);
+var nodeGeo = new THREE.CircleGeometry(5);
+//nodeGeo.applyMatrix(new THREE.Matrix4().makeRotationY(Math.PI));
 var nodeFixedGeo = new THREE.CubeGeometry(10, 10, 10);
 
 var optGeo = new THREE.Geometry();
@@ -42,7 +42,7 @@ function Node(position, globals, noAdd){
 
         this.object3D = new THREE.Mesh(nodeGeo, nodeMaterial);
         this.object3D._myNode = this;
-        globals.threeView.sceneAdd(this.object3D);
+        globals.threeView.thirdPassSceneAdd(this.object3D);
 
         this.move(position);
     } else {
@@ -215,7 +215,7 @@ Node.prototype.destroy = function(){
     this.deleting = true;
     if (this.optimizationArrows) globals.threeView.secondPassSceneRemove(this.optimizationArrows);
     this.optimizationArrows = null;
-    globals.threeView.sceneRemove(this.object3D);
+    globals.threeView.thirdPassSceneRemove(this.object3D);
     this.object3D._myNode = null;
     this.object3D = null;
     for (var i=this.beams.length-1;i>=0;i--){
