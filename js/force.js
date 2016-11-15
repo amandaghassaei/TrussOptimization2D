@@ -10,7 +10,7 @@ function Force(force, globals){
     this.object3D = this.arrow.getObject3D();
     this.update();
     this.object3D.children[0]._myForce = this;
-    globals.threeView.sceneAdd(this.object3D);
+    globals.threeView.thirdPassSceneAdd(this.object3D);
 }
 
 Force.prototype.setNode = function(node){
@@ -39,8 +39,15 @@ Force.prototype.getLength = function(){
 };
 
 Force.prototype.move = function(position){
-    var force = position.sub(this.object3D.position);
-    this.setForce(force);
+    var force = position.sub(this.node.object3D.position);
+    var length = force.length() - 10;
+    var direction = force.normalize();
+    if (length<=0) {
+        this.setForce(new THREE.Vector3());
+        return;
+    }
+    var offset = direction.multiplyScalar(length);
+    this.setForce(offset);
 };
 
 Force.prototype.getDirection = function(){

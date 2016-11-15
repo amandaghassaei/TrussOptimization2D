@@ -5,9 +5,12 @@
 function initThreeView(globals) {
 
     var scene = new THREE.Scene();
+    var secondPassScene = new THREE.Scene();
+    var thirdPassScene = new THREE.Scene();
     var wrapper = new THREE.Object3D();
     var camera = new THREE.OrthographicCamera(window.innerWidth / -2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / -2, -1000, 1000);//-40, 40);
     var renderer = new THREE.WebGLRenderer({antialias: true});
+    renderer.autoClear = false;
     var controls;
 
     var animating = false;
@@ -70,7 +73,12 @@ function initThreeView(globals) {
     }
 
     function _render(){
+        renderer.clear();
         renderer.render(scene, camera);
+        renderer.clearDepth();
+        renderer.render(secondPassScene, camera);
+        renderer.clearDepth();
+        renderer.render(thirdPassScene, camera);
     }
 
     function _loop(callback){
@@ -78,6 +86,20 @@ function initThreeView(globals) {
         requestAnimationFrame(function(){
             if (animating) _loop(callback);
         });
+    }
+
+    function secondPassSceneAdd(object){
+        secondPassScene.add(object);
+    }
+    function secondPassSceneRemove(object){
+        secondPassScene.remove(object);
+    }
+
+    function thirdPassSceneAdd(object){
+        thirdPassScene.add(object)
+    }
+    function thirdPassSceneRemove(object){
+        thirdPassScene.remove(object);
     }
 
     function sceneAdd(object) {
@@ -122,7 +144,7 @@ function initThreeView(globals) {
     }
 
     function getObjToIntersect(){
-        return wrapper.children;
+        return wrapper.children.concat(thirdPassScene.children);
     }
 
     return {
@@ -137,6 +159,10 @@ function initThreeView(globals) {
         enableControls: enableControls,
         enableRotate: enableRotate,
         squareWithXY: squareWithXY,
+        secondPassSceneAdd: secondPassSceneAdd,
+        secondPassSceneRemove: secondPassSceneRemove,
+        thirdPassSceneAdd: thirdPassSceneAdd,
+        thirdPassSceneRemove: thirdPassSceneRemove,
         scene: scene,
         camera: camera
     }

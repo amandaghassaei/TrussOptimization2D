@@ -141,8 +141,9 @@
     <div class="modal-content">
       <div class="modal-body">
         <p><b>Truss Optimization 2D</b><br/><br/>
-            This is a design and optimization tool for structures that uses real-time simulation feedback to inform the end user.
-            It uses <a href="https://ocw.mit.edu/courses/civil-and-environmental-engineering/1-050-solid-mechanics-fall-2004/readings/emech5_04.pdf" target="_blank">Finite Element Analysis</a> to numerically solve for internal forces in 2D truss structures assuming only axial forces in beams.
+            This is a design and optimization tool for trusses that uses real-time simulation feedback to inform the design process.
+            Trusses are assemblies of rigid beams connected at "nodes" that form the backbone of buildings, bridges, and other structures.
+            This tool uses <a href="https://ocw.mit.edu/courses/civil-and-environmental-engineering/1-050-solid-mechanics-fall-2004/readings/emech5_04.pdf" target="_blank">Finite Element Analysis</a> to numerically solve for internal forces in 2D truss structures assuming only axial forces in beams.
             The beams have high stiffness (EA = 50 GPa m<sup>2</sup>) so that elastic deformations of the structure are negligible.
             The advantage of this numerical approach over analytical approaches (such as <a href="https://en.wikibooks.org/wiki/Statics/Method_of_Joints" target="_blank">Method of Joints</a>) is that it generalizes to statically indeterminate structures.
             <br/><br/>
@@ -155,7 +156,7 @@
             Once added, you may constrain their x/y position or change the axis of symmetry in your structure through the controls under "Optimization Variables".
             Click "Auto Optimize" to begin the automated optimization process.
             This process will incrementally adjust the positions of the nodes to minimize the total volume of the beams in the structure until further gains are less than "Gradient Tolerance".
-            This optimization process (gradient descent) is not guaranteed to find a globally optimal solution, run the optimization process from many initial starting configurations to find other local minima.
+            This optimization process (gradient descent) is not guaranteed to find a globally optimal solution; run the optimization process from many initial starting configurations to find other local minima.
             <br/><br/>
             <b>Instructions:</b><br/>
             <ul>

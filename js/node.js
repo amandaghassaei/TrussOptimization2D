@@ -27,6 +27,8 @@ function Node(position, globals, noAdd){
     } else {
         this.position = position.clone();
     }
+
+
 }
 
 
