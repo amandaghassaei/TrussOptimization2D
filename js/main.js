@@ -237,6 +237,7 @@ $(function() {
                     var oldEdge = highlightedObj;
                     setHighlightedObj(null);
                     globals.removeEdge(oldEdge);
+                    globals.gradient.syncNodes();
                     globals.solver.resetK_matrix();
                     globals.solver.resetF_matrix();
                     globals.solver.solve();
