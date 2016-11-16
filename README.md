@@ -10,7 +10,7 @@ Add nodes as variables to an automated optimization process either as single nod
 
 ###Instructions:  
 
-* Click and drag to rotate the view, scroll to zoom, left click and drag to pan.  
+* Scroll to zoom, left click and drag to pan.  
 * The force on each node is indicated by a grey arrow.  Drag on force vectors to change the applied force at each node.  Right click on a force vector to type in a value for it.  Click on the "Add Force" button and select a node to add an external force to it.  
 * Drag nodes to move them, right click to type in an exact position for them.  
 * Fixed nodes are indicated with a black square, click on the "Add/Remove Fixed Nodes" button and select a node to toggle its fixed state.  
