@@ -28,7 +28,7 @@ function initSolver(globals){
 
             globals.sumFL = sumFL;
 
-            $("#FL").html(sumFL.toFixed(2));
+            $("#FL").html(sumFL.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
        });
     }
 
