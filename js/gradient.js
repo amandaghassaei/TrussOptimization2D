@@ -45,6 +45,7 @@ function initGradientSolver(globals){
         }
         solver.resetK_matrix();
         solver.resetF_matrix();
+        originalPositions = [];
         $("#resetOptimization").hide();
     }
 
@@ -151,10 +152,11 @@ function initGradientSolver(globals){
 
     var originalPositions = [];
     function saveOriginalPositions(){
-        originalPositions = [];
+        var newPositions = [];
         for (var i=0;i<globals.nodes.length;i++){
-            originalPositions.push(globals.nodes[i].getPosition());
+            newPositions.push(globals.nodes[i].getPosition());
         }
+        originalPositions.push(newPositions);
     }
 
     function startOptimization(){
@@ -211,13 +213,19 @@ function initGradientSolver(globals){
         $("#resetOptimization").show();
     }
     function resetOptimization(){
-        for (var i=0;i<originalPositions.length;i++) {
-            globals.nodes[i].moveManually(originalPositions[i]);
+        if (originalPositions.length == 0){
+            console.warn("no positions left");
+            return;
         }
+        var lastPositions = originalPositions[originalPositions.length-1];
+        for (var i=0;i<lastPositions.length;i++) {
+            globals.nodes[i].moveManually(lastPositions[i]);
+        }
+        originalPositions.pop();
         globals.solver.resetK_matrix();
         globals.solver.solve();
         globals.controls.viewModeCallback();
-        $("#resetOptimization").hide();
+        if (originalPositions.length == 0) $("#resetOptimization").hide();
     }
 
     return {
