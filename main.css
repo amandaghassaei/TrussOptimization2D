@@ -101,7 +101,7 @@ body{
     /*width: 420px;*/
     padding: 20px 20px 20px 20px;
     max-height: 100%;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 .sliderInput{
@@ -351,6 +351,10 @@ span.modal-close{
     float: right;
 }
 
+/*#linkedNodes{*/
+    /*display: block;*/
+/*}*/
+
 .deleteLinked{
     float: right;
     color:darkred;
@@ -412,4 +416,31 @@ span.modal-close{
 
 #gradOptions{
     margin-top: 30px;
+}
+
+a.seeMore{
+    float:none!important;
+    color: #34495e;
+}
+a.seeMore>.fui-triangle-down{
+    display: inline-block;
+    margin-right:10px;
+}
+a.seeMore.closed>.fui-triangle-down{
+    -ms-transform: rotate(-90deg); /* IE 9 */
+    -webkit-transform: rotate(-90deg); /* Chrome, Safari, Opera */
+    transform: rotate(-90deg);
+}
+
+.hide{
+    display: none;
+}
+
+.flipped
+{
+    direction: rtl;
+}
+.flipped>div
+{
+    direction: ltr;
 }

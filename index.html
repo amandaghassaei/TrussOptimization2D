@@ -53,8 +53,8 @@
     <div class="floatRight"><b>Gradient Step Size (m):</b> &nbsp;&nbsp;<input id="gradStepSize" value="" placeholder="Step Size" class="form-control" type="text"></div><br/><br/>
     <div class="floatRight"><b>Gradient Tolerance (Nm):</b> &nbsp;&nbsp;<input id="gradTolerance" value="" placeholder="Tolerance" class="form-control" type="text"></div>
     <br/><br/><br/>
-    <div id="linkedContainer"><b>Optimization Variables:</b><br/>
-        <div class="indent" id="linkedNodes"></div>
+    <div id="linkedContainer"><a href="#" class="seeMore closed" data-id="linkedNodes"><span class="fui-triangle-down"></span><b>Optimization Variables / Constraints:</b></a><br/>
+        <br/><div class="indent hide" id="linkedNodes"></div>
     </div>
     <div id="gradOptions">
         <div class="floatRight" id="symmetryOptions">
@@ -63,63 +63,65 @@
     </div>
     <div class="extraSpace"></div>
 </div>
-<div id="controlsLeft">
-    <a id="logo" target="_blank" href="http://cba.mit.edu/">
-        <img id="inactiveLogo" src="logo.png"/>
-        <img id="activeLogo" src="logo-active.png"/>
-    </a>
-    <a href="#" id="about" class="btn btn-lg btn-default">About</a><br/>
-    <a href="#" id="addForce" class="btn btn-lg btn-default">Add Force</a><br/>
-    <a href="#" id="addRemoveFixed" class="btn btn-lg btn-default">Add/Remove Fixed Nodes</a><br/>
-    <a href="#" id="deleteMode" class="btn btn-lg btn-default">Delete Mode</a><br/><br/>
+<div id="controlsLeft" class="flipped">
     <div>
-        <b>Controls:</b>
-        <div class="indent">
-            <label class="checkbox" for="lockForces">
-                <input id="lockForces" data-toggle="checkbox" class="custom-checkbox layersSelector" type="checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
-                Lock Forces
-            </label>
-            <label class="checkbox" for="lockTopology">
-                <input id="lockTopology" data-toggle="checkbox" class="custom-checkbox layersSelector" type="checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
-                Lock Topology
-            </label>
-            <label class="checkbox" for="lockNodePositions">
-                <input id="lockNodePositions" data-toggle="checkbox" class="custom-checkbox layersSelector" type="checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
-                Lock Node Positions
-            </label>
-            <!--<label class="checkbox" for="xyOnly">-->
-                <!--<input id="xyOnly" data-toggle="checkbox" class="custom-checkbox layersSelector" type="checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>-->
-                <!--Constrain to XY Plane-->
-            <!--</label>-->
-        </div>
+        <a id="logo" target="_blank" href="http://cba.mit.edu/">
+            <img id="inactiveLogo" src="logo.png"/>
+            <img id="activeLogo" src="logo-active.png"/>
+        </a>
+        <a href="#" id="about" class="btn btn-lg btn-default">About</a><br/>
+        <a href="#" id="addForce" class="btn btn-lg btn-default">Add Force</a><br/>
+        <a href="#" id="addRemoveFixed" class="btn btn-lg btn-default">Add/Remove Fixed Nodes</a><br/>
+        <a href="#" id="deleteMode" class="btn btn-lg btn-default">Delete Mode</a><br/><br/>
+        <div>
+            <a href="#" class="seeMore closed" data-id="designControls"><span class="fui-triangle-down"></span><b>Design Controls:</b></a><br/>
+            <div id="designControls" class="indent hide">
+                <label class="checkbox" for="lockForces">
+                    <input id="lockForces" data-toggle="checkbox" class="custom-checkbox layersSelector" type="checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
+                    Lock Forces
+                </label>
+                <label class="checkbox" for="lockTopology">
+                    <input id="lockTopology" data-toggle="checkbox" class="custom-checkbox layersSelector" type="checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
+                    Lock Topology
+                </label>
+                <label class="checkbox" for="lockNodePositions">
+                    <input id="lockNodePositions" data-toggle="checkbox" class="custom-checkbox layersSelector" type="checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
+                    Lock Node Positions
+                </label>
+                <!--<label class="checkbox" for="xyOnly">-->
+                    <!--<input id="xyOnly" data-toggle="checkbox" class="custom-checkbox layersSelector" type="checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>-->
+                    <!--Constrain to XY Plane-->
+                <!--</label>-->
+            </div>
+        </div><br/>
+        <div>
+            <b>View Mode:</b>
+            <div class="indent">
+                <label class="radio">
+                    <input name="viewMode" value="geometry" data-toggle="radio" class="custom-radio" type="radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
+                    Geometry
+                </label>
+                <label class="radio">
+                    <input name="viewMode" value="length" data-toggle="radio" class="custom-radio" type="radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
+                    Length (m)
+                </label>
+                <label class="radio">
+                    <input name="viewMode" value="force" data-toggle="radio" class="custom-radio" type="radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
+                        Internal Forces (N)
+                </label>
+                <label class="radio">
+                    <input name="viewMode" value="tensionCompression" data-toggle="radio" class="custom-radio" type="radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
+                        Tension/Compression (N)
+                </label>
+                <!--<label class="radio">-->
+                    <!--<input name="viewMode" value="deformation" data-toggle="radio" class="custom-radio" type="radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>-->
+                        <!--Deformation (m)-->
+                <!--</label>-->
+            </div>
+        </div><br/>
+        <a href="#" id="download" class="btn btn-lg btn-default">Download Design Info (.txt)</a>
+        <!--<a href="#" id="saveVariables" class="btn btn-lg btn-default">Save</a>-->
     </div>
-    <div>
-        <b>View Mode:</b>
-        <div class="indent">
-            <label class="radio">
-                <input name="viewMode" value="geometry" data-toggle="radio" class="custom-radio" type="radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
-                Geometry
-            </label>
-            <label class="radio">
-                <input name="viewMode" value="length" data-toggle="radio" class="custom-radio" type="radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
-                Length (m)
-            </label>
-            <label class="radio">
-                <input name="viewMode" value="force" data-toggle="radio" class="custom-radio" type="radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
-                    Internal Forces (N)
-            </label>
-            <label class="radio">
-                <input name="viewMode" value="tensionCompression" data-toggle="radio" class="custom-radio" type="radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
-                    Tension/Compression (N)
-            </label>
-            <!--<label class="radio">-->
-                <!--<input name="viewMode" value="deformation" data-toggle="radio" class="custom-radio" type="radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>-->
-                    <!--Deformation (m)-->
-            <!--</label>-->
-        </div>
-    </div><br/>
-    <a href="#" id="download" class="btn btn-lg btn-default">Download Design Info (.txt)</a>
-    <!--<a href="#" id="saveVariables" class="btn btn-lg btn-default">Save</a>-->
 </div>
 
 <div id="scaleBars"></div>
@@ -163,7 +165,7 @@
             <br/><br/>
             <b>Instructions:</b><br/>
             <ul>
-                <li> Scroll to zoom, left click and drag to pan.</li>
+                <li> Scroll to zoom, right click and drag to pan.</li>
                 <li> The force on each node is indicated by a grey arrow.  Drag on force vectors to change the applied force at each node.  Right click on a force vector to type in a value for it.  Click on the "Add Force" button and select a node to add an external force to it.</li>
                 <li> Drag nodes to move them, right click to type in an exact position for them.</li>
                 <li> Fixed nodes are indicated with a black square, click on the "Add/Remove Fixed Nodes" button and select a node to toggle its fixed state.</li>
