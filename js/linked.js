@@ -206,9 +206,27 @@ function initLinked(globals){
         display();
     }
 
+    function constrain(node, position){
+        for (var i=0;i<linked.length;i++){
+            var index = linked[i].indexOf(node);
+            if (index >= 0){
+                if (locked[i][0]){
+                    position.x = node.getPosition().x;
+                }
+                if (locked[i][1]){
+                    position.y = node.getPosition().y;
+                }
+            }
+        }
+        return position;
+    }
+
     function move(node, position){
         for (var i=0;i<linked.length;i++){
             var index = linked[i].indexOf(node);
+            if (locked[i][0]){
+                position.x = node.getPosition().x;
+            }
             if (index >= 0){
                 var reflected = getSymmetricPosition(position);
                 for (var j=0;j<linked[i].length;j++){
@@ -247,6 +265,7 @@ function initLinked(globals){
         linked: linked,
         locked: locked,
         move: move,
+        constrain: constrain,
         getLinked: getLinked,
         setSymmetryAngle: setSymmetryAngle,
         setSymmetryPoint: setSymmetryPoint,
