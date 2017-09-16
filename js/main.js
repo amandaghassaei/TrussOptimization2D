@@ -388,6 +388,7 @@ $(function() {
                     globals.threeView.enableControls(false);
                 }
                 var intersection = getIntersectionWithObjectPlane(highlightedObj.getPosition());
+                console.log(intersection);
                 var data = "Position: " +
                             "&nbsp;&nbsp;  x : " + intersection.x.toFixed(2) + "&nbsp;  y : " + intersection.y.toFixed(2);
                 if (!globals.xyOnly) data += "&nbsp;  z : " + intersection.z.toFixed(2);

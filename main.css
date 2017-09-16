@@ -405,3 +405,11 @@ span.modal-close{
 #about{
     margin-left: 20px;
 }
+
+#addForce, #addRemoveFixed{
+    margin-bottom: 10px;
+}
+
+#gradOptions{
+    margin-top: 30px;
+}

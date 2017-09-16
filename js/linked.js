@@ -85,7 +85,7 @@ function initLinked(globals){
             string += '</div>';
         }
         string += '<label class="radio"> <input name="visibleLinked" value="-1" data-toggle="radio" class="custom-radio" type="radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>';
-        string += "Show all Optimization Nodes";
+        string += "Show all Optimization Variables";
         string += '</label>';
         $linkedNodes.html(string);
         $(".optLocks .custom-checkbox").click(function(e){
