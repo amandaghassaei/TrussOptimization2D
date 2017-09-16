@@ -98,6 +98,14 @@ Beam.prototype.setDeleteMode = function(){
 
 Beam.prototype.setInternalForce = function(force){
     this.force = force;
+    if (globals.viewMode == "geometry") this.updateThickness();
+};
+
+Beam.prototype.updateThickness = function(uniform){
+    var diameter = 1;
+    if (!uniform && Math.abs(this.force)>0) diameter = Math.sqrt(Math.abs(this.force))/4;
+    if (diameter<0.5) diameter = 0.5;
+    this.object3D.scale.x = diameter;
 };
 
 Beam.prototype.getForce = function(){

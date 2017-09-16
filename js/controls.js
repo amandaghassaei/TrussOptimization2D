@@ -200,10 +200,16 @@ function initControls(globals){
         var $scaleBars = $("#scaleBars");
         var $controls = $("#controls");
         var $redBlue = $("#tension-compressionScale");
+        _.each(globals.edges, function(edge){
+            edge.updateThickness(true);
+        });
         if (val == "geometry"){
             $scaleBars.animate({right: -100});
             $redBlue.animate({right: -100});
             $controls.animate({right:0});
+            _.each(globals.edges, function(edge){
+                edge.updateThickness();
+            });
         } else if (val == "length"){
             $scaleBars.show();
             $redBlue.hide();
