@@ -357,16 +357,16 @@ span.modal-close{
 
 .deleteLinked{
     float: right;
-    color:darkred;
+    color:#d01e1e;
     margin-top: 3px;
     /*margin-left: 10px;*/
     height: 21px;
 }
 .deleteLinked:hover{
-    color:darkred;
+    color:#d01e1e;
 }
 .deleteLinked:visited{
-    color:darkred;
+    color:#d01e1e;
 }
 
 #pauseOptimization{
@@ -443,4 +443,26 @@ a.seeMore.closed>.fui-triangle-down{
 .flipped>div
 {
     direction: ltr;
+}
+
+.about{
+    margin-right: 10px;
+    color: #34495e!important;
+    font-size: 18px;
+    line-height: 18px;
+}
+#controls .about{
+    position: absolute;
+    line-height: 1.7;
+    margin-top: 2px;
+    right:5px;
+}
+
+.margin-right{
+    margin-right: 30px;
+}
+
+#gradContainer{
+    width: 350px;
+    float: right;
 }
