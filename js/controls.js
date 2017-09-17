@@ -363,6 +363,13 @@ function initControls(globals){
         });
     }
 
+    setLink(".about", function(e){
+        var $target = $(e.target);
+        var id = $target.data("id");
+        if (id === undefined) id = $target.parent().data("id");
+        $("#" + id).modal("show");
+    });
+
     setInput("#gradStepSize", globals.gradStepSize, function(val){
         globals.gradStepSize = val;
     }, 0.0001);
