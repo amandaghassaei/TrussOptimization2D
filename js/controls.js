@@ -418,6 +418,10 @@ function initControls(globals){
     });
 
     setLink("#clear", function(){
+        $("#clearConfirm").modal("show");
+    });
+
+    setLink("#doClear", function(){
         globals.clear();
     });
 

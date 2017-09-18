@@ -498,3 +498,8 @@ a.seeMore.closed>.fui-triangle-down{
     text-align: center;
     margin: 20px 18px;
 }
+
+.btn-padding{
+    padding-left: 40px;
+    padding-right: 40px;
+}
