@@ -70,7 +70,7 @@
                 <div class="floatRight margin-right symmetryOptions">
                     <b>Symmetry Angle (deg):</b> &nbsp;&nbsp;<input id="symmetryAngle" value="" placeholder="Angle" class="form-control" type="text"><br/>
                 </div>
-                <a class="about symmetryOptions" style="line-height:35px;" href="#" data-id="aboutSymmetry"><span class="fui-question-circle"></span></a>
+                <a class="about symmetryOptions" style="line-height:35px;" href="#" data-id="aboutSymmetryModal"><span class="fui-question-circle"></span></a>
             </div>
         </div>
     </div>
@@ -168,6 +168,9 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-body">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
         <p><b>Truss Optimization 2D</b><br/><br/>
             This is a design and optimization tool for trusses that uses real-time simulation feedback to inform the design process.
             Trusses are assemblies of rigid beams connected at "nodes" that form the backbone of buildings, bridges, and other structures.
@@ -210,6 +213,9 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-body">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
         <p><b>SUM abs(FL)</b><br/><br/>
 
         </p>
@@ -221,6 +227,9 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-body">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
         <p><b>Gradient Settings</b><br/><br/>
 
         </p>
@@ -232,6 +241,9 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-body">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
         <p><b>Optimization Variables and Constraints</b><br/><br/>
             This menu allows you to configure nodes as variables in the automated optimization process and constrain their motion.
             <br/><br/>
@@ -246,6 +258,19 @@
             Constraints are illustrated by the arrows around the node on the canvas.</li>
           <img src="img/optimizationVars.jpg" />
             <li>Click and drag nodes to verify that your constraints are set up correctly.  You can also change the visibility of the constraint arrows by selecting each of the variables in the dropdown menu.</li>
+        </p>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div class="modal fade" id="aboutSymmetryModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+        <p><b>Symmetry</b><br/><br/>
         </p>
       </div>
     </div><!-- /.modal-content -->
