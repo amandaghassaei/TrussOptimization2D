@@ -166,6 +166,7 @@ Node.prototype.getPosition = function(){
 };
 
 Node.prototype.setSelected = function(state, highlighted){
+    if (!this.optimizationArrows) return;
     if (highlighted){
         this.optimizationArrows.visible = true;
         this.optimizationArrows.children[0].material = optMaterialHighlight;
@@ -213,8 +214,10 @@ Node.prototype.clone = function(){
 Node.prototype.destroy = function(){
     if (this.deleting) return;
     this.deleting = true;
+    globals.linked.removeNode(this);
     if (this.optimizationArrows) globals.threeView.secondPassSceneRemove(this.optimizationArrows);
     this.optimizationArrows = null;
+
     globals.threeView.thirdPassSceneRemove(this.object3D);
     this.object3D._myNode = null;
     this.object3D = null;

@@ -165,6 +165,23 @@ function initLinked(globals){
         globals.threeView.render();
     }
 
+    function removeNode(node){
+        for (var i = 0; i < linked.length; i++) {
+            var index = linked[i].indexOf(node);
+            if (index > -1) {
+                linked[i].splice(index, 1);
+            }
+        }
+        for (var i = linked.length-1; i >= 0; i--) {
+            if (linked[i].length == 0) {
+                linked.splice(i, 1);
+                locked.splice(i, 1);
+            }
+        }
+        deselectAll();
+        display();
+    }
+
     function selectNode(node){
         var index = selectedNodes.indexOf(node);
         if (index > -1) {
@@ -270,7 +287,8 @@ function initLinked(globals){
         setSymmetryAngle: setSymmetryAngle,
         setSymmetryPoint: setSymmetryPoint,
         getSymmetricPosition: getSymmetricPosition,
-        display: display
+        display: display,
+        removeNode: removeNode
     }
 
 }

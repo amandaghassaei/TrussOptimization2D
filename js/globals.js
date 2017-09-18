@@ -70,8 +70,6 @@ function initGlobals(){
                     _globals.linked.linked[index][0].setOptVis(1, !link[i][1]);
                     if (_globals.linked.linked[index].length == 2) _globals.linked.linked[index][1].setOptVis(1, !link[i][1]);
                 } else {
-                    console.log(_globals.nodes);
-                    console.log(link[i]);
                     _globals.linked.selectNode(_globals.nodes[link[i]]);
                 }
             }
@@ -121,7 +119,8 @@ function initGlobals(){
         data.variables = [];
         _.each(_globals.linked.linked, function(link, i){
             var lock = _globals.linked.locked[i];
-            data.variables.push([nodes.indexOf(link[0]), nodes.indexOf(link[1]), [lock[0], lock[1]]]);
+            data.variables.push([nodes.indexOf(link[0]), [lock[0], lock[1]]]);
+            if (link.length==2) data.variables[data.variables.length-1].splice(1, 0, nodes.indexOf(link[1]));
         });
         data.symmetryAngle = _globals.symmetryAngle;
 
@@ -129,6 +128,7 @@ function initGlobals(){
     }
 
     function clear(){
+        if (_globals.setHighlightedObj) _globals.setHighlightedObj(null);
         for (var i=0;i<_globals.edges.length;i++){
             _globals.edges[i].destroy();
         }

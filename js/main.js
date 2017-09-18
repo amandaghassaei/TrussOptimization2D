@@ -138,6 +138,7 @@ $(function() {
         if (highlightedObj) highlightedObj.highlight();
         globals.threeView.render();
     }
+    globals.setHighlightedObj = setHighlightedObj;
 
     var shift = false;
     $(document).on("keydown", function (e) {
@@ -161,7 +162,7 @@ $(function() {
         if (highlightedObj && highlightedObj.type == "node"){
             if (globals.lockTopology) return;
             beamInProgress = new BeamBuilding(highlightedObj, highlightedObj.getPosition(), globals);
-            setHighlightedObj(null);
+            (null);
         } else if (highlightedObj && highlightedObj.type == "beam"){
             if (globals.lockTopology) return;
             var position = getPointOfIntersectionWithObject(highlightedObj.getObject3D());
