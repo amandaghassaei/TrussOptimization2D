@@ -67,7 +67,8 @@ Solver.prototype.solve = function(nodes, edges, xyOnly, callback){
             if (edge.getLength() <= 0){
                 //unsolvable
                 $("#unsolvable").show();
-                console.warn("unsolvable");
+                $("#optimize").addClass("disabled");
+                // console.warn("unsolvable");
                 this.resetK_matrix();
                 if (callback) callback(this.initEmptyArray(freeEdges.length), freeEdges);
                 return;
@@ -78,13 +79,15 @@ Solver.prototype.solve = function(nodes, edges, xyOnly, callback){
         var mat = numeric.dot(A, this.K_A_transpose);
         var determinant = numeric.det(mat);
         if (determinant == 0) {
-            console.warn("unsolvable");
+            // console.warn("unsolvable");
             $("#unsolvable").show();
+            $("#optimize").addClass("disabled");
             this.resetK_matrix();
             if (callback) callback(this.initEmptyArray(freeEdges.length), freeEdges);
             return;
         }
         $("#unsolvable").hide();
+        $("#optimize").removeClass("disabled");
         this.K_matrix = numeric.inv(mat);
     }
 

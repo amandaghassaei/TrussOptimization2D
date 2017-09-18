@@ -100,7 +100,7 @@ Node.prototype.removeBeam = function(beam){
     if (this.beams === null) return;
     var index = this.beams.indexOf(beam);
     if (index>=0) this.beams.splice(index, 1);
-    if (this.beams.length == 0) globals.removeNode(this);
+    // if (this.beams.length == 0) globals.removeNode(this);
 };
 
 Node.prototype.getBeams = function(){

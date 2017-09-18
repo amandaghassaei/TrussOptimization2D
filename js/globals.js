@@ -67,6 +67,10 @@ function initGlobals(){
         return JSON.stringify(data, null, 2);
     }
 
+    function clear(){
+
+    }
+
     function addNode(node){
         _globals.nodes.push(node);
         _globals.gradient.sync();
