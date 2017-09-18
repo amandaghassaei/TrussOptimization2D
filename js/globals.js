@@ -12,7 +12,7 @@ function initGlobals(){
         addRemoveFixedMode: false,
         deleteMode: false,
 
-        viewMode: "force",
+        viewMode: "geometry",
         xyOnly: true,
 
         gradStepSize: 1,
