@@ -406,18 +406,6 @@ function initControls(globals){
         saveAs(blob, "truss.txt");
     });
 
-    setLink("#saveVariables", function(){
-        //x1 = n1-y, x2 = n3-x, x3 = n3-y, x4 = n5-x, x5 = n5-y, x6 = n7-y
-        var array = [];
-        array.push(globals.nodes[1].getPosition().y);
-        array.push(globals.nodes[3].getPosition().x);
-        array.push(globals.nodes[3].getPosition().y);
-        array.push(globals.nodes[5].getPosition().x);
-        array.push(globals.nodes[5].getPosition().y);
-        array.push(globals.nodes[7].getPosition().y);
-        console.log(array.join(", "));
-    });
-
     setLink("#clear", function(){
         $("#clearConfirm").modal("show");
     });
@@ -470,8 +458,22 @@ function initControls(globals){
                         if (data.fixedNodes) fixed = data.fixedNodes;
                         var forces = [];
                         if (data.externalForces) forces = data.externalForces;
+                        var linked = [];
+                        if (data.variables) linked = data.variables;
 
-                        globals.setModel(nodes, edges, forces, fixed);
+                        if (fixed.length != nodes.length){
+                            globals.warn("fixedNodes array is not the same length as nodes array.");
+                        }
+                        if (forces.length != nodes.length){
+                            globals.warn("externalForces array is not the same length as nodes array.");
+                        }
+
+                        if (data.symmetryAngle !== undefined) {
+                            globals.symmetryAngle = data.symmetryAngle;
+                            $("#symmetryAngle").val(globals.symmetryAngle);
+                        }
+
+                        globals.setModel(nodes, edges, forces, fixed, linked);
 
                     } catch(err) {
                         globals.warn("Unable to parse txt file.");

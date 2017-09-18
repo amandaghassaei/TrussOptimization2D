@@ -35,17 +35,17 @@ function initGlobals(){
         getInfo: getInfo
     };
 
-    function setModel(nodes, edges, forces, fixed){
+    function setModel(nodes, edges, forces, fixed, linked){
         this.clear();
         _.each(nodes, function(pos, i){
             //todo everything on z==0
             var position = new THREE.Vector3(pos[0], pos[1], 0);
-            var node = new Node(position, globals);
+            var node = new Node(position, _globals);
             if (forces.length>i && forces[i]){
                 var force = forces[i];
                 if (force.length == 2) force.push(0);
                 if (force.length != 3) console.warn("bad force " + JSON.stringify(force));
-                node.addExternalForce(new Force(new THREE.Vector3(force[0],force[1],0), globals));
+                node.addExternalForce(new Force(new THREE.Vector3(force[0],force[1],0), _globals));
             }
             if (fixed.length>i && fixed[i]){
                 node.setFixed(true);
@@ -53,9 +53,30 @@ function initGlobals(){
             _globals.addNode(node);
         });
         _.each(edges, function(connection){
-            var edge = new Beam([globals.nodes[connection[0]], globals.nodes[connection[1]]], globals);
+            var edge = new Beam([_globals.nodes[connection[0]], _globals.nodes[connection[1]]], _globals);
             _globals.addEdge(edge);
         });
+
+        //constraints and opt vars
+        _.each(linked, function(link, index){
+            for (var i=0;i<link.length;i++){
+                if (i == link.length-1){
+                    _globals.linked.link();
+                    //constraints
+                    _globals.linked.locked[index][0] = link[i][0];
+                    _globals.linked.linked[index][0].setOptVis(0, !link[i][0]);
+                    if (_globals.linked.linked[index].length == 2) _globals.linked.linked[index][1].setOptVis(0, !link[i][0]);
+                    _globals.linked.locked[index][1] = link[i][1];
+                    _globals.linked.linked[index][0].setOptVis(1, !link[i][1]);
+                    if (_globals.linked.linked[index].length == 2) _globals.linked.linked[index][1].setOptVis(1, !link[i][1]);
+                } else {
+                    console.log(_globals.nodes);
+                    console.log(link[i]);
+                    _globals.linked.selectNode(_globals.nodes[link[i]]);
+                }
+            }
+        });
+        _globals.linked.display();
 
         _globals.sumFL = 0;
         _globals.gradient.sync();
@@ -96,6 +117,13 @@ function initGlobals(){
             data.edgeLengths.push(edge.getLength());
         });
         data.sumFL = _globals.sumFL;
+
+        data.variables = [];
+        _.each(_globals.linked.linked, function(link, i){
+            var lock = _globals.linked.locked[i];
+            data.variables.push([nodes.indexOf(link[0]), nodes.indexOf(link[1]), [lock[0], lock[1]]]);
+        });
+        data.symmetryAngle = _globals.symmetryAngle;
 
         return JSON.stringify(data, null, 2);
     }
