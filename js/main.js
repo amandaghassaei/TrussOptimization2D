@@ -8,7 +8,7 @@ $(function() {
 
     globals = initGlobals();
 
-    var nodePositions = [
+    var nodesInit = [
         [-360, 0, 0],
         [-360, 72, 0],
         [-240, 0, 0],
@@ -25,7 +25,7 @@ $(function() {
         [360, 72, 0]
     ];
 
-    var edgeConnections = [
+    var edgesInit = [
         [0,1],
         [2,3],
         [4,5],
@@ -53,28 +53,41 @@ $(function() {
         [10, 13]
     ];
 
-    _.each(nodePositions, function(pos){
-        var position = new THREE.Vector3(pos[0], pos[1], pos[2]);
-        var node = new Node(position, globals);
-        globals.addNode(node);
-    });
-    _.each(edgeConnections, function(connection){
-        var edge = new Beam([globals.nodes[connection[0]], globals.nodes[connection[1]]], globals);
-        globals.addEdge(edge);
-    });
+    var forcesInit = [
+        null,
+        null,
+        [0,-40,0],
+        null,
+        [0,-40,0],
+        null,
+        [0,-40,0],
+        null,
+        [0,-40,0],
+        null,
+        [0,-40,0],
+        null,
+        null,
+        null
+    ];
 
-    //boundary cond
-    globals.nodes[2].addExternalForce(new Force(new THREE.Vector3(0,-40,0), globals));
-    globals.nodes[4].addExternalForce(new Force(new THREE.Vector3(0,-40,0), globals));
-    globals.nodes[6].addExternalForce(new Force(new THREE.Vector3(0,-40,0), globals));
-    globals.nodes[8].addExternalForce(new Force(new THREE.Vector3(0,-40,0), globals));
-    globals.nodes[10].addExternalForce(new Force(new THREE.Vector3(0,-40,0), globals));
-    globals.nodes[12].addExternalForce(new Force(new THREE.Vector3(0,-40,0), globals));
-    globals.nodes[0].setFixed(true);
-    globals.nodes[1].setFixed(true);
-    globals.nodes[12].setFixed(true);
-    globals.nodes[13].setFixed(true);
-    globals.gradient.sync();
+    var fixedInit = [
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        true
+    ];
+
+    globals.setModel(nodesInit, edgesInit, forcesInit, fixedInit);
 
     //constraints and opt vars
     globals.linked.selectNode(globals.nodes[7]);
@@ -93,9 +106,6 @@ $(function() {
     globals.linked.locked[3][0] = true;
     globals.linked.linked[3][0].setOptVis(0, !globals.linked.locked[3][0]);
     globals.linked.display();
-
-    globals.solver.solve();
-    globals.threeView.render();
 
     var raycaster = new THREE.Raycaster();
     var mouse = new THREE.Vector2();

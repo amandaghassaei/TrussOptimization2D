@@ -461,8 +461,17 @@ function initControls(globals){
 
                     try {
                         var data = JSON.parse(reader.result);
+                        console.log(data);
+                        var nodes = [];
+                        if (data.nodes) nodes = data.nodes;
+                        var edges = [];
+                        if (data.edges) edges = data.edges;
+                        var fixed = [];
+                        if (data.fixedNodes) fixed = data.fixedNodes;
+                        var forces = [];
+                        if (data.externalForces) forces = data.externalForces;
 
-
+                        globals.setModel(nodes, edges, forces, fixed);
 
                     } catch(err) {
                         globals.warn("Unable to parse txt file.");

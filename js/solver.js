@@ -11,6 +11,7 @@ function Solver(){
     this.internalForces = null;
 }
 
+//todo add reason
 Solver.prototype.setNotSolvable = function(callback, freeEdges){
     $("#unsolvable").show();
     $("#optimize").addClass("disabled");
@@ -36,6 +37,10 @@ Solver.prototype.solve = function(nodes, edges, xyOnly, callback){
     }
 
     if (freeEdges.length == 0){
+        this.setNotSolvable(callback, freeEdges);
+        return;
+    }
+    if (freeNodes.length == nodes.length){
         this.setNotSolvable(callback, freeEdges);
         return;
     }

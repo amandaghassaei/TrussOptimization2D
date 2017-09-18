@@ -35,6 +35,34 @@ function initGlobals(){
         getInfo: getInfo
     };
 
+    function setModel(nodes, edges, forces, fixed){
+        this.clear();
+        _.each(nodes, function(pos, i){
+            //todo everything on z==0
+            var position = new THREE.Vector3(pos[0], pos[1], 0);
+            var node = new Node(position, globals);
+            if (forces.length>i && forces[i]){
+                var force = forces[i];
+                if (force.length == 2) force.push(0);
+                if (force.length != 3) console.warn("bad force " + JSON.stringify(force));
+                node.addExternalForce(new Force(new THREE.Vector3(force[0],force[1],0), globals));
+            }
+            if (fixed.length>i && fixed[i]){
+                node.setFixed(true);
+            }
+            globals.addNode(node);
+        });
+        _.each(edges, function(connection){
+            var edge = new Beam([globals.nodes[connection[0]], globals.nodes[connection[1]]], globals);
+            globals.addEdge(edge);
+        });
+
+        globals.gradient.sync();
+        globals.solver.solve();
+        globals.threeView.render();
+    }
+    _globals.setModel = setModel;
+
     function getInfo(){
         var data = {};
         var nodes = _globals.nodes;
@@ -45,14 +73,18 @@ function initGlobals(){
         data.externalForces = [];
         _.each(nodes, function(node){
             var position = node.getPosition().clone();
-            var externalForce = node.getExternalForce();
+            if (node.externalForce) {
+                var externalForce = node.getExternalForce();
+                data.externalForces.push([externalForce.x, externalForce.y, externalForce.z]);
+            } else {
+                data.externalForces.push(null);
+            }
             data.nodes.push([position.x, position.y, position.z]);
-            data.externalForces.push([externalForce.x, externalForce.y, externalForce.z]);
         });
 
-        data.fixedNodesIndices = [];
-        _.each(nodes, function(node, index){
-            if (node.fixed) data.fixedNodesIndices.push(index);
+        data.fixedNodes = [];
+        _.each(nodes, function(node){
+            data.fixedNodes.push(node.fixed);
         });
 
         data.numEdges = edges.length;
