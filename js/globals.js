@@ -69,7 +69,7 @@ function initGlobals(){
 
     function addNode(node){
         _globals.nodes.push(node);
-        _globals.gradient.syncNodes();
+        _globals.gradient.sync();
     }
     function removeNode(node){
         //if (_globals.nodes.length < 2) return;
@@ -77,12 +77,12 @@ function initGlobals(){
         if (index>=0) _globals.nodes.splice(index, 1);
         _globals.linked.deleteNode(node);
         node.destroy();
-        _globals.gradient.syncNodes();
+        _globals.gradient.sync();
     }
 
     function addEdge(edge){
         _globals.edges.push(edge);
-        _globals.gradient.syncNodes();
+        _globals.gradient.sync();
     }
     function removeEdge(edge){
         //if (_globals.edges.length == 1) return;
@@ -90,6 +90,16 @@ function initGlobals(){
         if (index>=0) _globals.edges.splice(index, 1);
         edge.destroy();
     }
+
+    function warn(msg){
+        if (($("#warningMessage").data('bs.modal') || {}).isShown){
+            $("#warningMessage").append("<br/><br/>" + msg);
+            return;
+        }
+        $("#warningMessage").html(msg);
+        $("#warningModal").modal("show");
+    }
+    _globals.warn = warn;
 
     _globals.threeView = initThreeView(_globals);
     _globals.controls = initControls(_globals);

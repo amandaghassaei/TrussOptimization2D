@@ -417,6 +417,63 @@ function initControls(globals){
         console.log(array.join(", "));
     });
 
+    setLink("#clear", function(){
+
+    });
+
+    setLink("#openTxt", function(e){
+        $("#fileSelector").click();
+        $(e.target).blur();
+    });
+
+    var reader = new FileReader();
+
+    function warnUnableToLoad(){
+        globals.warn("Unable to load file.");
+    }
+
+    $("#fileSelector").change(function(e) {
+        var files = e.target.files; // FileList object
+        if (files.length < 1) {
+            return;
+        }
+
+        var file = files[0];
+        var extension = file.name.split(".");
+        var name = extension[0];
+        extension = extension[extension.length - 1];
+
+        $(e.target).val("");
+
+        if (extension == "txt"){
+            reader.onload = function () {
+                return function (e) {
+                    if (!reader.result) {
+                        warnUnableToLoad();
+                        return;
+                    }
+                    globals.filename = name;
+                    globals.extension = extension;
+
+                    try {
+                        var data = JSON.parse(reader.result);
+
+
+
+                    } catch(err) {
+                        globals.warn("Unable to parse txt file.");
+                        console.log(err);
+                    }
+                }
+            }(file);
+            reader.readAsText(file);
+        } else {
+            globals.warn('Unknown file extension: .' + extension);
+            return null;
+        }
+
+    });
+
     function setLink(id, callback){
         $(id).click(function(e){
             e.preventDefault();

@@ -14,7 +14,7 @@ function initGradientSolver(globals){
     var nodes = [];
     var edges = [];
 
-    function syncNodes(){
+    function sync(){
 
         for (var i=0;i<nodes.length;i++){
             nodes[i].externalForce = null;
@@ -140,7 +140,7 @@ function initGradientSolver(globals){
         });
     }
 
-    syncNodes();
+    sync();
 
     function resetF_matrix(){
         solver.resetF_matrix();
@@ -229,7 +229,7 @@ function initGradientSolver(globals){
     }
 
     return {
-        syncNodes: syncNodes,
+        sync: sync,
         syncFixed: syncFixed,
         calcGrad: calcGrad,
         resetF_matrix: resetF_matrix,

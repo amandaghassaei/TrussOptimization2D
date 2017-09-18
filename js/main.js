@@ -63,6 +63,7 @@ $(function() {
         globals.addEdge(edge);
     });
 
+    //boundary cond
     globals.nodes[2].addExternalForce(new Force(new THREE.Vector3(0,-40,0), globals));
     globals.nodes[4].addExternalForce(new Force(new THREE.Vector3(0,-40,0), globals));
     globals.nodes[6].addExternalForce(new Force(new THREE.Vector3(0,-40,0), globals));
@@ -73,8 +74,9 @@ $(function() {
     globals.nodes[1].setFixed(true);
     globals.nodes[12].setFixed(true);
     globals.nodes[13].setFixed(true);
-    globals.gradient.syncNodes();
+    globals.gradient.sync();
 
+    //constraints and opt vars
     globals.linked.selectNode(globals.nodes[7]);
     globals.linked.link();
     globals.linked.selectNode(globals.nodes[5]);
@@ -208,7 +210,7 @@ $(function() {
                     highlightedObj.addExternalForce(force);
                     setHighlightedObj(force);
                     globals.solver.resetF_matrix();
-                    globals.gradient.syncNodes();
+                    globals.gradient.sync();
                     globals.solver.solve();
                 }
                 globals.addForceMode = false;
@@ -237,7 +239,7 @@ $(function() {
                     var oldEdge = highlightedObj;
                     setHighlightedObj(null);
                     globals.removeEdge(oldEdge);
-                    globals.gradient.syncNodes();
+                    globals.gradient.sync();
                     globals.solver.resetK_matrix();
                     globals.solver.resetF_matrix();
                     globals.solver.solve();
@@ -246,7 +248,7 @@ $(function() {
                     setHighlightedObj(null);
                     oldForce.destroy();
                     globals.solver.resetF_matrix();
-                    globals.gradient.syncNodes();
+                    globals.gradient.sync();
                     globals.solver.solve();
                 }
                 globals.threeView.render();

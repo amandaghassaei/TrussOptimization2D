@@ -84,7 +84,15 @@
             <img id="inactiveLogo" src="logo.png"/>
             <img id="activeLogo" src="logo-active.png"/>
         </a>
-        <a href="#" id="about" class="btn btn-lg btn-default">About</a><br/>
+
+        <a href="#" id="about" class="btn btn-lg btn-default">About</a>
+        <div class="btn-group">
+            <button data-toggle="dropdown" class="btn btn-lg btn-default dropdown-toggle" type="button">File <span class="caret"></span></button>
+            <ul role="menu" class="dropdown-menu">
+              <li><a id="openTxt" href="#">Open .txt ...</a></li>
+              <li><a id="download" href="#">Save .txt</a></li>
+            </ul>
+        </div><!-- /btn-group --><br/>
         <a href="#" id="addForce" class="btn btn-lg btn-default">Add Force</a><br/>
         <a href="#" id="addRemoveFixed" class="btn btn-lg btn-default">Add/Remove Fixed Nodes</a><br/>
         <a href="#" id="deleteMode" class="btn btn-lg btn-default">Delete Mode</a><br/><br/>
@@ -134,11 +142,11 @@
                 <!--</label>-->
             </div>
         </div><br/>
-        <a href="#" id="download" class="btn btn-lg btn-default">Download Design Info (.txt)</a>
+        <a href="#" id="clear" class="btn btn-lg btn-danger">Clear Design</a>
         <!--<a href="#" id="saveVariables" class="btn btn-lg btn-default">Save</a>-->
     </div>
 </div>
-
+<input id="fileSelector" type="file">
 <div id="scaleBars"></div>
 <div id="tension-compressionScale"></div>
 <div id="moreInfo" class="form-inline"><span></span>
@@ -230,6 +238,19 @@
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div class="modal fade" id="warningModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog sm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <p id="warningMessage">
+                </p>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 </body>
 </html>
