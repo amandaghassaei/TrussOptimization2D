@@ -11,6 +11,14 @@ function Solver(){
     this.internalForces = null;
 }
 
+Solver.prototype.setNotSolvable = function(callback, freeEdges){
+    $("#unsolvable").show();
+    $("#optimize").addClass("disabled");
+    // console.warn("unsolvable");
+    this.resetK_matrix();
+    if (callback) callback(this.initEmptyArray(freeEdges.length), freeEdges);
+};
+
 Solver.prototype.solve = function(nodes, edges, xyOnly, callback){
 
     var freeNodes = [];
@@ -27,7 +35,13 @@ Solver.prototype.solve = function(nodes, edges, xyOnly, callback){
         }
     }
 
+    if (freeEdges.length == 0){
+        this.setNotSolvable(callback, freeEdges);
+        return;
+    }
+
     if (this.K_matrix === null){
+
         //A*k*At
         var A = [];
         for (var i=0;i<freeNodes.length;i++){
@@ -66,11 +80,7 @@ Solver.prototype.solve = function(nodes, edges, xyOnly, callback){
             var edge = edges[freeEdges[i]];
             if (edge.getLength() <= 0){
                 //unsolvable
-                $("#unsolvable").show();
-                $("#optimize").addClass("disabled");
-                // console.warn("unsolvable");
-                this.resetK_matrix();
-                if (callback) callback(this.initEmptyArray(freeEdges.length), freeEdges);
+                this.setNotSolvable(callback, freeEdges);
                 return;
             }
             k[i][i] = 50000000000/edge.getLength();
@@ -80,10 +90,7 @@ Solver.prototype.solve = function(nodes, edges, xyOnly, callback){
         var determinant = numeric.det(mat);
         if (determinant == 0) {
             // console.warn("unsolvable");
-            $("#unsolvable").show();
-            $("#optimize").addClass("disabled");
-            this.resetK_matrix();
-            if (callback) callback(this.initEmptyArray(freeEdges.length), freeEdges);
+            this.setNotSolvable(callback, freeEdges);
             return;
         }
         $("#unsolvable").hide();

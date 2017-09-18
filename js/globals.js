@@ -68,8 +68,21 @@ function initGlobals(){
     }
 
     function clear(){
-
+        for (var i=0;i<_globals.edges.length;i++){
+            _globals.edges[i].destroy();
+        }
+        _globals.edges = [];
+        for (var i=0;i<_globals.nodes.length;i++){
+            _globals.linked.deleteNode(_globals.nodes[i]);
+        }
+        for (var i=0;i<_globals.nodes.length;i++){
+            _globals.nodes[i].destroy();
+        }
+        _globals.nodes = [];
+        _globals.gradient.sync();
+        _globals.threeView.render();
     }
+    _globals.clear = clear;
 
     function addNode(node){
         _globals.nodes.push(node);

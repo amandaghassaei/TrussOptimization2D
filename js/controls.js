@@ -418,7 +418,7 @@ function initControls(globals){
     });
 
     setLink("#clear", function(){
-
+        globals.clear();
     });
 
     setLink("#openTxt", function(e){
