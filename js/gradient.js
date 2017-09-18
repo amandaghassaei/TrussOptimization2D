@@ -59,6 +59,9 @@ function initGradientSolver(globals){
         }
         solver.resetK_matrix();
         solver.resetF_matrix();
+        //keep other solver copy in sync
+        globals.solver.resetK_matrix();
+        globals.solver.resetF_matrix();
     }
     function syncPosition(){
         for (var i=0;i<nodes.length;i++){
@@ -178,6 +181,12 @@ function initGradientSolver(globals){
         $("#optimize").blur();
         hide();
         var numConverged = 0;
+
+        if (globals.linked.linked.length == 0){
+            globals.warn("No nodes selected for automatic optimiztion process.  Open the <b>Opt Variables / Constraints</b> menu" +
+                " to configure optimization.");
+        }
+
         globals.threeView.startAnimation(function(){
 
             lastFL = globals.sumFL;

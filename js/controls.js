@@ -34,6 +34,7 @@ function initControls(globals){
             AnimateRotate(0, -90, $target.children("span"));
             $div.hide();
         }
+        $(".seeMore").blur();
     });
 
     function AnimateRotate(from, to, $elem) {

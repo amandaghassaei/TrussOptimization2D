@@ -57,6 +57,7 @@ function initGlobals(){
             _globals.addEdge(edge);
         });
 
+        _globals.sumFL = 0;
         _globals.gradient.sync();
         _globals.solver.solve();
         _globals.threeView.render();
