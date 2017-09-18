@@ -5,7 +5,7 @@
 
 function initGradientSolver(globals){
 
-    var solver = new Solver();
+    var solver = new Solver();//gradient has it's own solver
 
     var arrow = new Force(new THREE.Vector3(), globals, true);
     arrow.arrow.cone.material.color.setHex(0xff00ff);
@@ -45,6 +45,10 @@ function initGradientSolver(globals){
         }
         solver.resetK_matrix();
         solver.resetF_matrix();
+        //keep other solver copy in sync
+        globals.solver.resetK_matrix();
+        globals.solver.resetF_matrix();
+
         originalPositions = [];
         $("#resetOptimization").hide();
     }

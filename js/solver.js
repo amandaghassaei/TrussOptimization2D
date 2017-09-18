@@ -12,10 +12,10 @@ function Solver(){
 }
 
 //todo add reason
-Solver.prototype.setNotSolvable = function(callback, freeEdges){
+Solver.prototype.setNotSolvable = function(callback, freeEdges, reason){
     $("#unsolvable").show();
     $("#optimize").addClass("disabled");
-    // console.warn("unsolvable");
+    console.warn(reason);
     this.resetK_matrix();
     if (callback) callback(this.initEmptyArray(freeEdges.length), freeEdges);
 };
@@ -37,11 +37,11 @@ Solver.prototype.solve = function(nodes, edges, xyOnly, callback){
     }
 
     if (freeEdges.length == 0){
-        this.setNotSolvable(callback, freeEdges);
+        this.setNotSolvable(callback, freeEdges, "no non-fixed edges");
         return;
     }
     if (freeNodes.length == nodes.length){
-        this.setNotSolvable(callback, freeEdges);
+        this.setNotSolvable(callback, freeEdges, "no non-fixed nodes");
         return;
     }
 
@@ -85,7 +85,7 @@ Solver.prototype.solve = function(nodes, edges, xyOnly, callback){
             var edge = edges[freeEdges[i]];
             if (edge.getLength() <= 0){
                 //unsolvable
-                this.setNotSolvable(callback, freeEdges);
+                this.setNotSolvable(callback, freeEdges, "edge with zero length");
                 return;
             }
             k[i][i] = 50000000000/edge.getLength();
@@ -95,7 +95,7 @@ Solver.prototype.solve = function(nodes, edges, xyOnly, callback){
         var determinant = numeric.det(mat);
         if (determinant == 0) {
             // console.warn("unsolvable");
-            this.setNotSolvable(callback, freeEdges);
+            this.setNotSolvable(callback, freeEdges, "bad topology");
             return;
         }
         $("#unsolvable").hide();

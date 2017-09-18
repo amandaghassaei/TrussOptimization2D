@@ -219,7 +219,6 @@ $(function() {
                     var force = new Force(new THREE.Vector3(), globals);
                     highlightedObj.addExternalForce(force);
                     setHighlightedObj(force);
-                    globals.solver.resetF_matrix();
                     globals.gradient.sync();
                     globals.solver.solve();
                 }
@@ -231,8 +230,6 @@ $(function() {
                 if (highlightedObj && highlightedObj.type == "node"){
                     highlightedObj.setFixed(!highlightedObj.fixed);
                     globals.gradient.syncFixed();
-                    globals.solver.resetK_matrix();
-                    globals.solver.resetF_matrix();
                     globals.solver.solve();
                 }
                 globals.threeView.render();
@@ -242,22 +239,17 @@ $(function() {
                     var oldNode = highlightedObj;
                     setHighlightedObj(null);
                     globals.removeNode(oldNode);
-                    globals.solver.resetK_matrix();
-                    globals.solver.resetF_matrix();
                     globals.solver.solve();
                 } else if (highlightedObj && highlightedObj.type == "beam"){
                     var oldEdge = highlightedObj;
                     setHighlightedObj(null);
                     globals.removeEdge(oldEdge);
                     globals.gradient.sync();
-                    globals.solver.resetK_matrix();
-                    globals.solver.resetF_matrix();
                     globals.solver.solve();
                 } else if (highlightedObj && highlightedObj.type == "force"){
                     var oldForce = highlightedObj;
                     setHighlightedObj(null);
                     oldForce.destroy();
-                    globals.solver.resetF_matrix();
                     globals.gradient.sync();
                     globals.solver.solve();
                 }

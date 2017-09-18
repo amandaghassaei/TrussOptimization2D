@@ -461,7 +461,6 @@ function initControls(globals){
 
                     try {
                         var data = JSON.parse(reader.result);
-                        console.log(data);
                         var nodes = [];
                         if (data.nodes) nodes = data.nodes;
                         var edges = [];

@@ -50,16 +50,16 @@ function initGlobals(){
             if (fixed.length>i && fixed[i]){
                 node.setFixed(true);
             }
-            globals.addNode(node);
+            _globals.addNode(node);
         });
         _.each(edges, function(connection){
             var edge = new Beam([globals.nodes[connection[0]], globals.nodes[connection[1]]], globals);
-            globals.addEdge(edge);
+            _globals.addEdge(edge);
         });
 
-        globals.gradient.sync();
-        globals.solver.solve();
-        globals.threeView.render();
+        _globals.gradient.sync();
+        _globals.solver.solve();
+        _globals.threeView.render();
     }
     _globals.setModel = setModel;
 
