@@ -510,4 +510,5 @@ a.seeMore.closed>.fui-triangle-down{
     position: relative;
     top: auto;
     left: auto;
+    display: block;
 }
