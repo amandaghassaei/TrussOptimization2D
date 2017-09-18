@@ -49,7 +49,7 @@ function initLinked(globals){
     function display(){
         var $linkedNodes = $("#linkedNodes");
         var $options = $("#gradOptions");
-        var $symmetryOptions = $("#symmetryOptions");
+        var $symmetryOptions = $(".symmetryOptions");
         if (linked.length == 0){
             $linkedNodes.html("<b>No Nodes Selected</b> (Shift+click to select a node or a group of nodes, Enter to add them to list.)");
             $options.hide();

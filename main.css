@@ -401,9 +401,9 @@ span.modal-close{
     padding-left: 27px;
 }
 
-#symmetryOptions{
-    margin-bottom:20px;
-}
+/*#symmetryOptions{*/
+    /*margin-bottom:20px;*/
+/*}*/
 
 #about{
     margin: 0 20px;
@@ -502,4 +502,12 @@ a.seeMore.closed>.fui-triangle-down{
 .btn-padding{
     padding-left: 40px;
     padding-right: 40px;
+}
+
+.modal-body img{
+        width: 70%;
+    margin: 0 auto;
+    position: relative;
+    top: auto;
+    left: auto;
 }

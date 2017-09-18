@@ -5,7 +5,7 @@
 var nodeMaterial = new THREE.MeshBasicMaterial({color: 0x000000});
 var nodeMaterialFixed = new THREE.MeshBasicMaterial({color: 0x000000});
 var nodeMaterialDelete = new THREE.MeshBasicMaterial({color: 0xff0000});
-var nodeMaterialHighlight = new THREE.MeshBasicMaterial({color: 0xffffff});
+var nodeMaterialHighlight = new THREE.MeshBasicMaterial({color: 0x000000});
 var nodeGeo = new THREE.CircleGeometry(5);
 //nodeGeo.applyMatrix(new THREE.Matrix4().makeRotationY(Math.PI));
 var nodeFixedGeo = new THREE.CubeGeometry(12, 12, 12);

@@ -67,10 +67,10 @@
         <div class="hide" id="optVarsContain">
             <div class="indent" id="linkedNodes"></div>
             <div id="gradOptions">
-                <div class="floatRight margin-right" id="symmetryOptions">
+                <div class="floatRight margin-right symmetryOptions">
                     <b>Symmetry Angle (deg):</b> &nbsp;&nbsp;<input id="symmetryAngle" value="" placeholder="Angle" class="form-control" type="text"><br/>
                 </div>
-                    <a class="about" style="line-height:35px;" href="#" data-id="aboutSymmetry"><span class="fui-question-circle"></span></a>
+                <a class="about symmetryOptions" style="line-height:35px;" href="#" data-id="aboutSymmetry"><span class="fui-question-circle"></span></a>
             </div>
         </div>
     </div>
@@ -233,7 +233,19 @@
     <div class="modal-content">
       <div class="modal-body">
         <p><b>Optimization Variables and Constraints</b><br/><br/>
-
+            This menu allows you to configure nodes as variables in the automated optimization process and constrain their motion.
+            <br/><br/>
+            <b>Instructions:</b><br/>
+            <li>Hold <b>Shift</b> and select a node - you will see magenta selection arrows appear around it.</li>
+            <li>Hit <b>Enter</b> to  add the selected node as an optimization variable - you will see it appear in the menu under <b>Opt Variables / Constraints</b></li>
+            <li>You may also add two nodes as symmetrically-linked variables.
+                In this case you select both nodes while holding down the <b>Shift</b> key and press <b>Enter</b>.
+                Symmetrically-linked variables are constrained to be symmetric across a line of symmetry (blue dotted line), whose angle is defined by <b>Symmetry Angle</b>.
+                (You will only see the symmetry line when you have symmetrically-linked variables present).</li>
+            <li>Constrain the x or y position of an optimization variable by selecting the appropriate checkbox next to it in the dropdown menu.
+            Constraints are illustrated by the arrows around the node on the canvas.</li>
+          <img src="img/optimizationVars.jpg" />
+            <li>Click and drag nodes to verify that your constraints are set up correctly.  You can also change the visibility of the constraint arrows by selecting each of the variables in the dropdown menu.</li>
         </p>
       </div>
     </div><!-- /.modal-content -->
