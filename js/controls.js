@@ -471,6 +471,8 @@ function initControls(globals){
                         if (data.symmetryAngle !== undefined) {
                             globals.symmetryAngle = data.symmetryAngle;
                             $("#symmetryAngle").val(globals.symmetryAngle);
+                            globals.linked.setSymmetryAngle(globals.symmetryAngle);
+                            globals.threeView.render();
                         }
 
                         globals.setModel(nodes, edges, forces, fixed, linked);
