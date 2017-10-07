@@ -8,7 +8,7 @@ Real-time simulation feedback shows the user how to adjust the positions of the 
 
 Add nodes as variables to an automated optimization process either as single nodes or in mirrored pairs by holding down Shift, selecting a single node or a pair of nodes, and hitting Enter.  Once added, you may constrain their x/y position or change the axis of symmetry in your structure through the controls under "Optimization Variables".  Click "Auto Optimize" to begin the automated optimization process.  This process will incrementally adjust the positions of the nodes to minimize the total volume of the beams in the structure until further gains are less than "Gradient Tolerance".  This optimization process (gradient descent) is not guaranteed to find a globally optimal solution, run the optimization process from many initial starting configurations to find other local minima.  
 
-###Instructions:  
+### Instructions:  
 
 * Scroll to zoom, left click and drag to pan.  
 * The force on each node is indicated by a grey arrow.  Drag on force vectors to change the applied force at each node.  Right click on a force vector to type in a value for it.  Click on the "Add Force" button and select a node to add an external force to it.  
