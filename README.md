@@ -1,6 +1,6 @@
 # TrussOptimization2D
 
-Live demo available [here](http://git.amandaghassaei.com/TrussOptimization2D/). 
+Live demo at <a href="http://apps.amandaghassaei.com/TrussOptimization2D/" target="_blank">apps.amandaghassaei.com/TrussOptimization2D</a>. 
 
 This is a design and optimization tool for structures that uses real-time simulation feedback to inform the end user.  It uses [Finite Element Analysis](https://ocw.mit.edu/courses/civil-and-environmental-engineering/1-050-solid-mechanics-fall-2004/readings/emech5_04.pdf) to numerically solve for internal forces in 2D truss structures assuming only axial forces in beams.  The beams have high stiffness (EA = 50 GPa m<sup>2</sup>) so that elastic deformations of the structure are negligible.  The advantage of this numerical approach over analytical approaches (such as [Method of Joints](https://en.wikibooks.org/wiki/Statics/Method_of_Joints)) is that it generalizes to statically indeterminate structures.  
 
